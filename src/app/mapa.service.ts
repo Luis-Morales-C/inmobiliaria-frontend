@@ -26,7 +26,7 @@ export class MapaService {
       console.log('Contenedor del mapa encontrado:', container);
 
       this.mapa = new mapboxgl.Map({
-        accessToken: '',
+        accessToken: 'pk.eyJ1Ijoibmljb2xhc3BlbmEiLCJhIjoiY21mNW5xeHcyMDNxNTJzcHhqNmNkanptbSJ9.LwkC_ifCLcl9yKbXMZf31w',
         container: 'mapa',
         style: 'mapbox://styles/mapbox/standard',
         center: this.posicionActual,
