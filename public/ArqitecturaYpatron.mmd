@@ -1,0 +1,36 @@
+graph TD
+subgraph "Capa de Presentación"
+WEB[Web Frontend]
+MOB[Mobile Web App]
+API[API Controllers<br>● PropertyController<br>● UserController<br>● BookingController]
+end
+
+subgraph "Capa de Aplicación (DTOs)"
+DTO[Data Transfer Objects<br>● PropertyDTO<br>● UserDTO<br>● TransactionDTO]
+MAP[DTO Mappers]
+end
+
+subgraph "Capa de Negocio"
+SERVICES[Services<br>● PropertyService<br>● UserService<br>● TransactionService]
+DOMAIN[Domain Models<br>● Property<br>● User<br>● Contract]
+end
+
+subgraph "Capa de Persistencia"
+REPO[Repositories<br>● PropertyRepository<br>● UserRepository<br>● BookingRepository]
+DAO[Data Access Objects]
+end
+
+subgraph "Base de Datos"
+DB[(SQL Database<br>● Properties<br>● Users<br>● Transactions)]
+end
+
+WEB --> API
+MOB --> API
+API --> DTO
+DTO --> MAP
+MAP --> SERVICES
+SERVICES --> DOMAIN
+SERVICES --> REPO
+REPO --> DAO
+DAO --> DB
+DOMAIN --> REPO

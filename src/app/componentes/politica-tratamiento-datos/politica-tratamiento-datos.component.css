@@ -1,0 +1,82 @@
+.politica-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7f9fb;
+  color: #333;
+  padding-bottom: 50px;
+}
+
+.hero-section {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+  url('https://cdn.pixabay.com/photo/2017/08/06/22/01/house-2593570_1280.jpg') center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: 0 0 40px 40px;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+}
+
+.politica-content {
+  background: white;
+  max-width: 1100px;
+  margin: 40px auto;
+  border-radius: 20px;
+  padding: 40px 50px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.politica-content h2 {
+  color: #00A36C;
+  margin-top: 30px;
+}
+
+.politica-content p,
+.politica-content ul {
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #444;
+}
+
+.politica-content ul {
+  padding-left: 20px;
+}
+
+.firma {
+  margin-top: 50px;
+  text-align: center;
+  color: #00A36C;
+  font-weight: 500;
+}
+
+.volver-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.btn-volver {
+  background-color: #00A36C;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-volver i {
+  margin-right: 8px;
+}
+
+.btn-volver:hover {
+  background-color: #00915f;
+  transform: translateY(-2px);
+}

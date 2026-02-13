@@ -1,0 +1,247 @@
+:root {
+  --primary-light: #c7fae9;
+  --primary: #10bb82;
+  --white: #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==== NAVBAR ==== */
+.navbar {
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--primary) !important;
+  letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: #333 !important;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary) !important;
+}
+
+/* ==== SECCIÓN PRINCIPAL ==== */
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 30px;
+}
+
+.container p {
+  text-align: center;
+  color: #6c757d;
+}
+
+/* ==== TARJETAS DE INMUEBLE ==== */
+.property-card {
+  background-color: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.property-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Imagen del inmueble */
+.property-card img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* Badge con tipo de negocio */
+.property-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background-color: transparent;
+  color: var(--primary);
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(16, 187, 130, 0.3);
+}
+
+/* ==== CONTENIDO DE LA TARJETA ==== */
+.card-body {
+  padding: 1rem 1.25rem;
+}
+
+.property-price {
+  font-size: 1.3rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.property-card i {
+  margin-right: 5px;
+  color: var(--primary);
+}
+
+/* ==== BOTONES DE ACCIÓN ==== */
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+.btn-success.btn-sm {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-success.btn-sm:hover {
+  background-color: #0daa75;
+  border-color: #0daa75;
+}
+
+.btn-danger.btn-sm {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger.btn-sm:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* ==== SPINNER ==== */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* ==== RESPONSIVE AJUSTES ==== */
+@media (max-width: 576px) {
+  .property-card img {
+    height: 160px;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}
+
+.btn-cerrar-sesion {
+  background-color: #dc3545; /* rojo Bootstrap */
+  border: 2px solid #dc3545;
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+}
+.btn-cerrar-sesion-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px;
+  background-color: #dc3545;
+  border: 2px solid #dc3545;
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  z-index: 10;
+}
+
+.btn-cerrar-sesion-top-left:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+}
+
+/* ===== MODAL DE TRANSFERENCIA ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modal-container {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-container table {
+  font-size: 0.85rem;
+}
+
+.modal-container h5 {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+
+.btn-action {
+  min-width: 140px;        /* Tamaño fijo para todos */
+  text-align: center;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 8px 16px;
+}
+
+

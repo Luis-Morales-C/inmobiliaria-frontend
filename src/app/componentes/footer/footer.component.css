@@ -1,0 +1,23 @@
+footer {
+  background-color: #333;
+  color: white;
+  padding: 60px 0 30px;
+}
+
+.social-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.social-icon:hover {
+  background-color: #0daa75;
+  color: white;
+}

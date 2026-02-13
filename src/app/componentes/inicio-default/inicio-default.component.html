@@ -1,0 +1,87 @@
+<!-- Navbar igual a INVITADO -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container">
+    <a class="navbar-brand" >EDÉN</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavInvitado" aria-controls="navbarNavInvitado" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavInvitado">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">HAGAMOS NEGOCIOS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"(click)="redireccionamiento.redirigirALogin()">ASESORES</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">CONÓCENOS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">CONTÁCTENOS</a>
+        </li>
+      </ul>
+
+      <div class="d-flex">
+        <button class="btn btn-iniciar-sesion"  (click)="redireccionamiento.redirigirALogin()">INICIAR SESIÓN</button>
+        <button class="btn btn-registrarse" (click)="redireccionamiento.redirigirARegistro()">REGISTRARSE</button>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section igual a INVITADO -->
+<section class="container mb-5">
+  <div class="hero-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1 class="display-4 fw-bold mb-4">Bienvenido a EDÉN</h1>
+          <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
+          <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Explorar Propiedades</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Propiedades destacadas igual a INVITADO -->
+<section class="container mb-5">
+  <h2 class="section-title">Propiedades Destacadas</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let propiedad of propiedadesDestacadas">
+      <div class="property-card card">
+        <div class="position-relative">
+          <img [src]="propiedad.imagenes[0]" class="card-img-top" alt="Imagen del inmueble">
+          <span class="property-badge">{{ propiedad.estadoTransa }}</span>
+        </div>
+        <div class="card-body">
+          <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
+          <h6 class="card-title">{{ propiedad.tipo }}</h6>
+          <p class="card-text">{{ propiedad.descripcion }}</p>
+          <div class="d-flex justify-content-between">
+            <span><i class="bi bi-house-door"></i> {{ propiedad.tipoNegocio }}</span>
+            <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} Habitaciones</span>
+            <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
+          </div>
+          <div class="d-grid gap-2 mt-3">
+            <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action igual a INVITADO -->
+<section class="bg-light-primary py-5 mb-5">
+  <div class="container text-center">
+    <h2 class="mb-4">¿Necesitas ayuda para encontrar tu propiedad ideal?</h2>
+    <p class="lead mb-4">Nuestros asesores están listos para ayudarte a encontrar la propiedad perfecta para ti.</p>
+    <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Contactar un Asesor</a>
+  </div>
+</section>

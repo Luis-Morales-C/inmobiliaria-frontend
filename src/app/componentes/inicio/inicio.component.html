@@ -1,0 +1,320 @@
+<!-- Vista centralizada usando ngSwitch -->
+<div [ngSwitch]="tipoInicio">
+  <!-- Debug information
+  <div class="container mt-3 alert alert-info">
+    <h5>Debug Information</h5>
+    <p><strong>tipoInicio:</strong> "{{tipoInicio}}"</p>
+    <p><strong>inicioDeUsuario:</strong> "{{inicioDeUsuario}}"</p>
+    <p><strong>isLogged:</strong> {{isLogged}}</p>
+  </div>
+  -->
+
+  <!-- Vista para CLIENTE -->
+  <ng-container *ngSwitchCase="'CLIENTE'">
+    <!--<div class="alert alert-success m-3">
+      <h4>Mostrando contenido para CLIENTE</h4>
+    </div>
+    -->
+    <!-- Navbar para usuario -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" >EDÉN</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavCliente" aria-controls="navbarNavCliente" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavCliente">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" (click)="redireccionamiento.redirigirARegistroInmueble()">HAGAMOS NEGOCIOS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">ASESORES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONÓCENOS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONTÁCTENOS</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <app-user-menu [userName]="userName" (logout)="logout()"></app-user-menu>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="container mb-5">
+      <div class="hero-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+              <h1 class="display-4 fw-bold mb-4">Encuentra tu propiedad ideal</h1>
+              <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
+              <button class="btn btn-primary btn-lg">Explorar Propiedades</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Búsqueda avanzada solo para logueados -->
+    <section class="container mb-5">
+      <div class="search-box">
+        <h2 class="mb-4">BÚSQUEDA AVANZADA</h2>
+        <form>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Ciudad</label>
+              <select class="form-select">
+                <option selected>Todas</option>
+                <option>Bogotá</option>
+                <option>Medellín</option>
+                <option>Cali</option>
+                <option>Barranquilla</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo de inmueble</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Casa</option>
+                <option>Apartamento</option>
+                <option>Local</option>
+                <option>Lote</option>
+                <option>Finca</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Estado de propiedad</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Nuevo</option>
+                <option>Usado</option>
+                <option>En construcción</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo de negocio</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Venta</option>
+                <option>Alquiler</option>
+                <option>Permuta</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Habitaciones</label>
+              <select class="form-select">
+                <option selected>Cualquiera</option>
+                <option>1+</option>
+                <option>2+</option>
+                <option>3+</option>
+                <option>4+</option>
+                <option>5+</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Baños</label>
+              <select class="form-select">
+                <option selected>Cualquiera</option>
+                <option>1+</option>
+                <option>2+</option>
+                <option>3+</option>
+                <option>4+</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Precio desde</label>
+              <input type="text" class="form-control" placeholder="$ Mínimo">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Precio hasta</label>
+              <input type="text" class="form-control" placeholder="$ Máximo">
+            </div>
+            <div class="col-12 text-center mt-4">
+              <button type="submit" class="btn btn-primary px-5">BUSCAR</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Mapa solo para logueados -->
+    <section id="mapSection" class="container mb-5">
+      <h2 class="section-title">Buscar en el Mapa</h2>
+
+      <div class="map-search-container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Buscar dirección, barrio o ciudad...">
+              <button class="btn btn-primary" type="button">
+                <i class="bi bi-search"></i> Buscar
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4 text-end">
+            <button class="btn btn-outline-primary">
+              <i class="bi bi-geo-alt"></i> Mi ubicación
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-controls">
+        <div>
+          <button class="btn map-filter-btn active">Todos</button>
+          <button class="btn map-filter-btn">Venta</button>
+          <button class="btn map-filter-btn">Alquiler</button>
+          <button class="btn map-filter-btn">Permuta</button>
+        </div>
+        <div>
+          <button class="btn map-filter-btn">
+            <i class="bi bi-filter"></i> Filtros
+          </button>
+        </div>
+      </div>
+
+      <div id="mapa" ></div>
+    </section>
+
+
+    <section class="container mb-5">
+      <h2 class="section-title">Propiedades Destacadas</h2>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let propiedad of propiedadesDestacadas">
+          <div class="property-card card">
+            <div class="position-relative">
+              <img [src]="propiedad.imagenes[0]" class="card-img-top" alt="Imagen del inmueble">
+              <span class="property-badge">{{ propiedad.estadoTransa }}</span>
+            </div>
+            <div class="card-body">
+              <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
+              <h6 class="card-title">{{ propiedad.tipo }}</h6>
+              <p class="card-text">{{ propiedad.descripcion }}</p>
+              <div class="d-flex justify-content-between">
+                <span><i class="bi bi-house-door"></i> {{ propiedad.tipoNegocio }}</span>
+                <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} Habitaciones</span>
+                <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
+              </div>
+              <div class="d-grid gap-2 mt-3">
+                <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-light-primary py-5 mb-5">
+      <div class="container text-center">
+        <h2 class="mb-4">¿Necesitas ayuda para encontrar tu propiedad ideal?</h2>
+        <p class="lead mb-4">Nuestros asesores están listos para ayudarte a encontrar la propiedad perfecta para ti.</p>
+        <button class="btn btn-primary btn-lg">Contactar un Asesor</button>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- Vista para INVITADO (usuarios no logueados) -->
+  <ng-container *ngSwitchCase="'INVITADO'">
+    <div class="alert alert-warning m-3">
+      <h4>Mostrando contenido para invitados</h4>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">EDÉN</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavInvitado" aria-controls="navbarNavInvitado" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavInvitado">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">INICIO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login">INICIAR SESIÓN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/registro">REGISTRARSE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONÓCENOS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONTÁCTENOS</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section class="container mb-5">
+      <div class="hero-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+              <h1 class="display-4 fw-bold mb-4">Bienvenido a EDÉN</h1>
+              <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
+              <a class="btn btn-primary btn-lg" routerLink="/login">Explorar Propiedades</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- Otros roles (ejemplo: ASESOR) -->
+  <ng-container *ngSwitchDefault>
+    <div class="alert alert-secondary m-3">
+      <h4>Mostrando contenido por defecto</h4>
+      <p>No se encontró una coincidencia exacta para "{{tipoInicio}}".</p>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">EDÉN</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDefault" aria-controls="navbarNavDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDefault">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">INICIO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login">INICIAR SESIÓN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/registro">REGISTRARSE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONÓCENOS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONTÁCTENOS</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section class="container mb-5">
+      <div class="hero-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+              <h1 class="display-4 fw-bold mb-4">Bienvenido a EDÉN</h1>
+              <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
+              <a class="btn btn-primary btn-lg" routerLink="/login">Explorar Propiedades</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container mb-5">
+      <h2 class="section-title">Propiedades Destacadas</h2>
+      <!-- Aquí puedes agregar contenido genérico o destacado -->
+    </section>
+  </ng-container>
+</div>

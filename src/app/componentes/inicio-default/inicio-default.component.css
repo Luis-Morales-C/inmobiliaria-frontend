@@ -1,0 +1,133 @@
+:root {
+  --primary-light: #c7fae9;
+  --primary: #10bb82;
+  --white: #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.nav-link {
+  color: #333;
+  font-weight: 500;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #0daa75;
+  border-color: #0daa75;
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.btn-iniciar-sesion {
+  background-color: var(--primary);
+  border: 2px solid #ffffff;
+  border-radius: 30px;
+  color: #ffffff;
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-iniciar-sesion:hover {
+  background-color: #0daa75;
+  border-color: #ffffff;
+}
+
+.btn-registrarse {
+  background-color: #ffffff;
+  border: 2px solid var(--primary);
+  border-radius: 30px;
+  color: var(--primary);
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.btn-registrarse:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 30px;
+}
+
+.hero-section {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=800&q=80');
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  color: white;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 150px;
+  }
+  .hero-section {
+    padding: 20px 0;
+  }
+}

@@ -1,0 +1,12 @@
+<div class="dropdown">
+  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ userName }}
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+    <li><a class="dropdown-item" (click)="mostrarRolPrincipal()">Ver perfil</a></li>
+    <li><a class="dropdown-item" href="https://wa.me/573001234567" target="_blank">WhatsApp Help</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><button class="dropdown-item" (click)="onLogout()">Cerrar sesión</button></li>
+  </ul>
+</div>
+

@@ -1,0 +1,78 @@
+<!-- Botón flotante -->
+<button class="accessibility-btn" (click)="MostrarMenu()">
+  <i class="fa-solid fa-wheelchair"></i>
+</button>
+
+<!-- Menú de accesibilidad -->
+<div class="accessibility-menu" *ngIf="menuVisible">
+  <h3 class="menu-title">Accesibilidad
+    <i class="fa-solid fa-brain"></i>
+  </h3>
+
+  <!-- Control de tamaño de texto -->
+  <div class="text-size-control">
+    <label for="textSize">Tamaño de texto</label>
+    <div class="slider-labels">
+      <span>Pequeño</span>
+      <span>{{ (zoom * 100) | number: '1.0-0' }}%</span>
+      <span>Grande</span>
+    </div>
+    <input
+      id="textSize"
+      type="range"
+      min="0.8"
+      max="1.5"
+      step="0.1"
+      [(ngModel)]="zoom"
+      (input)="actualizarZoom()"
+    />
+  </div>
+
+  <!-- Switch de alto contraste -->
+  <div class="switch-container">
+    <label for="contrasteSwitch">Alto contraste
+      <i class="fa-solid fa-circle-half-stroke"></i>
+    </label>
+    <label class="switch">
+      <input
+        id="contrasteSwitch"
+        type="checkbox"
+        [(ngModel)]="altoContraste"
+        (change)="CambiarContraste()"
+      />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Estado visual -->
+  <p>Contraste: {{ altoContraste ? 'Activado' : 'Desactivado' }}</p>
+
+  <!-- Switch de modo oscuro -->
+  <div class="switch-container">
+    <label for="oscuroSwitch">Modo oscuro
+
+      @if (modoOscuro)
+      {
+        <i class="fa-solid fa-moon"></i>
+      }
+      @else
+      {
+
+        <i class="fa-solid fa-sun"></i>
+
+      }
+    </label>
+    <label class="switch">
+      <input
+        id="oscuroSwitch"
+        type="checkbox"
+        [(ngModel)]="modoOscuro"
+        (change)="CambiarModoOscuro()"
+      />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Estado visual -->
+  <p>Modo oscuro: {{ modoOscuro ? 'Activado' : 'Desactivado' }}</p>
+</div>

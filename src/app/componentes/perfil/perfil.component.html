@@ -1,0 +1,107 @@
+<button class="btn-volver" (click)="volver()">
+  <i class="fa-solid fa-arrow-left"></i> Volver al Login
+</button>
+
+<main class="container" [formGroup]="perfilForm">
+  <section class="perfil">
+    <div class="perfil-header">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        alt="Foto de perfil"
+        class="avatar"
+      >
+
+      <div class="perfil-info">
+        <h1 *ngIf="!editando">{{ nombre }} {{ apellido }}</h1>
+
+        <div *ngIf="editando" class="nombre-apellido-editar">
+          <input type="text" class="campo-editar" placeholder="Nombre" formControlName="nombreTemporal">
+          <input type="text" class="campo-editar" placeholder="Apellido" formControlName="apellidoTemporal">
+        </div>
+      </div>
+    </div>
+
+    <div class="perfil-detalles">
+      <h2>Información personal</h2>
+
+      <div class="info-grid">
+        <div>
+          <strong>Correo:</strong>
+          <p>{{ email }}</p>
+        </div>
+
+        <div>
+          <strong>Teléfono:</strong>
+          <p *ngIf="!editando">{{ telefono }}</p>
+          <input *ngIf="editando" type="text" class="campo-editar" placeholder="Teléfono" formControlName="telefonoTemporal">
+        </div>
+
+        <div>
+          <strong>Documento de identidad:</strong>
+          <p *ngIf="!editando">{{ documentoIdentidad }}</p>
+          <input *ngIf="editando" type="text" class="campo-editar" placeholder="Documento de identidad" formControlName="documentoIdentidadTemporal">
+        </div>
+
+        <div>
+          <strong>Tipo de cuenta:</strong>
+          <p>{{ rol }}</p>
+        </div>
+      </div>
+
+      <div class="overlay" *ngIf="mostrarConfirmacion">
+        <div class="ventana-confirmacion">
+          <p>¿Seguro que quieres desvincularte de la empresa?</p>
+          <div class="botones-confirmacion">
+            <button class="btn-verde" (click)="confirmarDesvinculacion()">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="btn-rojo" (click)="cancelarDesvinculacion()">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button *ngIf="!editando" class="btn-verde" (click)="activarEdicion()">Editar información</button>
+
+        <div *ngIf="editando" class="botones-edicion">
+          <button class="btn-verde" (click)="guardarCambios()">
+            <i class="fa-solid fa-check"></i>
+          </button>
+          <button class="btn-rojo" (click)="cancelarEdicion()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <button class="btn-rojo" *ngIf="!editando" (click)="desvincularEmpresa()">Desvincularme de la empresa</button>
+      </div>
+    </div>
+
+    <div class="perfil-propiedades">
+      <h2>Mis propiedades</h2>
+
+      <div *ngIf="propiedades.length === 0" class="no-propiedades" style="text-align:center; font-size:2rem; color:#999;">
+        <i class="fa-solid fa-face-frown"></i>
+        <p>No tienes propiedades registradas</p>
+      </div>
+
+      <div class="propiedades-grid" *ngIf="propiedades.length > 0">
+        <div class="card" *ngFor="let propiedad of propiedades">
+          <img [src]="propiedad.imagenes[0]" alt="Imagen del inmueble">
+          <div class="card-body">
+            <h3>{{ propiedad.tipo }} - {{ propiedad.tipoNegocio }}</h3>
+            <span class="badge" [ngClass]="propiedad.estadoTransa === 'VENTA' ? 'verde' : 'azul'">
+              {{ propiedad.estadoTransa }}
+            </span>
+            <p>{{ propiedad.descripcion }}</p>
+            <p><strong>Área:</strong> {{ propiedad.medidas }} m²</p>
+            <p><strong>Habitaciones:</strong> {{ propiedad.habitaciones }}</p>
+            <p><strong>Baños:</strong> {{ propiedad.banos }}</p>
+            <p><strong>Precio:</strong> {{ propiedad.precio | currency:'COP' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

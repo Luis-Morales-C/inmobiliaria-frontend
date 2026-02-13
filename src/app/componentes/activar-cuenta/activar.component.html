@@ -1,0 +1,97 @@
+<div class="activation-container">
+    <div class="brand-header">
+        <div class="brand-logo">EDÉN</div>
+        <div class="brand-subtitle">Inmobiliaria</div>
+    </div>
+    
+    <h2 class="text-center mb-4">Activación de Cuenta</h2>
+    <p class="text-center text-muted mb-4">Ingresa el código de verificación que hemos enviado a tu correo electrónico</p>
+    
+    <div class="instructions">
+        <p class="mb-2"><strong>Instrucciones:</strong></p>
+        <ul>
+            <li>Revisa tu bandeja de entrada o spam</li>
+            <li>El código tiene una validez de 15 minutos</li>
+            <li>Si no recibiste el código, solicita uno nuevo</li>
+        </ul>
+    </div>
+    
+    <form [formGroup]="activationForm" (ngSubmit)="onSubmit()">
+        <div class="code-inputs">
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit1"
+                maxlength="1" 
+                formControlName="digit1"
+                (input)="onInput($event, 1)"
+                (keydown)="onKeyDown($event, 1)"
+                required>
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit2"
+                maxlength="1" 
+                formControlName="digit2"
+                (input)="onInput($event, 2)"
+                (keydown)="onKeyDown($event, 2)"
+                required>
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit3"
+                maxlength="1" 
+                formControlName="digit3"
+                (input)="onInput($event, 3)"
+                (keydown)="onKeyDown($event, 3)"
+                required>
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit4"
+                maxlength="1" 
+                formControlName="digit4"
+                (input)="onInput($event, 4)"
+                (keydown)="onKeyDown($event, 4)"
+                required>
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit5"
+                maxlength="1" 
+                formControlName="digit5"
+                (input)="onInput($event, 5)"
+                (keydown)="onKeyDown($event, 5)"
+                required>
+            <input 
+                type="text" 
+                class="code-input" 
+                id="digit6"
+                maxlength="1" 
+                formControlName="digit6"
+                (input)="onInput($event, 6)"
+                (keydown)="onKeyDown($event, 6)"
+                required>
+        </div>
+        
+        <div class="success-message" [style.display]="successMessage ? 'block' : 'none'">
+            <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+        </div>
+        
+        <div class="error-message" [style.display]="errorMessage ? 'block' : 'none'">
+            <i class="bi bi-exclamation-circle-fill"></i> {{ errorMessage }}
+        </div>
+        
+        <button 
+            type="submit" 
+            class="btn btn-primary mb-3" 
+            [disabled]="isSubmitting">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" [style.display]="isSubmitting ? 'inline-block' : 'none'"></span>
+            {{ isSubmitting ? 'Verificando...' : 'Verificar Código' }}
+        </button>
+        
+        <div class="resend-link">
+            ¿No recibiste el código? <a href="#" (click)="resendCode(); $event.preventDefault()">Reenviar código</a>
+        </div>
+    </form>
+</div>
