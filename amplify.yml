@@ -8,7 +8,7 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: dist/front-avanzada
+    baseDirectory: dist/front-avanzada/browser
     files:
       - '**/*'
   cache:
