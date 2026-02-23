@@ -3,7 +3,6 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import {VentanaAgenteComponent} from './componentes/ventana-agente/ventana-agente.component';
-import {VentanaUsuarioComponent} from './componentes/ventana-usuario/ventana-usuario.component';
 import {UnauthorizedComponent} from './componentes/unauthorized/unauthorized.component';
 import {RegistroInmuebleComponent} from './componentes/registro-inmueble/registro-inmueble.component';
 import {RecuperarContraseniaComponent} from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
@@ -52,22 +51,10 @@ export const routes: Routes = [
     component: ActivarComponent
   },
   {
-    path: 'ventanaUsuario',
-    component: VentanaUsuarioComponent,
-    canActivate: [rolesGuard],
-    data: { expectedRoles: ["USUARIO"] }
-  },
-  {
     path: 'ventanaAgente',
     component: VentanaAgenteComponent,
     canActivate: [rolesGuard],
     data: { expectedRoles: ["AGENTE"] }
-  },
-  {
-    path: 'ventanaAsesor',
-    component: VentanaAgenteComponent,
-    canActivate: [rolesGuard],
-    data: { expectedRoles: ["ASESOR"] }
   },
   {
     path: 'registroInmueble',

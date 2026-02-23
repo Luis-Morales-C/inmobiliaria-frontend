@@ -119,9 +119,12 @@
     <!-- Imágenes -->
     <h3 class="section-title">Imágenes del inmueble</h3>
     <div class="image-upload" id="imageUpload"
-         (click)="fileInput.click()"
-         (dragover)="onDragOver($event)"
-         (drop)="onDrop($event)">
+         [class.disabled-upload]="imagenes.length >= 10"
+         [style.pointer-events]="imagenes.length >= 10 ? 'none' : 'auto'"
+
+         (click)="imagenes.length < 10 && fileInput.click()"
+         (dragover)="imagenes.length < 10 && onDragOver($event)"
+         (drop)="imagenes.length < 10 && onDrop($event)">
       <div class="upload-icon">
         <i class="bi bi-cloud-arrow-up"></i>
       </div>

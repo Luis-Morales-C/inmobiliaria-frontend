@@ -6,8 +6,9 @@ import {FormsModule} from '@angular/forms';
 import {TipoNegocio} from '../../modelo/TipoNegocio';
 import {AuthService} from '../../servicios/auth.service';
 import {UsersService} from '../../servicios/users.service';
-import {UserResponse} from '../../dto/user-response';
 import {UsuarioResponseDto} from '../../dto/usuario-response.dto';
+import {UserMenuComponent} from '../user-menu/user-menu.component';
+import {RedireccionService} from '../../servicios/redireccion.service';
 
 @Component({
   selector: 'app-inmuebles-proceso',
@@ -17,26 +18,35 @@ import {UsuarioResponseDto} from '../../dto/usuario-response.dto';
   imports: [
     CommonModule,       // ✅ Esto es lo que faltaba
     CurrencyPipe,
-    FormsModule
+    FormsModule,
+    UserMenuComponent
   ]
 })
 export class VentanaAgenteComponent implements OnInit {
   @Output() logout = new EventEmitter<void>();
-  userName = 'Nicolás';
+  userName: string = '';
   propiedadesDestacadas: InmuebleResponse[] = [];
   propiedadSeleccionada: InmuebleResponse | null = null;
   correoUsuario = localStorage.getItem('userEmail') || '';
+  isLogged = false;
 
-  constructor(protected inmuebleService: InmuebleServiceService,protected authservice: AuthService,protected userService:UsersService) {}
+  constructor(protected inmuebleService: InmuebleServiceService,protected authservice: AuthService,protected userService:UsersService, protected redireccionamiento: RedireccionService) {
+    this.isLogged=this.authservice.isAuthenticated();
+  }
 
   ngOnInit(): void {
+
+    if(this.isLogged)
+    {
+      this.userName=this.authservice.getUserEmail() || 'Usuario';
+    }
     this.inmuebleService.obtenerListaInmueblesAgente(this.correoUsuario).subscribe({
       next: (inmuebles) => {
         this.propiedadesDestacadas = inmuebles;
         console.log('Propiedades destacadas cargadas:', inmuebles);
       },
       error: (err) => {
-        console.error('Error al obtener inmuebles', err);
+        console.error('No se pudieron obtener los inmuebles debido a que el agente no tiene inmuebles adjuntos a su nombre', err);
       }
     });
   }
@@ -90,15 +100,32 @@ export class VentanaAgenteComponent implements OnInit {
     });
   }
 
-  onLogout() {
-    this.authservice.logout();
+  deshacerRechazo(inmueble: InmuebleResponse): void {
+    console.log('Inmueble recibido desde el botón:', inmueble);
+
+    this.inmuebleService.actualizarEstadoTransaccion(inmueble.id, 'PENDIENTE').subscribe({
+      next: (response) => {
+        console.log('Estado actualizado:', response);
+        this.propiedadSeleccionada = response;
+
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error('Error al actualizar estado:', err);
+      }
+    });
   }
+
 
   mostrarModalTransferencia = false;
   listaUsuarios: any[] = [];
   inmuebleSeleccionado: InmuebleResponse | null = null;
 
-// 🔹 Método para abrir el modal
+  // Modal de detalles del inmueble
+  mostrarModalDetalle = false;
+  detalleInmueble: InmuebleResponse | null = null;
+
+  // 🔹 Método para abrir el modal de transferencia
   abrirModalTransferencia(inmueble: InmuebleResponse): void {
     this.inmuebleSeleccionado = inmueble;
     this.mostrarModalTransferencia = true;
@@ -117,19 +144,31 @@ export class VentanaAgenteComponent implements OnInit {
   }
 
 
-// 🔹 Método para cerrar el modal
+  // 🔹 Método para cerrar el modal de transferencia
   cerrarModalTransferencia() {
     this.mostrarModalTransferencia = false;
     this.inmuebleSeleccionado = null;
   }
 
-// 🔹 Método para ejecutar la transferencia
-  /*transferirInmueble(usuario: any) {
+  // 🔹 Método para abrir el modal de detalles
+  abrirModalDetalles(inmueble: InmuebleResponse): void {
+    this.detalleInmueble = inmueble;
+    this.mostrarModalDetalle = true;
+  }
+
+  // 🔹 Método para cerrar el modal de detalles
+  cerrarModalDetalles(): void {
+    this.mostrarModalDetalle = false;
+    this.detalleInmueble = null;
+  }
+
+  // 🔹 Método para ejecutar la transferencia
+  transferirInmueble(usuario: UsuarioResponseDto | any) {
     if (!this.inmuebleSeleccionado) return;
 
     console.log(`Transfiriendo inmueble ${this.inmuebleSeleccionado.id} al usuario ${usuario.email}`);
 
-    this.inmuebleService.transferirInmueble(this.inmuebleSeleccionado.id, usuario.id).subscribe({
+    /*this.inmuebleService.transferirInmueble(this.inmuebleSeleccionado.id, usuario.id).subscribe({
       next: (res) => {
         console.log('Inmueble transferido con éxito:', res);
         this.cerrarModalTransferencia();
@@ -139,10 +178,21 @@ export class VentanaAgenteComponent implements OnInit {
         console.error('Error al transferir inmueble:', err);
       }
     });
+
+     */
   }
 
-   */
-
+  volver() {
+    if(this.authservice.getToken()==null)
+    {
+      this.redireccionamiento.redirigirAHome()
+    }
+    else
+    {
+      this.redireccionamiento.redirigirAHomeIngresado();
+      console.log("Redirigiendo a home ingresado"+this.authservice.getUserEmail() );
+    }
+  }
 
 
 }

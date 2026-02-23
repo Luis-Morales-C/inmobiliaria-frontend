@@ -1,20 +1,9 @@
 <!-- Vista centralizada usando ngSwitch -->
 <div [ngSwitch]="tipoInicio">
-  <!-- Debug information
-  <div class="container mt-3 alert alert-info">
-    <h5>Debug Information</h5>
-    <p><strong>tipoInicio:</strong> "{{tipoInicio}}"</p>
-    <p><strong>inicioDeUsuario:</strong> "{{inicioDeUsuario}}"</p>
-    <p><strong>isLogged:</strong> {{isLogged}}</p>
-  </div>
-  -->
+
 
   <!-- Vista para CLIENTE -->
   <ng-container *ngSwitchCase="'CLIENTE'">
-    <!--<div class="alert alert-success m-3">
-      <h4>Mostrando contenido para CLIENTE</h4>
-    </div>
-    -->
     <!-- Navbar para usuario -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
       <div class="container">
@@ -185,14 +174,14 @@
           <div class="property-card card">
             <div class="position-relative">
               <img [src]="propiedad.imagenes[0]" class="card-img-top" alt="Imagen del inmueble">
-              <span class="property-badge">{{ propiedad.estadoTransa }}</span>
+              <span class="property-badge">{{ propiedad.tipoNegocio }}</span>
             </div>
             <div class="card-body">
               <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
               <h6 class="card-title">{{ propiedad.tipo }}</h6>
-              <p class="card-text">{{ propiedad.descripcion }}</p>
+              <!-- <p class="card-text">{{ propiedad.descripcion }}</p>-->
               <div class="d-flex justify-content-between">
-                <span><i class="bi bi-house-door"></i> {{ propiedad.tipoNegocio }}</span>
+                <span><i class="bi bi-house-door"></i> {{ propiedad.estado }}</span>
                 <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
               </div>
               <hr>
@@ -201,7 +190,220 @@
                 <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
               </div>
               <div class="d-grid gap-2 mt-3">
-                <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+                <div *ngIf="!isLogged">
+                  <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+                </div>
+                <div *ngIf="isLogged">
+                  <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">Ver Detalles</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   <!-- Call to Action -->
+    <section class="bg-light-primary py-5 mb-5">
+      <div class="container text-center">
+        <h2 class="mb-4">¿Necesitas ayuda para encontrar tu propiedad ideal?</h2>
+        <p class="lead mb-4">Nuestros asesores están listos para ayudarte a encontrar la propiedad perfecta para ti.</p>
+        <button class="btn btn-primary btn-lg">Contactar un Asesor</button>
+      </div>
+    </section>
+  </ng-container>
+
+
+  <ng-container *ngSwitchCase="'AGENTE'">
+    <!-- Navbar para agente -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" >EDÉN</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavCliente" aria-controls="navbarNavCliente" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavCliente">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">ASESORES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONÓCENOS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">CONTÁCTENOS</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <app-user-menu [userName]="userName" (logout)="logout()"></app-user-menu>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="container mb-5">
+      <div class="hero-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+              <h1 class="display-4 fw-bold mb-4">Encuentra tu propiedad ideal</h1>
+              <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
+              <button class="btn btn-primary btn-lg">Explorar Propiedades</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Búsqueda avanzada solo para logueados -->
+    <section class="container mb-5">
+      <div class="search-box">
+        <h2 class="mb-4">BÚSQUEDA AVANZADA</h2>
+        <form>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Ciudad</label>
+              <select class="form-select">
+                <option selected>Todas</option>
+                <option>Bogotá</option>
+                <option>Medellín</option>
+                <option>Cali</option>
+                <option>Barranquilla</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo de inmueble</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Casa</option>
+                <option>Apartamento</option>
+                <option>Local</option>
+                <option>Lote</option>
+                <option>Finca</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Estado de propiedad</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Nuevo</option>
+                <option>Usado</option>
+                <option>En construcción</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo de negocio</label>
+              <select class="form-select">
+                <option selected>Todos</option>
+                <option>Venta</option>
+                <option>Alquiler</option>
+                <option>Permuta</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Habitaciones</label>
+              <select class="form-select">
+                <option selected>Cualquiera</option>
+                <option>1+</option>
+                <option>2+</option>
+                <option>3+</option>
+                <option>4+</option>
+                <option>5+</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Baños</label>
+              <select class="form-select">
+                <option selected>Cualquiera</option>
+                <option>1+</option>
+                <option>2+</option>
+                <option>3+</option>
+                <option>4+</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Precio desde</label>
+              <input type="text" class="form-control" placeholder="$ Mínimo">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Precio hasta</label>
+              <input type="text" class="form-control" placeholder="$ Máximo">
+            </div>
+            <div class="col-12 text-center mt-4">
+              <button type="submit" class="btn btn-primary px-5">BUSCAR</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Mapa solo para logueados -->
+    <section id="mapSection" class="container mb-5">
+      <h2 class="section-title">Buscar en el Mapa</h2>
+
+      <div class="map-search-container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Buscar dirección, barrio o ciudad...">
+              <button class="btn btn-primary" type="button">
+                <i class="bi bi-search"></i> Buscar
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4 text-end">
+            <button class="btn btn-outline-primary">
+              <i class="bi bi-geo-alt"></i> Mi ubicación
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-controls">
+        <div>
+          <button class="btn map-filter-btn active">Todos</button>
+          <button class="btn map-filter-btn">Venta</button>
+          <button class="btn map-filter-btn">Alquiler</button>
+          <button class="btn map-filter-btn">Permuta</button>
+        </div>
+        <div>
+          <button class="btn map-filter-btn">
+            <i class="bi bi-filter"></i> Filtros
+          </button>
+        </div>
+      </div>
+
+      <div id="mapa" ></div>
+    </section>
+
+
+    <section class="container mb-5">
+      <h2 class="section-title">Propiedades Destacadas</h2>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let propiedad of propiedadesDestacadas">
+          <div class="property-card card">
+            <div class="position-relative">
+              <img [src]="propiedad.imagenes[0]" class="card-img-top" alt="Imagen del inmueble">
+              <span class="property-badge">{{ propiedad.tipoNegocio }}</span>
+            </div>
+            <div class="card-body">
+              <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
+              <h6 class="card-title">{{ propiedad.tipo }}</h6>
+              <!-- <p class="card-text">{{ propiedad.descripcion }}</p>-->
+              <div class="d-flex justify-content-between">
+                <span><i class="bi bi-house-door"></i> {{ propiedad.estado }}</span>
+                <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} Habitaciones</span>
+                <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
+              </div>
+              <div class="d-grid gap-2 mt-3">
+                <div *ngIf="!isLogged">
+                  <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+                </div>
+                <div *ngIf="isLogged">
+                  <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">Ver Detalles</button>
+                </div>
               </div>
             </div>
           </div>
@@ -317,4 +519,47 @@
       <!-- Aquí puedes agregar contenido genérico o destacado -->
     </section>
   </ng-container>
+
+  <!-- Modal de Detalle del inmueble (compartido) -->
+<div class="modal-overlay" *ngIf="mostrarModalDetalle">
+  <div class="modal-container modal-lg">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Detalles del inmueble</h5>
+      <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
+    </div>
+
+    <div *ngIf="detalleInmueble">
+      <div class="row">
+        <div class="col-md-6">
+          <img [src]="detalleInmueble.imagenes?.length ? detalleInmueble.imagenes[0] : 'https://via.placeholder.com/600x400'" class="img-fluid mb-3" alt="Imagen">
+          <p><strong>Precio:</strong> {{ detalleInmueble.precio | currency:'COP' }}</p>
+          <p><strong>Tipo de negocio:</strong> {{ detalleInmueble.tipoNegocio }}</p>
+          <p><strong>Tipo de inmueble:</strong> {{ detalleInmueble.tipo }}</p>
+          <p><strong>Estado del inmueble:</strong> {{ detalleInmueble.estado }}</p>
+          <p><strong>Estado de transacción:</strong> {{ detalleInmueble.estadoTransa }}</p>
+          <p><strong>Imágenes (total):</strong> {{ detalleInmueble.imagenes?.length || 0 }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Descripción:</strong> {{ detalleInmueble.descripcion }}</p>
+          <p><strong>Habitaciones:</strong> {{ detalleInmueble.habitaciones }}</p>
+          <p><strong>Baños:</strong> {{ detalleInmueble.banos }}</p>
+          <p><strong>Medidas:</strong> {{ detalleInmueble.medidas }} m²</p>
+          <p><strong>Parqueaderos:</strong> {{ detalleInmueble.cantidadParqueaderos }}</p>
+          <p><strong>Contacto:</strong> {{ detalleInmueble.nombreContacto }} - {{ detalleInmueble.telefonoContacto }} - {{ detalleInmueble.correoContacto }}</p>
+          <p><strong>Propietario (ID):</strong> {{ detalleInmueble.propietario }}</p>
+          <p><strong>ID:</strong> {{ detalleInmueble.id }}</p>
+          <p><strong>Ubicación:</strong> Lat {{ detalleInmueble.latitud }}, Long {{ detalleInmueble.longitud }}</p>
+          <p><strong>Agente asociado (ID):</strong> {{ detalleInmueble.agenteAsociado }}</p>
+          <p><strong>Asesor legal (ID):</strong> {{ detalleInmueble.asesorLegal }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+
 </div>

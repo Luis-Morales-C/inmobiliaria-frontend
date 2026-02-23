@@ -11,7 +11,7 @@
           <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">HAGAMOS NEGOCIOS</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"(click)="redireccionamiento.redirigirALogin()">ASESORES</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">ASESORES</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">CONÓCENOS</a>
@@ -53,14 +53,14 @@
       <div class="property-card card">
         <div class="position-relative">
           <img [src]="propiedad.imagenes[0]" class="card-img-top" alt="Imagen del inmueble">
-          <span class="property-badge">{{ propiedad.estadoTransa }}</span>
+          <span class="property-badge">{{ propiedad.tipoNegocio }}</span>
         </div>
         <div class="card-body">
           <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
           <h6 class="card-title">{{ propiedad.tipo }}</h6>
-          <p class="card-text">{{ propiedad.descripcion }}</p>
+          <!-- <p class="card-text">{{ propiedad.descripcion }}</p>-->
           <div class="d-flex justify-content-between">
-            <span><i class="bi bi-house-door"></i> {{ propiedad.tipoNegocio }}</span>
+            <span><i class="bi bi-house-door"></i> {{ propiedad.estado }}</span>
             <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
           </div>
           <hr>
@@ -69,13 +69,14 @@
             <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
           </div>
           <div class="d-grid gap-2 mt-3">
-            <a class="btn btn-outline-primary w-100" (click)="redireccionamiento.redirigirALogin()">Ver Detalles</a>
+              <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">Ver Detalles</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- Call to Action igual a INVITADO -->
 <section class="bg-light-primary py-5 mb-5">
@@ -85,3 +86,44 @@
     <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Contactar un Asesor</a>
   </div>
 </section>
+
+<!-- Modal de Detalle del inmueble -->
+<div class="modal-overlay" *ngIf="mostrarModalDetalle">
+  <div class="modal-container modal-lg">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Detalles del inmueble</h5>
+      <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
+    </div>
+
+    <div *ngIf="detalleInmueble">
+      <div class="row">
+        <div class="col-md-6">
+          <img [src]="detalleInmueble.imagenes?.length ? detalleInmueble.imagenes[0] : 'https://via.placeholder.com/600x400'" class="img-fluid mb-3" alt="Imagen">
+          <p><strong>Precio:</strong> {{ detalleInmueble.precio | currency:'COP' }}</p>
+          <p><strong>Tipo de negocio:</strong> {{ detalleInmueble.tipoNegocio }}</p>
+          <p><strong>Tipo de inmueble:</strong> {{ detalleInmueble.tipo }}</p>
+          <p><strong>Estado del inmueble:</strong> {{ detalleInmueble.estado }}</p>
+          <p><strong>Estado de transacción:</strong> {{ detalleInmueble.estadoTransa }}</p>
+          <p><strong>Imágenes (total):</strong> {{ detalleInmueble.imagenes?.length || 0 }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Descripción:</strong> {{ detalleInmueble.descripcion }}</p>
+          <p><strong>Habitaciones:</strong> {{ detalleInmueble.habitaciones }}</p>
+          <p><strong>Baños:</strong> {{ detalleInmueble.banos }}</p>
+          <p><strong>Medidas:</strong> {{ detalleInmueble.medidas }} m²</p>
+          <p><strong>Parqueaderos:</strong> {{ detalleInmueble.cantidadParqueaderos }}</p>
+          <p><strong>Contacto:</strong> {{ detalleInmueble.nombreContacto }} - {{ detalleInmueble.telefonoContacto }} - {{ detalleInmueble.correoContacto }}</p>
+          <p><strong>Propietario (ID):</strong> {{ detalleInmueble.propietario }}</p>
+          <p><strong>ID:</strong> {{ detalleInmueble.id }}</p>
+          <p><strong>Ubicación:</strong> Lat {{ detalleInmueble.latitud }}, Long {{ detalleInmueble.longitud }}</p>
+          <p><strong>Agente asociado (ID):</strong> {{ detalleInmueble.agenteAsociado }}</p>
+          <p><strong>Asesor legal (ID):</strong> {{ detalleInmueble.asesorLegal }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
+    </div>
+  </div>
+</div>
