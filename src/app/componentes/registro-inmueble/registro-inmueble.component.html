@@ -148,10 +148,11 @@
     <h3 class="section-title">Documentos del inmueble (PDF)</h3>
 
     <div class="pdf-upload" id="pdfUpload"
-         (click)="pdfInput.click()"
-         (dragover)="onDragOverPDF($event)"
-         (drop)="onDropPDF($event)">
-      <div class="upload-icon">
+         [class.disabled-upload]="pdfArchivos.length >= 5"
+         (click)="pdfArchivos.length < 5 && pdfInput.click()"
+         (dragover)="pdfArchivos.length < 5 && onDragOverPDF($event)"
+         (drop)="pdfArchivos.length < 5 && onDropPDF($event)">
+    <div class="upload-icon">
         <i class="bi bi-file-earmark-pdf"></i>
       </div>
       <p>Haz clic o arrastra archivos PDF aquí para subirlos</p>
