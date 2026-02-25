@@ -80,6 +80,9 @@
         <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="text-danger">
           <div *ngIf="registroForm.get('contrasena')?.errors?.['required']">Debe escribir su contraseña.</div>
           <div *ngIf="registroForm.get('contrasena')?.errors?.['minlength']">La contraseña debe tener mínimo 8 caracteres.</div>
+          <div *ngIf="registroForm.get('contrasena')?.errors?.['pattern']">
+            Debe incluir mayúscula, minúscula, número y símbolo.
+          </div>
         </div>
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
                         <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>

@@ -36,7 +36,11 @@ export class RegistroComponent {
         documentoIdentidad: ['', [Validators.required, Validators.maxLength(20)]],
         telefono: ['', [Validators.required, Validators.maxLength(20)]],
         email: ['', [Validators.required, Validators.email, Validators.maxLength(150)]],
-        contrasena: ['', [Validators.required, Validators.minLength(8)]],
+        contrasena: ['', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/)
+        ]],
         confirmcontrasena: ['', [Validators.required, Validators.minLength(8)]],
         aceptaPolitica: [false, Validators.requiredTrue]
       },
