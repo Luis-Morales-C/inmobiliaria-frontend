@@ -26,17 +26,22 @@
         <div class="col-md-6 mb-3">
           <label class="form-label">Tipo de negocio</label>
           <select class="form-select" formControlName="tipoNegocio" required>
-            <option value="" disabled selected>Seleccionar</option>
+            <option value="" disabled>Seleccionar</option>
             <option value="VENTA">Venta</option>
             <option value="ALQUILER">Alquiler</option>
             <option value="PERMUTACION">Permuta</option>
           </select>
+          <div *ngIf="registroInmuebleForm.get('tipoNegocio')?.touched && registroInmuebleForm.get('tipoNegocio')?.invalid">
+            <small class="text-danger">
+              Debe seleccionar un tipo de negocio.
+            </small>
+          </div>
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Tipo de inmueble</label>
           <select class="form-select" formControlName="tipo" required>
-            <option value="" disabled selected>Seleccionar</option>
+            <option value="">Seleccionar</option>
             <option value="CASA">Casa</option>
             <option value="APARTAMENTO">Apartamento</option>
             <option value="LOCAL">Local Comercial</option>
@@ -44,6 +49,11 @@
             <option value="FINCA">Finca</option>
             <option value="OFICINA">Oficina</option>
           </select>
+          <div *ngIf="registroInmuebleForm.get('tipo')?.touched && registroInmuebleForm.get('tipo')?.invalid">
+            <small class="text-danger">
+              Debe seleccionar un tipo de inmueble.
+            </small>
+          </div>
         </div>
       </div>
     </div>
@@ -56,7 +66,12 @@
           <label class="form-label">Precio</label>
           <div class="input-group">
             <span class="input-group-text">$</span>
-            <input type="number" class="form-control" formControlName="precio" placeholder="Ej: 250000000">
+            <input type="number" class="form-control" formControlName="precio" placeholder="Ej: 250000000" min="0" step="1">
+            <div *ngIf="registroInmuebleForm.get('precio')?.touched && registroInmuebleForm.get('precio')?.invalid">
+              <small class="text-danger" *ngIf="registroInmuebleForm.get('precio')?.errors?.['required']">
+                El precio es obligatorio.
+              </small>
+            </div>
           </div>
         </div>
 
@@ -65,10 +80,17 @@
       <div class="mb-3">
         <label class="form-label">Estado del inmueble</label>
         <select class="form-select" formControlName="estado">
-          <option value="" disabled selected>Seleccionar</option>
+          <option value="" disabled>Seleccionar</option>
           <option value="NUEVO">Nuevo</option>
           <option value="USADO">Usado</option>
         </select>
+
+        <div *ngIf="registroInmuebleForm.get('estado')?.touched && registroInmuebleForm.get('estado')?.invalid">
+          <small class="text-danger">
+            Debe seleccionar el estado del inmueble.
+          </small>
+        </div>
+
       </div>
     </div>
 
@@ -79,15 +101,31 @@
         <div class="col-md-4 mb-3">
           <label class="form-label">Nº Habitaciones</label>
           <select class="form-select" formControlName="habitaciones">
-            <option *ngFor="let h of [0,1,2,3,4,5]" [value]="h">{{ h === 5 ? '5+' : h }}</option>
+            <option *ngFor="let h of [1,2,3,4,5]" [value]="h">{{ h === 5 ? '5+' : h }}</option>
           </select>
+          <div *ngIf="registroInmuebleForm.get('habitaciones')?.touched && registroInmuebleForm.get('habitaciones')?.invalid">
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('habitaciones')?.errors?.['required']">
+              El número de habitaciones es obligatorio.
+            </small>
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('habitaciones')?.errors?.['min']">
+              Debe haber al menos una habitación.
+            </small>
+          </div>
         </div>
 
         <div class="col-md-4 mb-3">
           <label class="form-label">Nº Baños</label>
           <select class="form-select" formControlName="banos">
-            <option *ngFor="let b of [0,1,2,3,4,5]" [value]="b">{{ b === 5 ? '5+' : b }}</option>
+            <option *ngFor="let b of [1,2,3,4,5]" [value]="b">{{ b === 5 ? '5+' : b }}</option>
           </select>
+          <div *ngIf="registroInmuebleForm.get('banos')?.touched && registroInmuebleForm.get('banos')?.invalid">
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('banos')?.errors?.['required']">
+              El número de baños es obligatorio.
+            </small>
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('banos')?.errors?.['min']">
+              Debe haber al menos un baño.
+            </small>
+          </div>
         </div>
 
         <div class="col-md-4 mb-3">
@@ -95,17 +133,53 @@
           <select class="form-select" formControlName="cantidadParqueaderos">
             <option *ngFor="let p of [0,1,2,3,4]" [value]="p">{{ p === 4 ? '4+' : p }}</option>
           </select>
+          <div *ngIf="registroInmuebleForm.get('cantidadParqueaderos')?.touched && registroInmuebleForm.get('cantidadParqueaderos')?.invalid">
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('cantidadParqueaderos')?.errors?.['required']">
+              El número de parqueaderos es obligatorio.
+            </small>
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('cantidadParqueaderos')?.errors?.['min']">
+              El número de parqueaderos no puede ser negativo.
+            </small>
+          </div>
         </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Área construida (m²)</label>
-        <input type="number" class="form-control" formControlName="medidas" placeholder="Ej: 120">
+        <input
+          type="number"
+          class="form-control"
+          formControlName="medidas"
+          placeholder="Ej: 120"
+          min="0"
+          step="1"
+        >
+        <div *ngIf="registroInmuebleForm.get('medidas')?.touched && registroInmuebleForm.get('medidas')?.invalid">
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('medidas')?.errors?.['required']">
+            Las medidas del inmueble son obligatorias.
+          </small>
+        </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Descripción</label>
+        <small style="color: var(--primary);">
+          La descripción puede tener máximo 255 caracteres.
+        </small>
         <textarea class="form-control" formControlName="descripcion" placeholder="Describe tu propiedad..."></textarea>
+        <div *ngIf="registroInmuebleForm.get('descripcion')?.touched && registroInmuebleForm.get('descripcion')?.invalid">
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('descripcion')?.errors?.['required']">
+            La descripción es obligatoria.
+          </small>
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('descripcion')?.errors?.['maxlength']">
+            La descripción no puede superar los 255 caracteres.
+          </small>
+        </div>
+        <div *ngIf="registroInmuebleForm.get('descripcion')?.touched && registroInmuebleForm.get('descripcion')?.invalid">
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('descripcion')?.errors?.['maxlength']">
+            La descripción no puede superar los 255 caracteres.
+          </small>
+        </div>
       </div>
     </div>
 
@@ -180,16 +254,40 @@
         <div class="col-md-6 mb-3">
           <label class="form-label">Nombre completo</label>
           <input type="text" class="form-control" formControlName="nombreContacto">
+          <div *ngIf="registroInmuebleForm.get('nombreContacto')?.touched && registroInmuebleForm.get('nombreContacto')?.invalid">
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('nombreContacto')?.errors?.['required']">
+              El nombre es obligatorio.
+            </small>
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('nombreContacto')?.errors?.['minlength']">
+              El nombre debe tener al menos 3 caracteres.
+            </small>
+          </div>
         </div>
         <div class="col-md-6 mb-3">
           <label class="form-label">Teléfono</label>
           <input type="tel" class="form-control" formControlName="telefonoContacto">
+          <div *ngIf="registroInmuebleForm.get('telefonoContacto')?.touched && registroInmuebleForm.get('telefonoContacto')?.invalid">
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('telefonoContacto')?.errors?.['required']">
+              El teléfono es obligatorio.
+            </small>
+            <small class="text-danger" *ngIf="registroInmuebleForm.get('telefonoContacto')?.errors?.['pattern']">
+              El teléfono solo debe contener números (7 a 15 dígitos).
+            </small>
+          </div>
         </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Correo electrónico</label>
         <input type="email" class="form-control" formControlName="correoContacto">
+        <div *ngIf="registroInmuebleForm.get('correoContacto')?.touched && registroInmuebleForm.get('correoContacto')?.invalid">
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('correoContacto')?.errors?.['required']">
+            El correo es obligatorio.
+          </small>
+          <small class="text-danger" *ngIf="registroInmuebleForm.get('correoContacto')?.errors?.['email']">
+            Debe ingresar un correo electrónico válido.
+          </small>
+        </div>
       </div>
     </div>
 

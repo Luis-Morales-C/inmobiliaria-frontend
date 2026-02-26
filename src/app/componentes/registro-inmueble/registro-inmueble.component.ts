@@ -143,20 +143,35 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   //Modificar despues xd
   private crearFormularioTexto() {
     this.registroInmuebleForm = this.formBuilder.group({
-      tipoNegocio: ['', [Validators.required]],
-      tipo: ['', [Validators.required]],
-      precio: ['', [Validators.required]],
-      estado: ['', [Validators.required]],
-      habitaciones: ['', [Validators.required]],
-      banos: ['', [Validators.required]],
-      cantidadParqueaderos: ['', [Validators.required]],
-      medidas: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      nombreContacto: ['', [Validators.required]],
-      telefonoContacto: ['', [Validators.required]],
+
+      tipoNegocio: ['', Validators.required],
+      tipo: ['', Validators.required],
+
+      precio: ['', [Validators.required, Validators.min(0)]],
+      estado: ['', Validators.required],
+
+      habitaciones: ['', [Validators.required, Validators.min(1)]],
+      banos: ['', [Validators.required, Validators.min(1)]],
+      cantidadParqueaderos: ['', [Validators.required, Validators.min(0)]],
+
+      medidas: ['', [Validators.required, Validators.min(1)]],
+
+      descripcion: ['', [Validators.required, Validators.maxLength(255)]],
+
+      nombreContacto: ['', [Validators.required, Validators.minLength(3)]],
+
+      telefonoContacto: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9]{7,15}$/)
+        ]
+      ],
+
       correoContacto: ['', [Validators.required, Validators.email]],
-      latitud: ['', [Validators.required]],
-      longitud: ['', [Validators.required]],
+
+      latitud: ['', Validators.required],
+      longitud: ['', Validators.required],
     });
   }
 

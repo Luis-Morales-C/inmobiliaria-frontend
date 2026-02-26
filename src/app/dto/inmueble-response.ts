@@ -23,5 +23,6 @@ export interface InmuebleResponse {
   correoContacto: string;
   imagenes: string[];
   id: number;
-  propietario: number// ✅ solo URLs
+  propietario: number; // ✅ solo URLs
+  documentos?: string[]; // URLs de PDFs asociados al inmueble (opcional)
 }

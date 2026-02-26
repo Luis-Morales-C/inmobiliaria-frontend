@@ -7,7 +7,6 @@ import {TipoNegocio} from '../../modelo/TipoNegocio';
 import {AuthService} from '../../servicios/auth.service';
 import {UsersService} from '../../servicios/users.service';
 import {UsuarioResponseDto} from '../../dto/usuario-response.dto';
-import {UserMenuComponent} from '../user-menu/user-menu.component';
 import {RedireccionService} from '../../servicios/redireccion.service';
 
 @Component({
@@ -18,8 +17,8 @@ import {RedireccionService} from '../../servicios/redireccion.service';
   imports: [
     CommonModule,       // ✅ Esto es lo que faltaba
     CurrencyPipe,
-    FormsModule,
-    UserMenuComponent
+    FormsModule
+    // UserMenuComponent removed because it's not used in template
   ]
 })
 export class VentanaAgenteComponent implements OnInit {
@@ -125,7 +124,15 @@ export class VentanaAgenteComponent implements OnInit {
   mostrarModalDetalle = false;
   detalleInmueble: InmuebleResponse | null = null;
 
-  // 🔹 Método para abrir el modal de transferencia
+  // Carrusel: índice de la imagen actualmente mostrada
+  currentImageIndex: number = 0;
+
+  // Obtener array de imágenes (seguro con fallback)
+  get detalleImagenes(): string[] {
+    return this.detalleInmueble?.imagenes || [];
+  }
+
+  // Función para abrir el modal de transferencia
   abrirModalTransferencia(inmueble: InmuebleResponse): void {
     this.inmuebleSeleccionado = inmueble;
     this.mostrarModalTransferencia = true;
@@ -144,25 +151,49 @@ export class VentanaAgenteComponent implements OnInit {
   }
 
 
-  // 🔹 Método para cerrar el modal de transferencia
+  // Cerrar modal de transferencia
   cerrarModalTransferencia() {
     this.mostrarModalTransferencia = false;
     this.inmuebleSeleccionado = null;
   }
 
-  // 🔹 Método para abrir el modal de detalles
+  // Abrir modal de detalles: setear detalleInmueble y reiniciar índice
   abrirModalDetalles(inmueble: InmuebleResponse): void {
     this.detalleInmueble = inmueble;
+    this.currentImageIndex = 0; // reiniciamos el carrusel
     this.mostrarModalDetalle = true;
   }
 
-  // 🔹 Método para cerrar el modal de detalles
+  // Cerrar modal de detalles
   cerrarModalDetalles(): void {
     this.mostrarModalDetalle = false;
     this.detalleInmueble = null;
+    this.currentImageIndex = 0;
   }
 
-  // 🔹 Método para ejecutar la transferencia
+  // Avanzar imagen
+  nextImage(): void {
+    const imgs = this.detalleImagenes;
+    if (!imgs.length) return;
+    this.currentImageIndex = (this.currentImageIndex + 1) % imgs.length;
+  }
+
+  // Retroceder imagen
+  prevImage(): void {
+    const imgs = this.detalleImagenes;
+    if (!imgs.length) return;
+    this.currentImageIndex = (this.currentImageIndex - 1 + imgs.length) % imgs.length;
+  }
+
+  // Seleccionar imagen por índice (por ejemplo al hacer click en miniatura)
+  selectImage(index: number): void {
+    if (index < 0) index = 0;
+    const imgs = this.detalleImagenes;
+    if (index >= imgs.length) index = imgs.length - 1;
+    this.currentImageIndex = index;
+  }
+
+  // Ejecutar la transferencia
   transferirInmueble(usuario: UsuarioResponseDto | any) {
     if (!this.inmuebleSeleccionado) return;
 
