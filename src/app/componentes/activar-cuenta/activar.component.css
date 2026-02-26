@@ -1,150 +1,191 @@
 :root {
-    --primary-light: #c7fae9;
-    --primary: #10bb82;
-    --primary-dark: #0daa75;
-    --white: #ffffff;
+  --primary-light: #c7fae9;
+  --primary: #10bb82;
+  --primary-dark: #0daa75;
+  --white: #ffffff;
 }
 
+/* Centrado real en toda la pantalla */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
 }
 
+/* Contenedor que ocupa toda la pantalla */
 .activation-container {
-    background-color: var(--white);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 450px;
-    padding: 30px;
+  background-color: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+
+  width: 92%;
+  max-width: 560px;   /* 🔥 Más grande */
+  padding: 40px;
+
+  /* 🔥 CENTRADO PERFECTO */
+  margin: 40px auto;
 }
+
+/* ---------- HEADER ---------- */
 
 .brand-header {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .brand-logo {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 3rem;   /* Más grande */
+  margin-bottom: 8px;
 }
 
 .brand-subtitle {
-    color: #6c757d;
-    font-size: 1.1rem;
+  color: #6c757d;
+  font-size: 1.2rem;
 }
 
-.form-label {
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.form-control {
-    border-radius: 10px;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    transition: all 0.3s;
-}
-
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
-}
+/* ---------- BOTONES ---------- */
 
 .btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    border-radius: 30px;
-    padding: 12px 25px;
-    font-weight: 600;
-    width: 100%;
-    transition: all 0.3s;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 14px 25px;
+  font-weight: 600;
+  width: 100%;
+  font-size: 1.1rem;
+  transition: all 0.3s;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-dark);
-    border-color: var(--primary-dark);
-    transform: translateY(-2px);
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
-.btn-outline-secondary {
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-weight: 600;
-    width: 100%;
-}
+/* ---------- INPUTS DE CÓDIGO ---------- */
 
 .code-inputs {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  gap: 10px;
 }
 
 .code-input {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    transition: all 0.3s;
+  width: 60px;   /* 🔥 Más grandes */
+  height: 60px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  transition: all 0.3s;
 }
 
 .code-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
 }
 
-.resend-link {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.resend-link a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.resend-link a:hover {
-    text-decoration: underline;
-}
+/* ---------- MENSAJES ---------- */
 
 .success-message {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: none;
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
 }
 
 .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: none;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
 }
 
+/* ---------- INSTRUCCIONES ---------- */
+
 .instructions {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
+  background-color: #f8f9fa;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
 }
 
 .instructions ul {
-    padding-left: 20px;
-    margin-bottom: 0;
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+/* ---------- REENVÍO ---------- */
+
+.resend-link {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.resend-link a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.resend-link a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Tablets ===== */
+@media (max-width: 768px) {
+
+  .activation-container {
+    padding: 30px 20px;
+  }
+
+  .brand-logo {
+    font-size: 2.4rem;
+  }
+
+  .code-input {
+    width: 52px;
+    height: 52px;
+    font-size: 1.5rem;
+  }
+}
+
+/* ===== Móviles ===== */
+@media (max-width: 480px) {
+
+  .activation-container {
+    width: 95%;
+    padding: 25px 15px;
+  }
+
+  .brand-logo {
+    font-size: 2rem;
+  }
+
+  .brand-subtitle {
+    font-size: 1rem;
+  }
+
+  .code-inputs {
+    gap: 6px;
+  }
+
+  .code-input {
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
 }

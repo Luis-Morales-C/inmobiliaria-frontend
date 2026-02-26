@@ -44,7 +44,7 @@ export const routes: Routes = [
   {
     path: 'recuperar',
     component: RecuperarContraseniaComponent,
-    canActivate: [authGuard]
+
   },
   {
     path: 'activar',
