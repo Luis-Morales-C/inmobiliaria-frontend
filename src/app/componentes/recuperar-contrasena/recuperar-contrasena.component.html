@@ -1,0 +1,78 @@
+<div class="auth-container">
+
+  <!-- Volver -->
+  <div class="back-button">
+    <button type="button"  routerLink="/login" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <!-- Header -->
+  <div class="brand-header">
+    <div class="brand-logo">EDÉN</div>
+    <div class="brand-subtitle">Inmobiliaria</div>
+  </div>
+
+  <h2 class="text-center mb-3">Recuperar contraseña</h2>
+
+  <!--TEXTO EXPLICATIVO -->
+  <p class="text-center text-muted mb-4">
+    Ingresa tu correo electrónico y te enviaremos un código para restablecer tu contraseña
+  </p>
+
+  <!-- INSTRUCCIONES (NUEVO) -->
+  <div class="instructions">
+    <p class="mb-2"><strong>Instrucciones:</strong></p>
+    <ul>
+      <li>Revisa tu bandeja de entrada o carpeta de spam</li>
+      <li>El código tendrá una validez de 10 minutos</li>
+      <li>Deberás ingresarlo para crear una nueva contraseña</li>
+    </ul>
+  </div>
+
+  <!-- Icono -->
+  <div class="recovery-icon">
+    <i class="bi bi-shield-lock"></i>
+  </div>
+
+  <!-- Pasos -->
+  <div class="step-indicator">
+    <div class="step active">1</div>
+    <div class="step">2</div>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="solicitarCodigo()">
+
+    <div class="mb-3">
+      <label class="form-label">CORREO ELECTRÓNICO</label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="ejemplo@correo.com"
+      >
+
+      <div class="text-danger mt-1"
+           *ngIf="email?.invalid && (email?.touched || email?.dirty)">
+        El correo es requerido
+      </div>
+
+
+    </div>
+    <div class="alert alert-warning py-2 mb-3" *ngIf="mostrarAlerta">
+      <i class="bi bi-exclamation-triangle me-2"></i>Por favor ingresa tu correo electrónico.
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Enviando...' : 'ENVIAR CÓDIGO' }}
+    </button>
+
+  </form>
+
+  <div class="auth-footer">
+    ¿Recuerdas tu contraseña?
+    <a routerLink="/login">Inicia sesión aquí</a>
+  </div>
+
+</div>

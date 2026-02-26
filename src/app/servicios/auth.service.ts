@@ -287,4 +287,51 @@ return localStorage.getItem(this.TOKEN_KEY);
     }, 3000);
   }
 
+
+  enviarCodigoRecuperacion(email: string): Observable<string> {
+    const url = `${this.url}/recuperar`;
+
+    return this.http.post(url, null, {
+      params: { email },
+      responseType: 'text'
+    }).pipe(
+      tap(() => {
+        this.showAlert('success',
+          'Si el correo está registrado, recibirás un código.');
+      }),
+      catchError(error => {
+        this.showAlert('error',
+          'Error al solicitar recuperación');
+        return throwError(() => error);
+      })
+    );
+  }
+
+  cambiarContrasenaConCodigo(
+    email: string,
+    codigo: string,
+    nuevaContrasena: string
+  ): Observable<string> {
+
+    const url = `${this.url}/recuperar/cambiar`;
+
+    const body = {
+      email,
+      codigo,
+      nuevaContrasena
+    };
+
+    return this.http.post(url, body, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.showAlert('success',
+          'Contraseña actualizada correctamente');
+      }),
+      catchError(error => {
+        const mensaje = error.error || 'Código inválido o expirado';
+        this.showAlert('error', mensaje);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }

@@ -1,0 +1,85 @@
+<div class="auth-container">
+
+  <div class="back-button">
+    <button type="button" routerLink="/recuperar" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <div class="brand-header">
+    <div class="brand-logo">EDÉN</div>
+    <div class="brand-subtitle">Inmobiliaria</div>
+  </div>
+
+  <h2 class="text-center mb-3">Cambiar contraseña</h2>
+  <p class="text-center text-muted mb-4">Ingresa el código recibido y crea una nueva contraseña segura</p>
+
+  <div class="instructions">
+    <p class="mb-2"><strong>Instrucciones:</strong></p>
+    <ul>
+      <li>Introduce el código enviado a tu correo</li>
+      <li>El código es válido por tiempo limitado</li>
+      <li>La nueva contraseña debe ser segura</li>
+    </ul>
+  </div>
+
+  <div class="recovery-icon">
+    <i class="bi bi-key"></i>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="cambiarContrasena()">
+
+    <!-- CÓDIGO -->
+    <div class="mb-3">
+      <label class="form-label">CÓDIGO DE VERIFICACIÓN</label>
+      <input type="text" class="form-control" formControlName="codigo" placeholder="Ingresa el código recibido">
+      <div *ngIf="form.get('codigo')?.invalid && (form.get('codigo')?.touched || submitAttempted)" class="text-danger">
+        <div *ngIf="form.get('codigo')?.errors?.['required']">Debe ingresar el código.</div>
+      </div>
+    </div>
+
+    <!-- NUEVA CONTRASEÑA -->
+    <div class="mb-3">
+      <label class="form-label">NUEVA CONTRASEÑA</label>
+      <div class="password-toggle">
+        <input [type]="verContra ? 'text' : 'password'" class="form-control" formControlName="nuevaContrasena" placeholder="Nueva contraseña">
+        <span class="password-toggle-icon" (click)="mostrarContrasenia()">
+
+        </span>
+      </div>
+      <div *ngIf="form.get('nuevaContrasena')?.invalid && (form.get('nuevaContrasena')?.touched || submitAttempted)" class="text-danger">
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['required']">Debe escribir la contraseña.</div>
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['minlength']">La contraseña debe tener mínimo 8 caracteres.</div>
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['pattern']">Debe incluir mayúscula, minúscula, número y símbolo.</div>
+      </div>
+    </div>
+
+    <!-- CONFIRMAR CONTRASEÑA -->
+    <div class="mb-3">
+      <label class="form-label">CONFIRMAR CONTRASEÑA</label>
+      <div class="password-toggle">
+        <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" formControlName="confirmarContrasena" placeholder="Repite la contraseña">
+        <span class="password-toggle-icon" (click)="mostrarConfirmContrasenia()">
+        </span>
+      </div>
+      <div *ngIf="(form.get('confirmarContrasena')?.invalid && (form.get('confirmarContrasena')?.touched || submitAttempted)) || (form.errors?.['passwordsMismatch'] && submitAttempted)" class="text-danger">
+        <div *ngIf="form.get('confirmarContrasena')?.errors?.['required']">Debe confirmar la contraseña.</div>
+        <div *ngIf="form.errors?.['passwordsMismatch']">Las contraseñas no coinciden.</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Actualizando...' : 'CAMBIAR CONTRASEÑA' }}
+    </button>
+
+  </form>
+
+  <div [class]="classResult" *ngIf="result" class="mt-3">
+    {{ result }}
+  </div>
+
+  <div class="auth-footer mt-3">
+    ¿Recordaste tu contraseña? <a routerLink="/login">Inicia sesión aquí</a>
+  </div>
+
+</div>

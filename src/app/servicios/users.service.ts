@@ -52,7 +52,7 @@ export class UsersService {
       contrasena: this.authservice.obtenerContrasenaUsuario()
     };
 
-    // 🟢 Hacemos el PUT y esperamos un texto plano como respuesta
+    // Hacemos el PUT y esperamos un texto plano como respuesta
     return this.http.put<TokenResponse>(`${this.url}/actualizar/${email}`, usuarioActualizado, {
       headers: {
         Authorization: `Bearer ${token}`,
