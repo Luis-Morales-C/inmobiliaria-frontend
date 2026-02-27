@@ -1,6 +1,5 @@
 export const environment = {
-  production: false,
-  //backendUrl: 'https://backend-eden.onrender.com' // Dirección del backend para desarrollo
-  backendUrl: 'http://localhost:8080/api/auth'
+  production: true,
+  backendUrl: 'http://backend-docker-env.eba-pwt3mz33.us-east-1.elasticbeanstalk.com'
 };
 

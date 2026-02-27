@@ -11,10 +11,11 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   //private url = `${environment.backendUrl}/api/auth`;
-  private url='http://localhost:8080/api/auth';
+  private url = `${environment.backendUrl}/api/auth`;
   private readonly TOKEN_KEY = 'authToken';
   private readonly TOKEN_TYPE_KEY = 'tokenType';
   private readonly EXPIRE_AT_KEY = 'expireAt';
