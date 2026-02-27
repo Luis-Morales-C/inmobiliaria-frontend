@@ -38,7 +38,7 @@ export class LoginComponent {
           this.loading = false;
           // Mensaje de éxito usando showAlert
           this.showAlert('success', 'Inicio de sesión exitoso');
-          const primerRol = this.authService.getPrimerRol();
+          /*const primerRol = this.authService.getPrimerRol();
           if (primerRol === 'AGENTE')
           {
             this.router.navigate(['/ventanaAgente']);
@@ -47,6 +47,8 @@ export class LoginComponent {
           {
             this.router.navigate(['/inicio']);
           }
+           */
+          this.router.navigate(['/inicio']);
         },
         error: (err: any) => {
           this.loading = false;

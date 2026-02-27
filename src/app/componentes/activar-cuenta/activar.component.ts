@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { ActivarCuentaService, ActivationResponse, ResendCodeResponse } from '../../servicios/activar-cuenta.service';
 
 @Component({
   selector: 'app-activar',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './activar.component.html',
   styleUrls: ['./activar.component.css']
 })

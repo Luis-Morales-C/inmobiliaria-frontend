@@ -81,5 +81,20 @@ export class InicioComponent implements OnInit, AfterViewInit {
     window.location.reload();
   }
 
+  mostrarModalDetalle = false;
+  detalleInmueble: InmuebleResponse | null = null;
+
+  // 🔹 Método para abrir el modal de detalles
+  abrirModalDetalles(inmueble: InmuebleResponse): void {
+    this.detalleInmueble = inmueble;
+    this.mostrarModalDetalle = true;
+  }
+
+  // 🔹 Método para cerrar el modal de detalles
+  cerrarModalDetalles(): void {
+    this.mostrarModalDetalle = false;
+    this.detalleInmueble = null;
+  }
+
 
 }

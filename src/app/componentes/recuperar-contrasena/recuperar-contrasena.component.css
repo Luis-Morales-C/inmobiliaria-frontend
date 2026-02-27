@@ -1,0 +1,158 @@
+/* ===== CONTENEDOR EXACTO ===== */
+
+.auth-container {
+  background-color: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+
+  width: 92%;
+  max-width: 560px;
+  padding: 40px;
+
+  margin: 40px auto;   /* 🔥 CENTRADO REAL */
+}
+
+/* ===== HEADER ===== */
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-logo {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.brand-subtitle {
+  color: #6c757d;
+  font-size: 1.2rem;
+}
+
+/* ===== ICONO ===== */
+
+.recovery-icon {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 25px;
+}
+
+.recovery-icon i {
+  font-size: 2.5rem;
+  color: var(--primary);
+}
+
+/* ===== BOTON ===== */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 14px 25px;
+  font-weight: 600;
+  width: 100%;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* ===== PASOS ===== */
+
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 160px;
+  height: 2px;
+  background-color: #eee;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.step {
+  position: relative;
+  z-index: 2;
+
+  width: 36px;
+  height: 36px;
+
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.step.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* ===== FOOTER ===== */
+
+.auth-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ===== INSTRUCCIONES ===== */
+
+.instructions {
+  background-color: #f8f9fa;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  border: 1px solid #eee;
+}
+
+.instructions ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.instructions li {
+  margin-bottom: 6px;
+}

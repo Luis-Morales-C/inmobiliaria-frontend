@@ -284,3 +284,10 @@ textarea {
   color: var(--primary);
   margin-bottom: 10px;
 }
+
+.disabled-upload {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+

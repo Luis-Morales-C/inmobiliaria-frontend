@@ -3,7 +3,6 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
 import {VentanaAgenteComponent} from './componentes/ventana-agente/ventana-agente.component';
-import {VentanaUsuarioComponent} from './componentes/ventana-usuario/ventana-usuario.component';
 import {UnauthorizedComponent} from './componentes/unauthorized/unauthorized.component';
 import {RegistroInmuebleComponent} from './componentes/registro-inmueble/registro-inmueble.component';
 import {RecuperarContraseniaComponent} from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
@@ -16,6 +15,8 @@ import {
 
 import {authGuard} from './guards/auth.guard';
 import {rolesGuard} from './guards/roles.guard';
+import {RecuperarContrasenaComponent} from './componentes/recuperar-contrasena/recuperar-contrasena.component';
+import {CambiarContrasenaComponent} from './componentes/cambiar-contrasena/cambiar-contrasena.component';
 
 
 export const routes: Routes = [
@@ -40,34 +41,31 @@ export const routes: Routes = [
   {
     path: 'politicaDatos',
     component: PoliticaTratamientoDatosComponent
+  }
+  ,
+  {
+    path: 'recuperar',
+    component: RecuperarContrasenaComponent
+  },
+  {
+    path: 'cambiar-contrasena',
+    component: CambiarContrasenaComponent
   },
   // Rutas protegidas para usuarios logueados
   {
-    path: 'recuperar',
+    path: 'recuperar2',
     component: RecuperarContraseniaComponent,
-    canActivate: [authGuard]
+
   },
   {
     path: 'activar',
     component: ActivarComponent
   },
   {
-    path: 'ventanaUsuario',
-    component: VentanaUsuarioComponent,
-    canActivate: [rolesGuard],
-    data: { expectedRoles: ["USUARIO"] }
-  },
-  {
     path: 'ventanaAgente',
     component: VentanaAgenteComponent,
     canActivate: [rolesGuard],
     data: { expectedRoles: ["AGENTE"] }
-  },
-  {
-    path: 'ventanaAsesor',
-    component: VentanaAgenteComponent,
-    canActivate: [rolesGuard],
-    data: { expectedRoles: ["ASESOR"] }
   },
   {
     path: 'registroInmueble',

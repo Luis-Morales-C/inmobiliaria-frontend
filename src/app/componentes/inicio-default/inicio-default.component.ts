@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { RedireccionService } from '../../servicios/redireccion.service';
 import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
 import { InmuebleResponse } from '../../dto/inmueble-response';
@@ -10,13 +9,12 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './inicio-default.component.html',
-  styleUrl: './inicio-default.component.css'
+  styleUrls: ['./inicio-default.component.css']
 })
 export class InicioDefaultComponent implements OnInit {
   propiedadesDestacadas: InmuebleResponse[] = [];
 
   constructor(
-    private router: Router,
     protected redireccionamiento: RedireccionService,
     protected inmuebleService: InmuebleServiceService
   ) {}
@@ -31,5 +29,20 @@ export class InicioDefaultComponent implements OnInit {
         console.error('Error al obtener inmuebles', err);
       }
     });
+  }
+
+  mostrarModalDetalle = false;
+  detalleInmueble: InmuebleResponse | null = null;
+
+  // 🔹 Método para abrir el modal de detalles
+  abrirModalDetalles(inmueble: InmuebleResponse): void {
+    this.detalleInmueble = inmueble;
+    this.mostrarModalDetalle = true;
+  }
+
+  // 🔹 Método para cerrar el modal de detalles
+  cerrarModalDetalles(): void {
+    this.mostrarModalDetalle = false;
+    this.detalleInmueble = null;
   }
 }
