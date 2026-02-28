@@ -334,4 +334,28 @@ return localStorage.getItem(this.TOKEN_KEY);
     );
   }
 
+  enviarContacto(data: {
+    nombre: string;
+    telefono: string;
+    correo: string;
+    asunto: string;
+    mensaje: string;
+  }): Observable<string> {
+
+    const url = `${this.url}/contacto`;
+
+
+    return this.http.post(url, data, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.showAlert('success', 'Mensaje enviado correctamente');
+      }),
+      catchError(error => {
+        console.error('Error enviando contacto:', error);
+        const mensaje = error.error || 'Error al enviar el mensaje';
+        this.showAlert('error', mensaje);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }

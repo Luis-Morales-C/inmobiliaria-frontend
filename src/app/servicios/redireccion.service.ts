@@ -51,5 +51,8 @@ export class RedireccionService {
   redirigirAConocenos() {
     this.router.navigate(['/conocenos']);
   }
+  redirigirAContactenos() {
+    this.router.navigate(['/contactenos']);
+  }
 
 }

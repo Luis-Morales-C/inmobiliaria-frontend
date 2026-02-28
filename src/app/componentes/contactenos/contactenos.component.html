@@ -1,0 +1,77 @@
+<div class="contact-form-container">
+
+  <div class="back-button">
+    <button type="button" class="btn btn-outline-secondary" routerLink="/inicio">
+      <i class="bi bi-arrow-left"></i> Volver al Inicio
+    </button>
+  </div>
+
+  <div class="form-header">
+    <h1>Contáctanos</h1>
+    <p>Envíanos tu mensaje y pronto nos comunicaremos contigo</p>
+  </div>
+
+  <form [formGroup]="contactoForm" (ngSubmit)="onSubmit()">
+
+    <!-- Información de contacto -->
+    <div class="form-section">
+      <h3 class="section-title">Información personal</h3>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre completo</label>
+          <input type="text" class="form-control" formControlName="nombre">
+          <small class="text-danger"
+                 *ngIf="contactoForm.get('nombre')?.touched && contactoForm.get('nombre')?.invalid">
+            El nombre debe tener mínimo 3 caracteres.
+          </small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="tel" class="form-control" formControlName="telefono">
+          <small class="text-danger"
+                 *ngIf="contactoForm.get('telefono')?.touched && contactoForm.get('telefono')?.invalid">
+            Teléfono válido entre 7 y 15 dígitos.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" formControlName="correo">
+        <small class="text-danger"
+               *ngIf="contactoForm.get('correo')?.touched && contactoForm.get('correo')?.invalid">
+          Debe ingresar un correo válido.
+        </small>
+      </div>
+    </div>
+
+    <!-- Mensaje -->
+    <div class="form-section">
+      <h3 class="section-title">Tu mensaje</h3>
+
+      <div class="mb-3">
+        <label class="form-label">Asunto</label>
+        <input type="text" class="form-control" formControlName="asunto">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Mensaje</label>
+        <textarea class="form-control" formControlName="mensaje"
+                  placeholder="Escribe tu mensaje aquí..."></textarea>
+
+        <small style="color: var(--primary);">
+          Máximo 500 caracteres.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-navigation">
+      <button type="submit" class="btn btn-primary">
+        Enviar mensaje
+      </button>
+    </div>
+
+  </form>
+</div>
