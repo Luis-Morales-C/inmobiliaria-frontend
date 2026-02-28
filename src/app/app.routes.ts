@@ -17,6 +17,7 @@ import {authGuard} from './guards/auth.guard';
 import {rolesGuard} from './guards/roles.guard';
 import {RecuperarContrasenaComponent} from './componentes/recuperar-contrasena/recuperar-contrasena.component';
 import {CambiarContrasenaComponent} from './componentes/cambiar-contrasena/cambiar-contrasena.component';
+import {ConocenosComponent} from './componentes/conocenos/conocenos.component';
 
 
 export const routes: Routes = [
@@ -50,6 +51,10 @@ export const routes: Routes = [
   {
     path: 'cambiar-contrasena',
     component: CambiarContrasenaComponent
+  },
+  {
+    path: 'conocenos',
+    component: ConocenosComponent
   },
   // Rutas protegidas para usuarios logueados
   {

@@ -48,5 +48,8 @@ export class RedireccionService {
   redirigirAPoliticaDatos() {
     this.router.navigate(['/politicaDatos']);
   }
+  redirigirAConocenos() {
+    this.router.navigate(['/conocenos']);
+  }
 
 }
