@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  backendUrl: 'https://d3rpdete8szopw.cloudfront.net'
+  backendUrl: 'http://df9oxbe03x3to.cloudfront.net/'
 };
 
 
