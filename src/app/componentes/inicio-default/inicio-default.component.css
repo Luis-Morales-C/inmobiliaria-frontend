@@ -175,3 +175,118 @@ body {
   background: transparent;
   border: none;
 }
+
+/* === MODO OSCURO === */
+body.dark-mode .navbar {
+  background-color: #16213e !important;
+  border-bottom: 1px solid #0f3460;
+}
+
+body.dark-mode .navbar-brand {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .nav-link {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .nav-link:hover {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .btn-iniciar-sesion {
+  background-color: #10bb82;
+  border: 2px solid #10bb82;
+  color: #1a1a2e;
+}
+
+body.dark-mode .btn-iniciar-sesion:hover {
+  background-color: #0daa75;
+  border-color: #0daa75;
+  color: #1a1a2e;
+}
+
+body.dark-mode .btn-registrarse {
+  background-color: transparent;
+  border: 2px solid #10bb82;
+  color: #10bb82;
+}
+
+body.dark-mode .btn-registrarse:hover {
+  background-color: #10bb82;
+  color: #1a1a2e;
+}
+
+body.dark-mode .card {
+  background-color: #16213e;
+  border: 1px solid #0f3460;
+}
+
+body.dark-mode .card-body {
+  background-color: #16213e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .card-title {
+  color: #10bb82;
+}
+
+body.dark-mode .section-title {
+  color: #10bb82;
+}
+
+body.dark-mode .property-price {
+  color: #10bb82;
+}
+
+body.dark-mode .btn-outline-primary {
+  background-color: transparent;
+  border-color: #10bb82;
+  color: #10bb82;
+}
+
+body.dark-mode .btn-outline-primary:hover {
+  background-color: #10bb82;
+  color: #1a1a2e;
+}
+
+body.dark-mode .bg-light-primary {
+  background-color: #16213e !important;
+}
+
+body.dark-mode .text-muted {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .modal-container {
+  background-color: #16213e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .modal-container h5 {
+  color: #10bb82;
+}
+
+body.dark-mode .modal-container .text-primary {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .modal-container .text-success {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .modal-container hr {
+  border-color: #0f3460;
+}
+
+body.dark-mode .modal-container .border-bottom {
+  border-color: #0f3460 !important;
+}
+
+body.dark-mode .btn-close {
+  filter: invert(1);
+}

@@ -133,3 +133,86 @@ input[type="password"]::-ms-clear {
   color: #6c757d;
   z-index: 10;
 }
+
+/* === MODO OSCURO === */
+body.dark-mode {
+  background-color: #1a1a2e;
+}
+
+body.dark-mode .login-container {
+  background-color: #16213e;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .login-header h2 {
+  color: #10bb82;
+}
+
+body.dark-mode .login-header p {
+  color: #a0a0a0;
+}
+
+body.dark-mode .form-control {
+  background-color: #1a1a2e;
+  border: 1px solid #0f3460;
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-control:focus {
+  border-color: #10bb82;
+  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #a0a0a0;
+}
+
+body.dark-mode .form-label {
+  color: #e0e0e0;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #10bb82;
+  border-color: #10bb82;
+  color: #1a1a2e;
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: #0daa75;
+  border-color: #0daa75;
+  color: #1a1a2e;
+}
+
+body.dark-mode .btn-outline-secondary {
+  background-color: #0f3460;
+  border-color: #0f3460;
+  color: #e0e0e0;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .forgot-password a {
+  color: #10bb82;
+}
+
+body.dark-mode .login-footer {
+  color: #a0a0a0;
+  border-top: 1px solid #0f3460;
+}
+
+body.dark-mode .login-footer a {
+  color: #10bb82;
+}
+
+body.dark-mode .password-toggle-icon {
+  color: #a0a0a0;
+}
+
+body.dark-mode .text-danger {
+  color: #ff6b6b !important;
+}

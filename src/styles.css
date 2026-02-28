@@ -238,13 +238,26 @@ footer {
 }
 
 
-/* 1️⃣ Fondo general negro, textos blancos */
+/* 1️⃣ Fondo general gris oscuro suave, textos blancos */
 body.dark-mode {
-  background-color: #000 !important;
-  color: #fff !important;
+  background-color: #1a1a2e !important;
+  color: #e0e0e0 !important;
 }
 
-/* 2️⃣ Elementos de fondo blanco o gris -> negro */
+/* Fondo específico para páginas de login y registro */
+body.dark-mode app-login,
+body.dark-mode app-registro {
+  background-color: #1a1a2e !important;
+  min-height: 100vh;
+  display: block;
+}
+
+body.dark-mode app-login body,
+body.dark-mode app-registro body {
+  background-color: #1a1a2e !important;
+}
+
+/* 2️⃣ Elementos de fondo blanco o gris -> gris oscuro */
 body.dark-mode .navbar,
 body.dark-mode footer,
 body.dark-mode .search-box,
@@ -254,13 +267,16 @@ body.dark-mode .form-select,
 body.dark-mode .map-search-container,
 body.dark-mode .accessibility-window,
 body.dark-mode .bg-light-primary,
-body.dark-mode #router-outlet {
-  background-color: #000 !important;
-  color: #fff !important;
-  border-color: #333 !important; /* Para bordes suaves */
+body.dark-mode #router-outlet,
+body.dark-mode .card,
+body.dark-mode .modal-content,
+body.dark-mode .dropdown-menu {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  border-color: #0f3460 !important;
 }
 
-/* 3️⃣ Textos originalmente oscuros -> blancos */
+/* 3️⃣ Textos originalmente oscuros -> whites con mejor contraste */
 body.dark-mode .nav-link,
 body.dark-mode .section-title,
 body.dark-mode p,
@@ -273,21 +289,34 @@ body.dark-mode h6,
 body.dark-mode span,
 body.dark-mode label,
 body.dark-mode a:not(.btn):not(.property-badge):not(.social-icon) {
-  color: #fff !important;
+  color: #e0e0e0 !important;
 }
 
-/* 4️⃣ Textos originalmente blancos -> negros (por ejemplo, sobre fondos verdes) */
+/* 4️⃣ Placeholder de inputs en modo oscuro */
+body.dark-mode .form-control::placeholder {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+  background-color: #1a1a2e !important;
+  color: #e0e0e0 !important;
+  border-color: #10bb82 !important;
+  box-shadow: 0 0 0 0.2rem rgba(16, 187, 130, 0.25) !important;
+}
+
+/* 5️⃣ Elementos con verde — mantienen su color pero ajustados */
 body.dark-mode .btn-primary,
 body.dark-mode .property-badge,
 body.dark-mode .social-icon,
 body.dark-mode .map-filter-btn.active,
 body.dark-mode .custom-marker {
-  background-color: var(--primary) !important; /* Mantiene verde */
-  color: #000 !important; /* Texto negro */
-  border-color: var(--primary) !important;
+  background-color: #10bb82 !important;
+  color: #1a1a2e !important;
+  border-color: #10bb82 !important;
 }
 
-/* 5️⃣ Elementos con verde — nunca cambian de color */
+/* 6️⃣ Texto en precios y elementos destacados */
 body.dark-mode .property-price,
 body.dark-mode .btn-outline-primary,
 body.dark-mode .btn-primary,
@@ -295,32 +324,75 @@ body.dark-mode .map-filter-btn.active,
 body.dark-mode .property-badge,
 body.dark-mode .social-icon,
 body.dark-mode .custom-marker {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
-  color: white !important; /* Se mantiene legible */
+  background-color: #10bb82 !important;
+  border-color: #10bb82 !important;
+  color: #1a1a2e !important;
 }
 
-/* 6️⃣ Hover states (verdes siguen igual) */
+/* 7️⃣ Hover states (verdes siguen igual pero más brillante) */
 body.dark-mode .btn-primary:hover,
 body.dark-mode .social-icon:hover {
   background-color: #0daa75 !important;
   border-color: #0daa75 !important;
+  color: #1a1a2e !important;
 }
 
-/* 7️⃣ Ajuste de footer, header, router-outlet */
+/* 8️⃣ Ajuste de footer, header, router-outlet */
 body.dark-mode footer,
 body.dark-mode .navbar,
 body.dark-mode #router-outlet {
-  background-color: #000 !important;
-  color: #fff !important;
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
 }
 
-/* 8️⃣ Bordes y sombras más sutiles en modo oscuro */
+/* 9️⃣ Bordes y sombras más sutiles en modo oscuro */
 body.dark-mode .property-card,
 body.dark-mode .search-box,
 body.dark-mode .map-search-container {
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(16, 187, 130, 0.2) !important;
+}
+
+/* 🔟 Inputs y selects con fondo oscuro */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #1a1a2e !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460 !important;
+}
+
+/* 1️⃣1️⃣ Ajustes específicos para el navbar en modo oscuro */
+body.dark-mode .navbar {
+  background-color: #16213e !important;
+  border-bottom: 1px solid #0f3460 !important;
+}
+
+body.dark-mode .navbar-toggler {
+  background-color: #e0e0e0 !important;
+}
+
+body.dark-mode .nav-link {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .nav-link:hover {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .navbar-brand {
+  color: #10bb82 !important;
+}
+
+/* 1️⃣2️⃣ Footer ajustado para modo oscuro */
+body.dark-mode footer {
+  background-color: #0f0f1a !important;
+  color: #a0a0a0 !important;
+  border-top: 1px solid #0f3460 !important;
+}
+
+/* 1️⃣3️⃣ Hero section con overlay más claro */
+body.dark-mode .hero-section {
+  background: linear-gradient(rgba(20, 20, 40, 0.7), rgba(20, 20, 40, 0.7)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=800&q=80');
 }
 
 .link-clickable {
@@ -331,5 +403,280 @@ body.dark-mode .map-search-container {
 .link-clickable:hover {
   color: #00A36C; /* verde corporativo */
   text-decoration: underline;
+}
+
+/* === PANEL DE ACCESIBILIDAD EN MODO OSCURO === */
+/* Estilos de alta especificidad para asegurar que se apliquen */
+body.dark-mode .accessibility-menu {
+  background-color: #16213e !important;
+  border: 2px solid #10bb82 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .accessibility-menu .menu-title {
+  color: #10bb82 !important;
+  border-bottom: 1px solid #0f3460 !important;
+}
+
+body.dark-mode .accessibility-menu .text-size-control label {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .accessibility-menu .slider-labels {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .accessibility-menu .switch-container {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .accessibility-menu p {
+  color: #a0a0a0 !important;
+  font-size: 0.85rem;
+}
+
+body.dark-mode .accessibility-menu input[type="range"] {
+  accent-color: #10bb82 !important;
+}
+
+body.dark-mode .accessibility-menu .slider {
+  background-color: #0f3460 !important;
+}
+
+body.dark-mode .accessibility-menu .slider:before {
+  background-color: #e0e0e0 !important;
+}
+
+body.dark-mode .accessibility-menu input:checked + .slider {
+  background-color: #10bb82 !important;
+}
+
+body.dark-mode .accessibility-menu input:checked + .slider:before {
+  background-color: white !important;
+}
+
+/* === LOGIN EN MODO OSCURO === */
+body.dark-mode app-login .login-container,
+body.dark-mode .login-container {
+  background-color: #16213e !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+}
+
+body.dark-mode app-login .login-header h2,
+body.dark-mode .login-header h2 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-login .login-header p,
+body.dark-mode .login-header p {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode app-login .form-control,
+body.dark-mode .login-container .form-control {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-login .form-control:focus,
+body.dark-mode .login-container .form-control:focus {
+  background-color: #1a1a2e !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-login .form-label,
+body.dark-mode .login-container .form-label {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-login .btn-outline-secondary,
+body.dark-mode .login-container .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  border-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-login .forgot-password a,
+body.dark-mode .login-container .forgot-password a {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-login .login-footer,
+body.dark-mode .login-container .login-footer {
+  color: #a0a0a0 !important;
+  border-top: 1px solid #0f3460 !important;
+}
+
+body.dark-mode app-login .login-footer a,
+body.dark-mode .login-container .login-footer a {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-login .password-toggle-icon,
+body.dark-mode .login-container .password-toggle-icon {
+  color: #a0a0a0 !important;
+}
+
+/* === REGISTRO EN MODO OSCURO === */
+body.dark-mode app-registro .register-container,
+body.dark-mode .register-container {
+  background-color: #16213e !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+}
+
+body.dark-mode app-registro .register-header h2,
+body.dark-mode .register-header h2 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-registro .register-header p,
+body.dark-mode .register-header p {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode app-registro .form-label,
+body.dark-mode .register-container .form-label {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-registro .register-footer,
+body.dark-mode .register-container .register-footer {
+  color: #a0a0a0 !important;
+  border-top: 1px solid #0f3460 !important;
+}
+
+body.dark-mode app-registro .register-footer a,
+body.dark-mode .register-container .register-footer a {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-registro .politica-link,
+body.dark-mode .register-container .politica-link {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-registro .form-check-label,
+body.dark-mode .register-container .form-check-label {
+  color: #e0e0e0 !important;
+}
+
+/* === INICIO-DEFAULT EN MODO OSCURO === */
+body.dark-mode app-inicio-default .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+body.dark-mode app-inicio-default .modal-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+}
+
+/* === CONOCENOS EN MODO OSCURO === */
+body.dark-mode app-conocenos .conocenos-container,
+body.dark-mode .conocenos-container {
+  background-color: #1a1a2e !important;
+}
+
+body.dark-mode app-conocenos .section-card,
+body.dark-mode .section-card {
+  background-color: #16213e !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode app-conocenos .section-card h2,
+body.dark-mode .section-card h2 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-conocenos .section-card p,
+body.dark-mode app-conocenos .section-card ul,
+body.dark-mode .section-card p,
+body.dark-mode .section-card ul {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-conocenos .valor-item,
+body.dark-mode .valor-item {
+  background-color: rgba(16, 187, 130, 0.2) !important;
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-conocenos .stat-card,
+body.dark-mode .stat-card {
+  background-color: #16213e !important;
+}
+
+body.dark-mode app-conocenos .stat-card h3,
+body.dark-mode .stat-card h3 {
+  color: #10bb82 !important;
+}
+
+/* === POLÍTICA TRATAMIENTO DATOS EN MODO OSCURO === */
+body.dark-mode app-politica-tratamiento-datos .politica-container,
+body.dark-mode .politica-container {
+  background-color: #1a1a2e !important;
+}
+
+body.dark-mode app-politica-tratamiento-datos .politica-content,
+body.dark-mode .politica-content {
+  background-color: #16213e !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode app-politica-tratamiento-datos .politica-content h2,
+body.dark-mode .politica-content h2 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-politica-tratamiento-datos .politica-content p,
+body.dark-mode app-politica-tratamiento-datos .politica-content ul,
+body.dark-mode .politica-content p,
+body.dark-mode .politica-content ul {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-politica-tratamiento-datos .firma,
+body.dark-mode .firma {
+  background-color: rgba(16, 187, 130, 0.15) !important;
+  color: #e0e0e0 !important;
+}
+
+/* === CONTACTENOS EN MODO OSCURO === */
+body.dark-mode app-contactenos .contact-form-container,
+body.dark-mode .contact-form-container {
+  background-color: #16213e !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode app-contactenos .form-header h1,
+body.dark-mode .form-header h1 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-contactenos .form-header p,
+body.dark-mode .form-header p {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode app-contactenos .form-section,
+body.dark-mode .form-section {
+  border-bottom: 1px solid #0f3460 !important;
+}
+
+body.dark-mode app-contactenos .section-title,
+body.dark-mode .section-title {
+  color: #10bb82 !important;
+}
+
+body.dark-mode app-contactenos .form-control,
+body.dark-mode .contact-form-container .form-control {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode app-contactenos .form-label,
+body.dark-mode .contact-form-container .form-label {
+  color: #e0e0e0 !important;
 }
 
