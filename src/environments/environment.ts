@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  backendUrl: 'http://localhost:8080'
+  backendUrl: 'https://df9oxbe03x3to.cloudfront.net'
 };
