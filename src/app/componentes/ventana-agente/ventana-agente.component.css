@@ -255,4 +255,82 @@ body {
   transition: all 0.3s ease;
 }
 
+/* ===== CARRUSEL DOCUMENTOS PDF ===== */
 
+/* Flechas verdes */
+#carouselDocumentos .carousel-control-prev-icon,
+#carouselDocumentos .carousel-control-next-icon {
+  background-image: none; /* quitamos el svg por defecto */
+  width: 35px;
+  height: 35px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Flecha izquierda */
+#carouselDocumentos .carousel-control-prev-icon::after {
+  content: "‹";
+  font-size: 22px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Flecha derecha */
+#carouselDocumentos .carousel-control-next-icon::after {
+  content: "›";
+  font-size: 22px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Hover */
+#carouselDocumentos .carousel-control-prev-icon:hover,
+#carouselDocumentos .carousel-control-next-icon:hover {
+  background-color: #0daa75;
+  transform: scale(1.1);
+}
+
+/* ===== LABEL PDF ===== */
+
+.pdf-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 260px;
+  /* mover más hacia abajo para no interferir con la navegación del carrusel */
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary-light), #e6fff6);
+  color: #0f5132;
+  border: 1px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(16, 187, 130, 0.15);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+
+/* Icono dentro */
+.pdf-label i {
+  color: var(--primary);
+}
+
+/* Hover elegante */
+.pdf-label:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 187, 130, 0.3);
+}
+
+.pdf-label:hover i {
+  color: white;
+}

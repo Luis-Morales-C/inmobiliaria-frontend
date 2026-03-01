@@ -157,18 +157,19 @@ export class VentanaAgenteComponent implements OnInit {
     this.inmuebleSeleccionado = null;
   }
 
-  // Abrir modal de detalles: setear detalleInmueble y reiniciar índice
   abrirModalDetalles(inmueble: InmuebleResponse): void {
     this.detalleInmueble = inmueble;
-    this.currentImageIndex = 0; // reiniciamos el carrusel
+    this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
     this.mostrarModalDetalle = true;
+    console.log(this.detalleInmueble.documentosImportantes.length)
   }
 
-  // Cerrar modal de detalles
   cerrarModalDetalles(): void {
     this.mostrarModalDetalle = false;
     this.detalleInmueble = null;
     this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
   }
 
   // Avanzar imagen
@@ -225,5 +226,47 @@ export class VentanaAgenteComponent implements OnInit {
     }
   }
 
+  // ================== DOCUMENTOS ==================
+
+// Obtener lista de PDFs del inmueble
+  get detalleDocumentos(): string[] {
+    return this.detalleInmueble?.documentosImportantes || [];
+  }
+
+  // Índices para los indicadores del carousel de documentos (0..n-1)
+  get detalleDocumentosIndices(): number[] {
+    const docs = this.detalleDocumentos;
+    return docs && docs.length ? docs.map((_, i) => i) : [];
+  }
+
+// Índice actual del carrusel de documentos
+  currentDocIndex: number = 0;
+
+// Abrir documento en el navegador (Cloudinary)
+  abrirDocumento(url: string): void {
+    if (!url) return;
+    window.open(url, '_blank');
+  }
+
+  // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
+  getFileNameFromUrl(url: string | undefined | null): string {
+    if (!url) return '';
+    try {
+      // Intentar usar el constructor URL para obtener el pathname
+      const u = new URL(url);
+      let filename = u.pathname.split('/').pop() || '';
+      // Quitar parámetros si los hubiera (aunque URL.pathname no incluye query)
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      return decodeURIComponent(filename);
+    } catch (e) {
+      // Fallback sencillo si la URL no es absoluta
+      const lastSlash = url.lastIndexOf('/');
+      let filename = lastSlash !== -1 ? url.substring(lastSlash + 1) : url;
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      try { return decodeURIComponent(filename); } catch { return filename; }
+    }
+  }
 
 }

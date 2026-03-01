@@ -218,6 +218,10 @@
       </div>
     </div>
 
+    <div *ngIf="imagenesError" class="text-danger mt-2">
+      Debe subir al menos una imagen del inmueble.
+    </div>
+
     <!-- Documentos PDF -->
     <h3 class="section-title">Documentos del inmueble (PDF)</h3>
 
@@ -244,7 +248,9 @@
       </ul>
     </div>
 
-
+    <div *ngIf="pdfError" class="text-danger mt-2">
+      Debe subir al menos un documento PDF.
+    </div>
 
 
     <!-- Información de contacto -->

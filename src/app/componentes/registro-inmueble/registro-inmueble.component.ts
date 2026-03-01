@@ -24,6 +24,9 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   registroInmuebleForm!: FormGroup;
   imagenes: File[] = [];
   imagenesPreview: string[] = [];
+  imagenesError: boolean = false;
+  pdfError: boolean = false;
+
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -62,6 +65,7 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
         reader.readAsDataURL(file);
       }
     }
+    this.imagenesError = false;
   }
 
   eliminarImagen(index: number): void {
@@ -99,6 +103,7 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
         this.pdfArchivos.push(file);
       }
     }
+    this.pdfError = false;
   }
 
   eliminarPDF(index: number): void {
@@ -245,6 +250,14 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
           if (inputPDFs) inputPDFs.value = '';
         }
       });
+    }
+
+    // 🔥 VALIDACIÓN NUEVA
+    this.imagenesError = this.imagenes.length === 0;
+    this.pdfError = this.pdfArchivos.length === 0;
+
+    if (this.imagenesError || this.pdfError) {
+      return;
     }
   }
 

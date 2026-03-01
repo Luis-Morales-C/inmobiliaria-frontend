@@ -215,7 +215,75 @@
                      alt="Sin imagen">
               </ng-template>
 
+              <!-- Documentos: ahora DENTRO de la columna izquierda, debajo de las imágenes -->
+              <div class="mt-4" *ngIf="detalleDocumentos.length > 0; else sinDocumentos">
+                <h6 class="fw-bold text-primary mb-3">Documentos Asociados</h6>
+
+                <div id="carouselDocumentos"
+                     class="carousel slide"
+                     data-bs-ride="carousel">
+
+                  <!-- Indicadores -->
+                  <div class="carousel-indicators">
+                    <button *ngFor="let i of detalleDocumentosIndices" type="button" data-bs-target="#carouselDocumentos" [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
+                  </div>
+
+                  <!-- Slides -->
+                  <div class="carousel-inner text-center">
+
+                    <div *ngFor="let doc of detalleDocumentos; let i = index" class="carousel-item" [class.active]="i === 0">
+                      <div class="mb-3">
+                        <i class="fa-solid fa-file-pdf fa-5x" [ngClass]="{
+                          'text-danger': i % 4 === 0,
+                          'text-primary': i % 4 === 1,
+                          'text-success': i % 4 === 2,
+                          'text-warning': i % 4 === 3
+                        }"></i>
+                      </div>
+
+                      <div class="d-flex justify-content-center mb-2">
+                        <button class="btn btn-outline-primary btn-sm me-2" (click)="abrirDocumento(doc)">Abrir documento</button>
+                      </div>
+
+                      <!-- Label con parte del nombre del archivo -->
+                      <div class="pdf-label"
+                           [title]="getFileNameFromUrl(doc)">
+                        <i class="fa-solid fa-file-lines me-2"></i>
+                        {{ getFileNameFromUrl(doc) | slice:0:35 }}
+                        {{ (getFileNameFromUrl(doc) || '').length > 35 ? '...' : '' }}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <button class="carousel-control-prev"
+                          type="button"
+                          data-bs-target="#carouselDocumentos"
+                          data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </button>
+
+                  <button class="carousel-control-next"
+                          type="button"
+                          data-bs-target="#carouselDocumentos"
+                          data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </button>
+
+                </div>
+              </div>
+
+              <!-- Mensaje si no hay documentos -->
+              <ng-template #sinDocumentos>
+                <div class="text-center py-5 border rounded bg-light">
+                  <i class="fa-regular fa-face-smile fa-3x text-warning mb-3"></i>
+                  <p class="text-muted fw-semibold">No se encontraron resultados</p>
+                </div>
+              </ng-template>
+
             </div>
+
             <div class="col-md-6">
 
               <!-- Datos Generales -->
@@ -240,7 +308,7 @@
 
                   <div class="col-6">
                     <small class="text-muted">Agente Asociado</small>
-                    <p class="mb-2">{{ detalleInmueble.agenteAsociado }}</p>
+                    <p class="mb-2">{{ detalleInmueble.agenteAsociado.nombre }}</p>
                   </div>
 
                   <div class="col-6">
@@ -329,9 +397,9 @@
                 </h4>
               </div>
 
-            </div>
           </div>
         </div>
+      </div>
 
         <div class="text-end mt-3">
           <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
