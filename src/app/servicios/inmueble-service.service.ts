@@ -23,6 +23,7 @@ export class InmuebleServiceService {
 
   public obtenerListaInmueblesAgente(email: string): Observable<InmuebleResponse[]> {
     return this.http.get<InmuebleResponse[]>(`${this.url}/agente/${email}`);
+
   }
 
 
