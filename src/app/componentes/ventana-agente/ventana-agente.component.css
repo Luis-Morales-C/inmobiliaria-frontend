@@ -213,9 +213,18 @@ body {
   padding: 25px;
   border-radius: 15px;
   width: 80%;
-  max-width: 700px;
+  max-width: 900px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   animation: fadeIn 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    width: 95%;
+    height: 90%;
+    overflow-y: auto;
+    padding: 15px;
+  }
 }
 
 @keyframes fadeIn {
@@ -254,6 +263,8 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
+
 
 /* ===== CARRUSEL DOCUMENTOS PDF ===== */
 
@@ -334,3 +345,53 @@ body {
 .pdf-label:hover i {
   color: white;
 }
+
+/* ===============================
+   AJUSTES GENERALES MOBILE
+================================ */
+@media (max-width: 768px) {
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .property-card {
+    margin-bottom: 20px;
+  }
+
+  .property-price {
+    font-size: 1.1rem;
+  }
+
+}
+
+.carousel-img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .carousel-img {
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .modal-container table {
+    font-size: 0.75rem;
+  }
+
+  .modal-container th,
+  .modal-container td {
+    padding: 6px;
+  }
+
+}
+

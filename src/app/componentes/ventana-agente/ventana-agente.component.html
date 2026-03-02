@@ -54,7 +54,7 @@
 
 
           <!-- Botones de acción -->
-          <div class="d-flex justify-content-center gap-2">
+          <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
             <!-- Aceptar y Cancelar: solo si está PENDIENTE -->
             <ng-container *ngIf="inmueble.estadoTransa === 'PENDIENTE'">
               <button
@@ -184,7 +184,7 @@
 
                       <img [src]="img"
                            class="d-block w-100 rounded"
-                           style="height: 400px; object-fit: cover;"
+                           style="object-fit: cover;"
                            alt="Imagen {{ i + 1 }}">
                     </div>
                   </div>

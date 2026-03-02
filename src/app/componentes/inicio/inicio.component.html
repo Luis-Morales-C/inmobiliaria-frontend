@@ -26,7 +26,7 @@
               <a class="nav-link" href="#">CONTÁCTENOS</a>
             </li>
           </ul>
-          <div class="d-flex">
+          <div class="d-flex flex-column flex-lg-row mt-3 mt-lg-0">
             <app-user-menu [userName]="userName" (logout)="logout()"></app-user-menu>
           </div>
         </div>
@@ -558,7 +558,7 @@
 
                     <img [src]="img"
                          class="d-block w-100 rounded"
-                         style="height: 400px; object-fit: cover;"
+                         style="object-fit: cover;"
                          alt="Imagen {{ i + 1 }}">
                   </div>
                 </div>
