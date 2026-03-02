@@ -26,6 +26,7 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   imagenesPreview: string[] = [];
   imagenesError: boolean = false;
   pdfError: boolean = false;
+  isLoading: boolean = false;
 
 
   onFileSelected(event: Event): void {
@@ -181,84 +182,70 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   }
 
   onSubmit(): void {
-    if (this.registroInmuebleForm.valid) {
-      // 1. Obtener los datos del formulario
-      const datosFormulario = this.registroInmuebleForm.value;
 
-      // 2. Crear el DTO sin archivos
-      const dto: CaptacionInmuebleDTO = {
-        latitud: datosFormulario.latitud,
-        longitud: datosFormulario.longitud,
-        tipoNegocio: datosFormulario.tipoNegocio,
-        tipo: datosFormulario.tipo,
-        medidas: datosFormulario.medidas,
-        habitaciones: datosFormulario.habitaciones,
-        banos: datosFormulario.banos,
-        descripcion: datosFormulario.descripcion,
-        precio: datosFormulario.precio,
-        cantidadParqueaderos: datosFormulario.cantidadParqueaderos,
-        telefonoContacto: datosFormulario.telefonoContacto,
-        nombreContacto: datosFormulario.nombreContacto,
-        correoContacto: datosFormulario.correoContacto,
-        estado: datosFormulario.estado
-      };
-
-      // 3. Crear FormData para archivos
-      const formData = new FormData();
-
-      // Agregar el DTO como JSON
-      Object.entries(dto).forEach(([key, value]) => {
-        formData.append(key, value.toString());
-      });
-
-      formData.append('correoUsuario', localStorage.getItem('userEmail') || '');
-
-
-
-      this.imagenes.forEach((img) => {
-        formData.append('imagenes', img); // mismo nombre para todos
-      });
-
-      this.pdfArchivos.forEach((pdf) => {
-        formData.append('documentosImportantes' + '', pdf);
-      });
-
-      console.log("=== DTO listo para enviar ===");
-      console.log(dto);
-
-
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
-      // 4. Enviar DTO y archivos
-      this.inmuebleService.registrarInmueble(formData).subscribe({
-        next: () => {
-          console.log('Captación registrada correctamente');
-          this.showAlert('success', 'Inmueble registrado exitosamente');
-          this.redireccionamiento.redirigirAPerfil();
-
-          // 🔄 Limpiar formulario y archivos
-          this.registroInmuebleForm.reset();
-          this.imagenes = [];
-          this.imagenesPreview = [];
-          this.pdfArchivos = [];
-
-          const inputImagenes = document.getElementById('inputImagenes') as HTMLInputElement;
-          const inputPDFs = document.getElementById('inputPDFs') as HTMLInputElement;
-          if (inputImagenes) inputImagenes.value = '';
-          if (inputPDFs) inputPDFs.value = '';
-        }
-      });
-    }
-
-    // 🔥 VALIDACIÓN NUEVA
     this.imagenesError = this.imagenes.length === 0;
     this.pdfError = this.pdfArchivos.length === 0;
 
-    if (this.imagenesError || this.pdfError) {
+    if (this.registroInmuebleForm.invalid || this.imagenesError || this.pdfError) {
       return;
     }
+
+    // 🔥 ACTIVAMOS EL MODAL
+    this.isLoading = true;
+
+    const datosFormulario = this.registroInmuebleForm.value;
+
+    const dto: CaptacionInmuebleDTO = {
+      latitud: datosFormulario.latitud,
+      longitud: datosFormulario.longitud,
+      tipoNegocio: datosFormulario.tipoNegocio,
+      tipo: datosFormulario.tipo,
+      medidas: datosFormulario.medidas,
+      habitaciones: datosFormulario.habitaciones,
+      banos: datosFormulario.banos,
+      descripcion: datosFormulario.descripcion,
+      precio: datosFormulario.precio,
+      cantidadParqueaderos: datosFormulario.cantidadParqueaderos,
+      telefonoContacto: datosFormulario.telefonoContacto,
+      nombreContacto: datosFormulario.nombreContacto,
+      correoContacto: datosFormulario.correoContacto,
+      estado: datosFormulario.estado
+    };
+
+    const formData = new FormData();
+
+    Object.entries(dto).forEach(([key, value]) => {
+      formData.append(key, value.toString());
+    });
+
+    formData.append('correoUsuario', localStorage.getItem('userEmail') || '');
+
+    this.imagenes.forEach((img) => {
+      formData.append('imagenes', img);
+    });
+
+    this.pdfArchivos.forEach((pdf) => {
+      formData.append('documentosImportantes', pdf);
+    });
+
+    this.inmuebleService.registrarInmueble(formData).subscribe({
+      next: () => {
+
+        this.isLoading = false; // 🔥 DESACTIVAMOS MODAL
+
+        this.showAlert('success', 'Inmueble registrado exitosamente');
+        this.redireccionamiento.redirigirAPerfil();
+
+        this.registroInmuebleForm.reset();
+        this.imagenes = [];
+        this.imagenesPreview = [];
+        this.pdfArchivos = [];
+      },
+      error: () => {
+        this.isLoading = false; // 🔥 IMPORTANTE también en error
+        this.showAlert('error', 'Ocurrió un error al registrar el inmueble');
+      }
+    });
   }
 
   showAlert(type: 'success' | 'error', message: string): void {
