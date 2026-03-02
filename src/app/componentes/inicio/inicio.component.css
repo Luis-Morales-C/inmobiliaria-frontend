@@ -397,3 +397,56 @@ body {
 
 }
 
+/* ===============================
+   MODAL DETALLE RESPONSIVE PRO
+================================ */
+
+.modal-detalle {
+  width: 90%;
+  max-width: 1200px; /* Más ancho en escritorio */
+  max-height: 90vh; /* Nunca más alto que la pantalla */
+  overflow-y: auto; /* Scroll interno */
+  padding: 30px;
+  border-radius: 20px;
+}
+
+/* Scroll bonito */
+.modal-detalle::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-detalle::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 10px;
+}
+
+/* Ajuste en móvil */
+@media (max-width: 768px) {
+
+  .modal-detalle {
+    width: 95%;
+    height: 95vh;
+    max-height: 95vh;
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  /* Cambiar layout a vertical */
+  .modal-detalle .row {
+    flex-direction: column;
+  }
+
+  .modal-detalle .col-md-6 {
+    width: 100%;
+  }
+
+  /* Reducir tamaño títulos */
+  .modal-detalle h6 {
+    font-size: 0.95rem;
+  }
+
+  .modal-detalle p {
+    font-size: 0.85rem;
+  }
+}
+
