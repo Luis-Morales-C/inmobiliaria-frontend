@@ -72,6 +72,52 @@ export class MapaService {
     });
   }
 
+  public irAMiUbicacion(): void {
+
+    if (!this.mapa) {
+      console.error('El mapa no ha sido inicializado');
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      alert('Tu navegador no soporta geolocalización');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        // Animación suave hacia la ubicación
+        this.mapa.flyTo({
+          center: [lng, lat],
+          zoom: 16,
+          essential: true
+        });
+
+        // Si ya existe marcador, lo quitamos
+        if (this.marcador) {
+          this.marcador.remove();
+        }
+
+        // Agregamos marcador azul para diferenciar
+        this.marcador = new mapboxgl.Marker({ color: 'blue' })
+          .setLngLat([lng, lat])
+          .addTo(this.mapa);
+
+      },
+      (error) => {
+        console.error('Error obteniendo ubicación:', error);
+        alert('No se pudo obtener tu ubicación');
+      },
+      {
+        enableHighAccuracy: true
+      }
+    );
+  }
+
  /* public pintarMarcadores(reportes: CaptacionInmuebleDTO[]) {
     reportes.forEach(reporte => {
       new mapboxgl.Marker({color: 'red'})

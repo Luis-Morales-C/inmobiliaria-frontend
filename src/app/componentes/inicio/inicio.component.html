@@ -17,13 +17,10 @@
               <a class="nav-link" (click)="redireccionamiento.redirigirARegistroInmueble()">HAGAMOS NEGOCIOS</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">ASESORES</a>
+              <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">CONÓCENOS</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">CONÓCENOS</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">CONTÁCTENOS</a>
+              <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">CONTÁCTENOS</a>
             </li>
           </ul>
           <div class="d-flex flex-column flex-lg-row mt-3 mt-lg-0">
@@ -142,7 +139,7 @@
             </div>
           </div>
           <div class="col-md-4 text-end">
-            <button class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary" (click)="irAMiUbicacion()">
               <i class="bi bi-geo-alt"></i> Mi ubicación
             </button>
           </div>
@@ -225,13 +222,10 @@
         <div class="collapse navbar-collapse" id="navbarNavCliente">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">ASESORES</a>
+              <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">CONÓCENOS</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">CONÓCENOS</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">CONTÁCTENOS</a>
+              <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">CONTÁCTENOS</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -350,7 +344,7 @@
             </div>
           </div>
           <div class="col-md-4 text-end">
-            <button class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary" (click)="irAMiUbicacion()">
               <i class="bi bi-geo-alt"></i> Mi ubicación
             </button>
           </div>

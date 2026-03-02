@@ -96,5 +96,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
     this.detalleInmueble = null;
   }
 
+  irAMiUbicacion(): void {
+    this.mapaService.irAMiUbicacion();
+  }
+
 
 }
