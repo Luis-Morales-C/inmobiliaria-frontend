@@ -207,25 +207,6 @@ return localStorage.getItem(this.TOKEN_KEY);
     return null;
   }
 
- /* modificarCredencialesToken(token: TokenResponse): void {
-    const tokenDecodificado: any = jwtDecode(token.token);
-    localStorage.setItem(this.TOKEN_KEY, token.token);
-    localStorage.setItem(this.TOKEN_TYPE_KEY, token.type);
-    localStorage.setItem(this.EXPIRE_AT_KEY, token.exp);
-    localStorage.setItem(this.USER_EMAIL_KEY, token.sub);
-    localStorage.setItem(this.USER_ID_KEY, token.id);
-    localStorage.setItem(this.ROLES_KEY, JSON.stringify(
-      Array.isArray(tokenDecodificado.rol) ? tokenDecodificado.rol : [tokenDecodificado.rol]
-    ));
-    localStorage.setItem(this.USER_NAME_KEY, token.nombre);
-    localStorage.setItem(this.USER_LASTNAME_KEY, token.apellido);
-    localStorage.setItem(this.USER_PHONE_KEY, token.telefono);
-    localStorage.setItem(this.USER_DOCUMENT_KEY, token.documentoIdentidad);
-    localStorage.setItem(this.USER_PASSWORD_KEY,token.contrasena)
-  }
-
-  */
-
 
 
   /**
