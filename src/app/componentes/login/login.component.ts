@@ -4,14 +4,36 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
-import {AuthService} from '../../servicios/auth.service';
-import {NgClass, NgIf} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
+import { AuthService } from '../../servicios/auth.service';
+import { NgClass, NgIf } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha'; // Actualizado para incluir settings
+import { environment } from '../../../environments/environment'; // Importado para usar la clave centralizada
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, MessageModule, NgIf, RouterLink, NgClass],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    MessageModule,
+    NgIf,
+    RouterLink,
+    NgClass,
+    RecaptchaModule
+  ],
+  // AGREGADO: Igual que en tu registro para que tome la clave del environment
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -20,43 +42,45 @@ export class LoginComponent {
   errorMessage: string | null = null;
   loading: boolean = false;
   verContra = false;
+  captchaToken: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, protected redireccionamiento: RedireccionService,private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    protected redireccionamiento: RedireccionService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required],
     });
   }
 
+  resolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
+      if (!this.captchaToken) {
+        this.showAlert('error', 'Por favor, completa la verificación reCAPTCHA');
+        return;
+      }
+
       this.loading = true;
       const { email, contrasena } = this.loginForm.value;
 
-      this.authService.login(email, contrasena).subscribe({
+      this.authService.login(email, contrasena, this.captchaToken).subscribe({
         next: (response) => {
           this.loading = false;
-          // Mensaje de éxito usando showAlert
           this.showAlert('success', 'Inicio de sesión exitoso');
-          /*const primerRol = this.authService.getPrimerRol();
-          if (primerRol === 'AGENTE')
-          {
-            this.router.navigate(['/ventanaAgente']);
-          }
-          else if (primerRol === 'CLIENTE')
-          {
-            this.router.navigate(['/inicio']);
-          }
-           */
           this.router.navigate(['/inicio']);
         },
         error: (err: any) => {
           this.loading = false;
+          this.captchaToken = null;
 
-          // Tomar el mensaje enviado por el backend
-          const mensajeBackend = err.error?.message;
-
-          // Decidir el mensaje a mostrar según el contenido
+          const mensajeBackend = err.error?.message || err.message;
           let mensajeAMostrar = mensajeBackend || 'Error desconocido';
 
           switch (mensajeBackend) {
@@ -69,19 +93,18 @@ export class LoginComponent {
             case 'Usuario bloqueado':
               mensajeAMostrar = 'Tu cuenta está bloqueada, contacta al soporte';
               break;
-            // Puedes agregar más casos según los mensajes que devuelva tu backend
+            case 'Validación de seguridad fallida (Captcha inválido).':
+              mensajeAMostrar = 'El reCAPTCHA ha expirado, inténtalo de nuevo';
+              break;
           }
 
-          // Mostrar el mensaje con showAlert
           this.showAlert('error', mensajeAMostrar);
         }
       });
     } else {
-      console.warn('Formulario inválido:', this.loginForm);
       this.showAlert('error', 'Por favor completa todos los campos correctamente');
     }
   }
-
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
@@ -104,10 +127,11 @@ export class LoginComponent {
       alertDiv.style.color = '#721c24';
       alertDiv.style.borderColor = '#f5c6cb';
     }
+    document.body.appendChild(alertDiv);
+    setTimeout(() => alertDiv.remove(), 3000);
   }
 
   mostrarContrasenia() {
     this.verContra = !this.verContra;
   }
-
 }

@@ -30,47 +30,36 @@ export class AuthService {
   constructor(private http: HttpClient, private redireccionService: RedireccionService) {}
 
   /**
-   * Envía las credenciales al backend y almacena el token.
+   * Envía las credenciales y el token de captcha al backend
    * @param email Nombre de usuario o correo
    * @param contrasena Contraseña
-   * @returns Observable con la respuesta del servidor*/
-  login(email: string, contrasena: string): Observable<TokenResponse> {
-    console.log('Enviando credenciales al backend:', { email, contrasena });
+   * @param recaptchaToken Token generado por Google reCaptcha
+   */
+  login(email: string, contrasena: string, recaptchaToken: string): Observable<TokenResponse> {
     const urlLogin = `${this.url}/login`;
-    const request = { email, contrasena };
+
+    // Ahora el request coincide con tu LoginRequest del Backend
+    const request = {
+      email,
+      contrasena,
+      recaptchaToken
+    };
 
     return this.http.post<TokenResponse>(urlLogin, request).pipe(
       tap(response => {
-        console.log('Token recibido del backend:', response);
         this.cambiarDatosToken(response);
-
-
-        // Mostrar mensaje de éxito
         this.showAlert('success', 'Inicio de sesión exitoso');
       }),
       catchError(error => {
-        console.error('Error en la llamada al backend:', error);
-
-        // Tomar el mensaje enviado por el backend
         const mensajeBackend = error.error?.message;
         let errorMsg = mensajeBackend || 'Error al iniciar sesión';
 
-        // Personalizar mensajes según el texto recibido
-        switch (mensajeBackend) {
-          case 'Usuario no encontrado':
-            errorMsg = 'El email ingresado no está registrado';
-            break;
-          case 'Contraseña incorrecta':
-            errorMsg = 'La contraseña es incorrecta';
-            break;
-          case 'Usuario bloqueado':
-            errorMsg = 'Tu cuenta está bloqueada, contacta al soporte';
-            break;
+        // Manejo de errores específico para el Captcha
+        if (error.status === 400 && errorMsg.includes('reCAPTCHA')) {
+          errorMsg = 'Por favor, completa el captcha correctamente.';
         }
 
-        // Mostrar alerta de error usando showAlert
         this.showAlert('error', errorMsg);
-
         return throwError(() => new Error(errorMsg));
       })
     );

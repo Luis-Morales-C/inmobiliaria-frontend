@@ -24,33 +24,37 @@
     <div class="mb-3">
       <label for="email" class="form-label">EMAIL</label>
       <input type="text" class="form-control" formControlName="email" id="email" placeholder="Ingresa tu email">
-      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
         debe de ingresar su correo electronico.
       </div>
     </div>
 
     <div class="mb-3">
-        <label for="contrasena" class="form-label">CONTRASEÑA</label>
+      <label for="contrasena" class="form-label">CONTRASEÑA</label>
       <div class="password-toggle">
-
         <input [type]="verContra ? 'text' : 'password'" class="form-control" id="password" formControlName="contrasena" placeholder="Crea una contraseña segura" required>
-        <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched">debe de ingresar su contraseña.</div>
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
-                        <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
-                    </span>
-        </div>
+          <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
+        </span>
+      </div>
+      <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched" class="text-danger">debe de ingresar su contraseña.</div>
     </div>
 
     <div class="forgot-password">
       <a routerLink="/recuperar">¿Olvidó su contraseña?</a>
     </div>
 
+    <div class="mb-3 d-flex justify-content-center">
+      <re-captcha (resolved)="resolved($event)"></re-captcha>
+    </div>
 
-    <button type="submit"  class="btn btn-primary">LOGIN</button>
+    <button type="submit" [disabled]="loading" class="btn btn-primary w-100">
+      {{ loading ? 'CARGANDO...' : 'LOGIN' }}
+    </button>
   </form>
 
   <div class="login-footer">
-    <p>¿No tienes una cuenta? <a (click)="redireccionamiento.redirigirARegistro()">Regístrate aquí</a></p>
+    <p>¿No tienes una cuenta? <a (click)="redireccionamiento.redirigirARegistro()" style="cursor: pointer;">Regístrate aquí</a></p>
   </div>
 </div>
 
