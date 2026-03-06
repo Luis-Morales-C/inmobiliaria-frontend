@@ -6,11 +6,11 @@ import {UsersService} from '../../servicios/users.service';
 import {Router} from '@angular/router';
 import {RedireccionService} from '../../servicios/redireccion.service';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
+import {InmuebleResponse} from '../../dto/inmueble-response';
 
 @Component({
   selector: 'app-perfil',
   imports: [
-    NgClass,
     FormsModule,
     CommonModule,
     ReactiveFormsModule
@@ -39,6 +39,11 @@ export class PerfilComponent implements OnInit {
 
   errorMessage: string | null = null;
   loading: boolean = false;
+
+  mostrarModalDetalle = false;
+  detalleInmueble: InmuebleResponse | null = null;
+  currentImageIndex: number = 0;
+  currentDocIndex: number = 0;
 
 
   constructor(private authService: AuthService,private userService:UsersService, private fb: FormBuilder,private redireccionamiento: RedireccionService, protected inmuebleService: InmuebleServiceService) {
@@ -168,6 +173,59 @@ export class PerfilComponent implements OnInit {
     )
   }
 
+  abrirModalDetalles(inmueble: InmuebleResponse): void {
+    this.detalleInmueble = inmueble;
+    this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
+    this.mostrarModalDetalle = true;
+    console.log(this.detalleInmueble.documentosImportantes.length)
+  }
+
+  cerrarModalDetalles(): void {
+    this.mostrarModalDetalle = false;
+    this.detalleInmueble = null;
+    this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
+  }
+
+  // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
+  getFileNameFromUrl(url: string | undefined | null): string {
+    if (!url) return '';
+    try {
+      // Intentar usar el constructor URL para obtener el pathname
+      const u = new URL(url);
+      let filename = u.pathname.split('/').pop() || '';
+      // Quitar parámetros si los hubiera (aunque URL.pathname no incluye query)
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      return decodeURIComponent(filename);
+    } catch (e) {
+      // Fallback sencillo si la URL no es absoluta
+      const lastSlash = url.lastIndexOf('/');
+      let filename = lastSlash !== -1 ? url.substring(lastSlash + 1) : url;
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      try { return decodeURIComponent(filename); } catch { return filename; }
+    }
+  }
+
+  // Abrir documento en el navegador (Cloudinary)
+  abrirDocumento(url: string): void {
+    if (!url) return;
+    window.open(url, '_blank');
+  }
+
+  // Índices para los indicadores del carousel de documentos (0..n-1)
+  get detalleDocumentosIndices(): number[] {
+    const docs = this.detalleDocumentos;
+    return docs && docs.length ? docs.map((_, i) => i) : [];
+  }
+
+  get detalleDocumentos(): string[] {
+    return this.detalleInmueble?.documentosImportantes || [];
+  }
+
+
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} mt-3`;
@@ -211,6 +269,7 @@ export class PerfilComponent implements OnInit {
       console.log("Redirigiendo a home ingresado"+this.authService.getUserEmail() );
     }
   }
+
 
 
 }
