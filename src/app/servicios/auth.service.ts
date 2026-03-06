@@ -269,43 +269,54 @@ return localStorage.getItem(this.TOKEN_KEY);
   }
 
 
-  enviarCodigoRecuperacion(email: string): Observable<string> {
+  /**
+   * Envía la solicitud para generar un código de recuperación.
+   * Ahora incluye el recaptchaToken en el cuerpo de la solicitud.
+   */
+  enviarCodigoRecuperacion(email: string, recaptchaToken: string): Observable<string> {
     const url = `${this.url}/recuperar`;
 
-    return this.http.post(url, null, {
-      params: { email },
-      responseType: 'text'
-    }).pipe(
+    // Creamos el objeto que coincide con tu SolicitarRecuperacionDto del backend
+    const body = {
+      email: email,
+      recaptchaToken: recaptchaToken
+    };
+
+    return this.http.post(url, body, { responseType: 'text' }).pipe(
       tap(() => {
-        this.showAlert('success',
-          'Si el correo está registrado, recibirás un código.');
+        this.showAlert('success', 'Si el correo está registrado, recibirás un código.');
       }),
       catchError(error => {
-        this.showAlert('error',
-          'Error al solicitar recuperación');
+        console.error('Error en recuperación:', error);
+        // Intentamos extraer el mensaje de error del backend si existe
+        const msg = error.error || 'Error al solicitar recuperación';
+        this.showAlert('error', msg);
         return throwError(() => error);
       })
     );
   }
 
+  /**
+   * Cambia la contraseña usando el código recibido por correo.
+   */
   cambiarContrasenaConCodigo(
     email: string,
     codigo: string,
     nuevaContrasena: string
   ): Observable<string> {
-
     const url = `${this.url}/recuperar/cambiar`;
 
     const body = {
       email,
       codigo,
       nuevaContrasena
+
     };
+
 
     return this.http.post(url, body, { responseType: 'text' }).pipe(
       tap(() => {
-        this.showAlert('success',
-          'Contraseña actualizada correctamente');
+        this.showAlert('success', 'Contraseña actualizada correctamente');
       }),
       catchError(error => {
         const mensaje = error.error || 'Código inválido o expirado';
@@ -314,7 +325,6 @@ return localStorage.getItem(this.TOKEN_KEY);
       })
     );
   }
-
   enviarContacto(data: {
     nombre: string;
     telefono: string;
