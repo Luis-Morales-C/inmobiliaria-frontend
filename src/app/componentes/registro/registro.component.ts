@@ -1,15 +1,26 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {NgClass, NgIf} from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { UserRegistrationRequest } from '../../dto/user-registration-request';
 import { UsersService } from '../../servicios/users.service';
 import { ErrorResponse } from '../../dto/error-response';
 import { Router, RouterLink } from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-registro',
-  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass, RecaptchaModule],
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
@@ -19,6 +30,7 @@ export class RegistroComponent {
   classResult = 'success';
   verContra = false;
   verConfirmContra = false;
+  captchaToken: string | null = null; // Variable para almacenar el token de Google
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,15 +61,29 @@ export class RegistroComponent {
       });
   }
 
+  // Metodo que se dispara cuando el usuario resuelve el captcha
+  onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
   onSubmit(): void {
-    // Crear objeto con los campos requeridos por el backend
-    const newUser: UserRegistrationRequest = {
+    // Validación extra: Si no hay token de captcha, no enviamos nada
+    if (!this.captchaToken) {
+      this.result = 'Por favor, completa la verificación de seguridad (Captcha).';
+      this.classResult = 'text-danger';
+      return;
+    }
+
+    // Crear objeto con los campos requeridos por el backend, incluyendo el token
+    // Usamos 'any' o actualiza tu interfaz UserRegistrationRequest para incluir recaptchaToken
+    const newUser: any = {
       nombre: this.registroForm.get('nombre')?.value,
       apellido: this.registroForm.get('apellido')?.value,
       documentoIdentidad: this.registroForm.get('documentoIdentidad')?.value,
       telefono: this.registroForm.get('telefono')?.value,
       email: this.registroForm.get('email')?.value,
-      contrasena: this.registroForm.get('contrasena')?.value
+      contrasena: this.registroForm.get('contrasena')?.value,
+      recaptchaToken: this.captchaToken // <--- Token enviado al backend
     };
 
     this.usersService.registrar(newUser).subscribe({
@@ -66,24 +92,24 @@ export class RegistroComponent {
         this.result = 'Usuario registrado correctamente. Redirigiendo a la activación de cuenta...';
         this.classResult = 'success';
 
-        // Guardar el email en localStorage y redirigir a la página de activación
         const userEmail = this.registroForm.get('email')?.value;
         localStorage.setItem('pendingActivationEmail', userEmail);
 
-        // Redirigir a la página de activación de cuenta después de un breve retraso
         setTimeout(() => {
           this.router.navigate(['/activar'], { state: { email: userEmail } });
         }, 2000);
       },
       error: (error) => {
         console.log('Se presentó un problema al registrar el usuario: ', error);
-        // Manejar correctamente el error cuando error.error es null
+
+        // Resetear captcha en caso de error para que el usuario deba marcarlo de nuevo
+        this.captchaToken = null;
+
         if (error.error && error.error instanceof Array) {
           this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
         } else if (error.error && error.error.message) {
           this.result = error.error.message;
         } else {
-          // Mensaje de error por defecto cuando no hay detalles específicos
           this.result = 'Error al registrar el usuario. Por favor, inténtelo más tarde.';
         }
         this.classResult = 'text-danger';
@@ -94,7 +120,6 @@ export class RegistroComponent {
   passwordMatchValidator(formGroup: FormGroup): any {
     const password = formGroup.get('contrasena')?.value;
     const confirmPassword = formGroup.get('confirmcontrasena')?.value;
-    // Si las contraseñas no coinciden, devuelve un error, de lo contrario, null
     return password === confirmPassword ? null : { passwordsMismatch: true };
   }
 
@@ -110,6 +135,4 @@ export class RegistroComponent {
     localStorage.setItem('migaPan','registro');
     this.redireccionamiento.redirigirAPoliticaDatos();
   }
-
-
 }
