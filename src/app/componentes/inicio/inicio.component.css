@@ -277,3 +277,128 @@ body {
   color: var(--primary);
   margin-bottom: 0.5rem;
 }
+
+/* ===================================================
+   === MODO OSCURO PARA EL INICIO (TODOS LOS ROLES) ===
+   =================================================== */
+
+/* 1. Navbar y Fondos Generales */
+:host-context(body.dark-mode) .navbar {
+  background-color: #16213e !important;
+  border-bottom: 1px solid #0f3460;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+:host-context(body.dark-mode) .nav-link {
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) .nav-link:hover {
+  color: #10bb82 !important;
+}
+
+/* 2. Secciones de Contenido */
+:host-context(body.dark-mode) .bg-light-primary {
+  background-color: #1a1a2e !important;
+  color: #e0e0e0;
+}
+
+/* 3. Caja de Búsqueda Avanzada */
+:host-context(body.dark-mode) .search-box,
+:host-context(body.dark-mode) .map-search-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4) !important;
+  border: 1px solid #0f3460;
+}
+
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) .form-label {
+  color: #a0a0a0 !important;
+}
+
+/* 4. Tarjetas de Propiedad */
+:host-context(body.dark-mode) .property-card.card {
+  background-color: #16213e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) .card-title {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .property-price {
+  color: #0b0a0a !important;
+}
+
+:host-context(body.dark-mode) .property-card hr {
+  border-top: 1px solid #0f3460;
+}
+
+/* 5. Mapa y Controles del Mapa */
+:host-context(body.dark-mode) #mapa {
+  border-color: #0f3460 !important;
+  /* Filtro para oscurecer el mapa de Leaflet/Google */
+  filter: grayscale(0.8) invert(0.9) hue-rotate(180deg) brightness(0.9);
+}
+
+:host-context(body.dark-mode) .map-filter-btn {
+  background-color: #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .map-filter-btn.active {
+  background-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+/* 6. MODAL DE DETALLES */
+:host-context(body.dark-mode) .modal-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460;
+}
+
+:host-context(body.dark-mode) .modal-container h5,
+:host-context(body.dark-mode) .modal-container h6 {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .modal-container .border-bottom {
+  border-bottom: 1px solid #0f3460 !important;
+}
+
+:host-context(body.dark-mode) .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%); /* Hace la 'X' blanca */
+}
+
+/* 7. Alertas de Roles */
+:host-context(body.dark-mode) .alert-warning {
+  background-color: rgba(255, 193, 7, 0.1) !important;
+  border-color: #ffc107 !important;
+  color: #ffc107 !important;
+}
+
+:host-context(body.dark-mode) .alert-secondary {
+  background-color: #1a1a2e !important;
+  border-color: #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+/* 8. Botones Outline */
+:host-context(body.dark-mode) .btn-outline-primary {
+  color: #000000 !important;
+  border-color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .btn-outline-primary:hover {
+  background-color: #10bb82 !important;
+  color: #16213e !important;
+}

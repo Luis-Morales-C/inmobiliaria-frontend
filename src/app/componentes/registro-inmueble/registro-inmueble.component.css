@@ -290,4 +290,119 @@ textarea {
   cursor: not-allowed;
 }
 
+/* ===================================================
+   === MODO OSCURO (REGISTRO DE INMUEBLE) ===
+   =================================================== */
+
+/* 1. Contenedor Principal y Secciones */
+:host-context(body.dark-mode) .property-form-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+}
+
+:host-context(body.dark-mode) .form-section {
+  border-bottom: 1px solid #0f3460 !important;
+}
+
+/* 2. Textos y Títulos */
+:host-context(body.dark-mode) .form-header h1,
+:host-context(body.dark-mode) .section-title {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .form-header p,
+:host-context(body.dark-mode) .text-muted,
+:host-context(body.dark-mode) .form-label {
+  color: #a0a0a0 !important;
+}
+
+/* 3. Inputs, Selects y Textareas */
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select,
+:host-context(body.dark-mode) .input-group-text {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) .form-control:focus,
+:host-context(body.dark-mode) .form-select:focus {
+  border-color: #10bb82 !important;
+  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25) !important;
+  background-color: #1a1a2e !important;
+}
+
+/* 4. Pasos (Steps) */
+:host-context(body.dark-mode) .form-steps:before {
+  background-color: #0f3460 !important;
+}
+
+:host-context(body.dark-mode) .step {
+  background-color: #1a1a2e !important;
+  border-color: #0f3460 !important;
+  color: #6c757d !important;
+}
+
+:host-context(body.dark-mode) .step.active {
+  background-color: #10bb82 !important;
+  border-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+:host-context(body.dark-mode) .step-label {
+  color: #6c757d !important;
+}
+
+:host-context(body.dark-mode) .step.active .step-label {
+  color: #10bb82 !important;
+}
+
+/* 5. Áreas de Carga de Archivos (Imágenes y PDF) */
+:host-context(body.dark-mode) .image-upload,
+:host-context(body.dark-mode) .pdf-upload {
+  background-color: #1a1a2e !important;
+  border: 2px dashed #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .image-upload:hover,
+:host-context(body.dark-mode) .pdf-upload:hover {
+  border-color: #10bb82 !important;
+  background-color: rgba(16, 187, 130, 0.05) !important;
+}
+
+/* 6. Tarjetas de Previsualización de Imágenes */
+:host-context(body.dark-mode) #imagePreview .card {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+}
+
+:host-context(body.dark-mode) .list-group-item {
+  background-color: #1a1a2e !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460 !important;
+}
+
+/* 7. Botones */
+:host-context(body.dark-mode) .btn-primary {
+  background-color: #10bb82 !important;
+  border-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+:host-context(body.dark-mode) .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+  border: none !important;
+}
+
+/* 8. Mapa (Ajuste de borde para que no brille) */
+:host-context(body.dark-mode) #mapa {
+  border: 1px solid #0f3460 !important;
+  filter: grayscale(0.8) invert(0.9) hue-rotate(180deg) brightness(0.9); /* Opcional: Filtro oscuro para el mapa */
+}
+
+
+
 
