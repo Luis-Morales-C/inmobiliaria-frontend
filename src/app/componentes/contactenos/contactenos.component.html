@@ -13,7 +13,6 @@
 
   <form [formGroup]="contactoForm" (ngSubmit)="onSubmit()">
 
-    <!-- Información de contacto -->
     <div class="form-section">
       <h3 class="section-title">Información personal</h3>
 
@@ -47,7 +46,6 @@
       </div>
     </div>
 
-    <!-- Mensaje -->
     <div class="form-section">
       <h3 class="section-title">Tu mensaje</h3>
 
@@ -67,8 +65,12 @@
       </div>
     </div>
 
+    <div class="mb-4 d-flex justify-content-center">
+      <re-captcha (resolved)="resolved($event)"></re-captcha>
+    </div>
+
     <div class="form-navigation">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary w-100" [disabled]="contactoForm.invalid || !captchaToken">
         Enviar mensaje
       </button>
     </div>

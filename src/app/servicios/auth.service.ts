@@ -314,12 +314,14 @@ return localStorage.getItem(this.TOKEN_KEY);
       })
     );
   }
+
   enviarContacto(data: {
     nombre: string;
     telefono: string;
     correo: string;
     asunto: string;
     mensaje: string;
+    recaptchaToken: string
   }): Observable<string> {
 
     const url = `${this.url}/contacto`;

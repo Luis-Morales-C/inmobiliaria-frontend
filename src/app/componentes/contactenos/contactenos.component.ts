@@ -3,21 +3,34 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { CommonModule } from '@angular/common';
+// IMPORTACIONES PARA RECAPTCHA
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contactenos',
   standalone: true,
   templateUrl: './contactenos.component.html',
+  styleUrls: ['./contactenos.component.css'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    RecaptchaModule // <--- Añadido a imports
   ],
-  styleUrls: ['./contactenos.component.css']
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
 })
 export class ContactenosComponent {
 
   contactoForm: FormGroup;
+  captchaToken: string | null = null; // Variable para el token
 
   constructor(
     private fb: FormBuilder,
@@ -32,16 +45,39 @@ export class ContactenosComponent {
     });
   }
 
+  // Método para capturar el token cuando se resuelve el captcha
+  resolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
   onSubmit() {
     if (this.contactoForm.invalid) {
       this.contactoForm.markAllAsTouched();
       return;
     }
 
-    this.authService.enviarContacto(this.contactoForm.value)
+    // Validación de seguridad local
+    if (!this.captchaToken) {
+      alert('Por favor, confirma que no eres un robot.');
+      return;
+    }
+
+    // Preparamos el objeto incluyendo el token
+    const datosEnvio = {
+      ...this.contactoForm.value,
+      recaptchaToken: this.captchaToken
+    };
+
+    this.authService.enviarContacto(datosEnvio)
       .subscribe({
         next: () => {
           this.contactoForm.reset();
+          this.captchaToken = null; // Resetear token tras éxito
+          // Nota: El widget se limpia visualmente si usas un ngIf o recargas
+        },
+        error: (err) => {
+          console.error('Error al enviar:', err);
+          this.captchaToken = null; // Resetear token para obligar a re-verificar
         }
       });
   }
