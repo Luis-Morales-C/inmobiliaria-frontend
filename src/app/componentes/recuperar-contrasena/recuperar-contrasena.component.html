@@ -54,7 +54,12 @@
     </div>
 
     <div class="mb-3 d-flex justify-content-center">
-      <re-captcha (resolved)="onCaptchaResolved($event)"></re-captcha>
+      @if (captchaActivo) {
+        <re-captcha
+          (resolved)="onCaptchaResolved($event)"
+          [theme]="temaActual">
+        </re-captcha>
+      }
     </div>
 
     <div class="alert alert-warning py-2 mb-3" *ngIf="mostrarAlerta">

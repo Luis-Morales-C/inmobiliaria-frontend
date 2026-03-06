@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'; // Añadidos ChangeDetectorRef, OnInit, OnDestroy
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { CommonModule } from '@angular/common';
-// IMPORTACIONES PARA RECAPTCHA
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { environment } from '../../../environments/environment';
 
@@ -16,7 +15,7 @@ import { environment } from '../../../environments/environment';
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    RecaptchaModule // <--- Añadido a imports
+    RecaptchaModule
   ],
   providers: [
     {
@@ -27,14 +26,19 @@ import { environment } from '../../../environments/environment';
     },
   ],
 })
-export class ContactenosComponent {
+export class ContactenosComponent implements OnInit, OnDestroy { // Implementamos interfaces
 
   contactoForm: FormGroup;
-  captchaToken: string | null = null; // Variable para el token
+  captchaToken: string | null = null;
+
+  // Control para el refresco del captcha
+  captchaActivo = true;
+  private observer: MutationObserver | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef // Inyectado para forzar renderizado
   ) {
     this.contactoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -45,7 +49,37 @@ export class ContactenosComponent {
     });
   }
 
-  // Método para capturar el token cuando se resuelve el captcha
+  ngOnInit(): void {
+    // Configuramos el observador para detectar cambios de clase en el body
+    this.observer = new MutationObserver(() => {
+      this.recargarCaptcha();
+    });
+
+    this.observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Desconectamos para evitar fugas de memoria
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  recargarCaptcha() {
+    this.captchaActivo = false;
+    this.cdr.detectChanges();
+    this.captchaActivo = true;
+    this.cdr.detectChanges();
+  }
+
+  // Getter para obtener el tema actual
+  get temaActual(): 'light' | 'dark' {
+    return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
+
   resolved(token: string | null) {
     this.captchaToken = token;
   }
@@ -56,13 +90,11 @@ export class ContactenosComponent {
       return;
     }
 
-    // Validación de seguridad local
     if (!this.captchaToken) {
       alert('Por favor, confirma que no eres un robot.');
       return;
     }
 
-    // Preparamos el objeto incluyendo el token
     const datosEnvio = {
       ...this.contactoForm.value,
       recaptchaToken: this.captchaToken
@@ -72,12 +104,15 @@ export class ContactenosComponent {
       .subscribe({
         next: () => {
           this.contactoForm.reset();
-          this.captchaToken = null; // Resetear token tras éxito
-          // Nota: El widget se limpia visualmente si usas un ngIf o recargas
+          this.captchaToken = null;
+          // Forzamos un refresco tras el envío exitoso para limpiar el widget
+          this.recargarCaptcha();
+          alert('Mensaje enviado con éxito');
         },
         error: (err) => {
           console.error('Error al enviar:', err);
-          this.captchaToken = null; // Resetear token para obligar a re-verificar
+          this.captchaToken = null;
+          this.recargarCaptcha(); // Resetear visualmente ante error
         }
       });
   }

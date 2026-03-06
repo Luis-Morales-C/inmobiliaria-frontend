@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core'; // Importado ChangeDetectorRef, OnInit, OnDestroy
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { UserRegistrationRequest } from '../../dto/user-registration-request';
@@ -24,21 +24,52 @@ import { environment } from '../../../environments/environment';
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit, OnDestroy { // Implementamos OnInit y OnDestroy
   registroForm!: FormGroup;
   result = '';
   classResult = 'success';
   verContra = false;
   verConfirmContra = false;
-  captchaToken: string | null = null; // Variable para almacenar el token de Google
+  captchaToken: string | null = null;
+
+  // Control para el re-renderizado del captcha
+  captchaActivo = true;
+  private observer: MutationObserver | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private router: Router,
-    protected redireccionamiento: RedireccionService
+    protected redireccionamiento: RedireccionService,
+    private cdr: ChangeDetectorRef // Inyectamos ChangeDetectorRef
   ) {
     this.crearFormulario();
+  }
+
+  ngOnInit() {
+    // Configuramos el observador para detectar cambios en las clases del body (Modo Oscuro)
+    this.observer = new MutationObserver(() => {
+      this.recargarCaptcha();
+    });
+
+    this.observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  ngOnDestroy() {
+    // Limpiamos el observador al destruir el componente
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  recargarCaptcha() {
+    this.captchaActivo = false;
+    this.cdr.detectChanges();
+    this.captchaActivo = true;
+    this.cdr.detectChanges();
   }
 
   private crearFormulario() {
@@ -61,21 +92,17 @@ export class RegistroComponent {
       });
   }
 
-  // Metodo que se dispara cuando el usuario resuelve el captcha
   onCaptchaResolved(token: string | null) {
     this.captchaToken = token;
   }
 
   onSubmit(): void {
-    // Validación extra: Si no hay token de captcha, no enviamos nada
     if (!this.captchaToken) {
       this.result = 'Por favor, completa la verificación de seguridad (Captcha).';
       this.classResult = 'text-danger';
       return;
     }
 
-    // Crear objeto con los campos requeridos por el backend, incluyendo el token
-    // Usamos 'any' o actualiza tu interfaz UserRegistrationRequest para incluir recaptchaToken
     const newUser: any = {
       nombre: this.registroForm.get('nombre')?.value,
       apellido: this.registroForm.get('apellido')?.value,
@@ -83,28 +110,21 @@ export class RegistroComponent {
       telefono: this.registroForm.get('telefono')?.value,
       email: this.registroForm.get('email')?.value,
       contrasena: this.registroForm.get('contrasena')?.value,
-      recaptchaToken: this.captchaToken // <--- Token enviado al backend
+      recaptchaToken: this.captchaToken
     };
 
     this.usersService.registrar(newUser).subscribe({
       next: (data) => {
-        console.log('El usuario ha sido registrado correctamente: ', data);
         this.result = 'Usuario registrado correctamente. Redirigiendo a la activación de cuenta...';
         this.classResult = 'success';
-
         const userEmail = this.registroForm.get('email')?.value;
         localStorage.setItem('pendingActivationEmail', userEmail);
-
         setTimeout(() => {
           this.router.navigate(['/activar'], { state: { email: userEmail } });
         }, 2000);
       },
       error: (error) => {
-        console.log('Se presentó un problema al registrar el usuario: ', error);
-
-        // Resetear captcha en caso de error para que el usuario deba marcarlo de nuevo
         this.captchaToken = null;
-
         if (error.error && error.error instanceof Array) {
           this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
         } else if (error.error && error.error.message) {
@@ -134,5 +154,10 @@ export class RegistroComponent {
   redirigirPoliticaDatosConLocalStorage() {
     localStorage.setItem('migaPan','registro');
     this.redireccionamiento.redirigirAPoliticaDatos();
+  }
+
+  // Getter para pasar el tema al componente re-captcha
+  get temaActual(): 'light' | 'dark' {
+    return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
   }
 }
