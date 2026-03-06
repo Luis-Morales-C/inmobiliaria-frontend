@@ -7,7 +7,6 @@
 /* =========================
    GENERAL
 ========================= */
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -19,7 +18,6 @@ body {
 /* =========================
    BOTÓN VOLVER
 ========================= */
-
 .btn-volver {
   display: inline-block;
   margin-bottom: 20px;
@@ -32,6 +30,7 @@ body {
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .btn-volver:hover {
@@ -42,7 +41,6 @@ body {
 /* =========================
    PERFIL
 ========================= */
-
 .perfil {
   background: #fff;
   border-radius: 20px;
@@ -62,6 +60,7 @@ body {
   height: 110px;
   border-radius: 50%;
   border: 4px solid var(--primary);
+  object-fit: cover;
 }
 
 .perfil-info h1 {
@@ -72,7 +71,6 @@ body {
 /* =========================
    CAMPOS EDITAR
 ========================= */
-
 .nombre-apellido-editar {
   display: flex;
   gap: 10px;
@@ -87,7 +85,6 @@ body {
 /* =========================
    GRID INFORMACIÓN
 ========================= */
-
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
@@ -107,7 +104,6 @@ body {
 /* =========================
    BOTONES PERFIL
 ========================= */
-
 .btn-verde {
   background-color: var(--primary);
   border: none;
@@ -118,9 +114,7 @@ body {
   transition: 0.3s;
 }
 
-.btn-verde:hover {
-  background-color: #0daa75;
-}
+.btn-verde:hover { background-color: #0daa75; }
 
 .btn-rojo {
   background-color: #dc3545;
@@ -131,9 +125,7 @@ body {
   font-weight: 600;
 }
 
-.btn-rojo:hover {
-  background-color: #c82333;
-}
+.btn-rojo:hover { background-color: #c82333; }
 
 .botones-edicion {
   display: flex;
@@ -143,7 +135,6 @@ body {
 /* =========================
    SECCIÓN PROPIEDADES
 ========================= */
-
 .perfil-propiedades {
   margin-top: 40px;
 }
@@ -155,15 +146,15 @@ body {
 }
 
 /* =========================
-   TARJETAS DE INMUEBLE
+   TARJETAS DE INMUEBLE (REUTILIZADAS)
 ========================= */
-
 .property-card {
   background-color: var(--white);
   border-radius: 20px;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  position: relative;
 }
 
 .property-card:hover {
@@ -189,201 +180,64 @@ body {
   font-weight: 600;
 }
 
-.card-body {
-  padding: 1rem 1.25rem;
+/* ===================================================
+   === MODO OSCURO (UNIFICADO) ===
+   =================================================== */
+
+body.dark-mode {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
 }
 
-.property-price {
-  font-size: 1.3rem;
-  color: var(--primary);
-  font-weight: 700;
+body.dark-mode .perfil,
+body.dark-mode .perfil-header,
+body.dark-mode .card,
+body.dark-mode .modal-container,
+body.dark-mode .modal-detalle,
+body.dark-mode .btn-volver {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  border-color: #0f3460 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }
 
-.card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary);
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode .card-title,
+body.dark-mode .property-price {
+  color: #10bb82 !important;
 }
 
-.property-card i {
-  margin-right: 5px;
-  color: var(--primary);
+body.dark-mode .info-grid strong {
+  color: #a0a0a0 !important;
 }
 
-/* =========================
-   MODAL
-========================= */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-container {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 15px;
-  width: 80%;
-  max-width: 900px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  animation: fadeIn 0.3s ease;
-}
-
-.modal-detalle {
-  width: 90%;
-  max-width: 1200px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 30px;
-  border-radius: 20px;
-}
-
-/* Scroll bonito */
-
-.modal-detalle::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-detalle::-webkit-scrollbar-thumb {
-  background-color: var(--primary);
+body.dark-mode .info-grid div {
+  background-color: #1a1a2e !important;
+  padding: 10px;
   border-radius: 10px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity:0;
-    transform:translateY(-10px);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
+body.dark-mode .campo-editar {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #ffffff !important;
 }
 
-/* =========================
-   PDF LABEL
-========================= */
-
-.pdf-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 260px;
-  padding: 8px 14px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--primary-light), #e6fff6);
-  color: #0f5132;
-  border: 1px solid var(--primary);
-  box-shadow: 0 4px 12px rgba(16, 187, 130, 0.15);
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: all 0.3s ease;
+body.dark-mode .property-card {
+  background-color: #16213e !important;
 }
 
-.pdf-label i {
-  color: var(--primary);
+body.dark-mode .pdf-label {
+  background: #1a1a2e;
+  color: #10bb82;
 }
 
-.pdf-label:hover {
-  background: var(--primary);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.pdf-label:hover i {
-  color: white;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
+/* ===================================================
+   === RESPONSIVE ===
+   =================================================== */
 @media (max-width: 768px) {
-
-  .perfil-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .avatar {
-    width: 90px;
-    height: 90px;
-  }
-
-  .modal-detalle {
-    width: 95%;
-    height: 95vh;
-    padding: 18px;
-  }
-
-  .modal-detalle .row {
-    flex-direction: column;
-  }
-
-  .modal-detalle .col-md-6 {
-    width: 100%;
-  }
-
-  .property-card img {
-    height: 160px;
-  }
-}
-
-/* ===============================
-   CARRUSEL DOCUMENTOS PDF
-================================ */
-
-/* Quitamos icono default de bootstrap */
-#carouselDocumentos .carousel-control-prev-icon,
-#carouselDocumentos .carousel-control-next-icon {
-  background-image: none;
-  width: 36px;
-  height: 36px;
-  background-color: var(--primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* Flecha izquierda */
-#carouselDocumentos .carousel-control-prev-icon::after {
-  content: "‹";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Flecha derecha */
-#carouselDocumentos .carousel-control-next-icon::after {
-  content: "›";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Hover elegante */
-#carouselDocumentos .carousel-control-prev-icon:hover,
-#carouselDocumentos .carousel-control-next-icon:hover {
-  background-color: #0daa75;
-  transform: scale(1.15);
-}
-
-/* Posición botones */
-#carouselDocumentos .carousel-control-prev,
-#carouselDocumentos .carousel-control-next {
-  width: 8%;
+  .perfil-header { flex-direction: column; text-align: center; }
+  .avatar { width: 90px; height: 90px; }
+  .modal-detalle { width: 95%; height: 95vh; padding: 18px; }
+  .modal-detalle .row { flex-direction: column; }
 }

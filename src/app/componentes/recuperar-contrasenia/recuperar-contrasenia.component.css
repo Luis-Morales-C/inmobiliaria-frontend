@@ -208,3 +208,95 @@ body {
   cursor: pointer;
   color: #6c757d;
 }
+
+/* === MODO OSCURO PARA RECUPERACIÓN (IGUAL AL LOGIN) === */
+
+/* Fondo de la página */
+body.dark-mode {
+  background-color: #1a1a2e !important;
+}
+
+/* Contenedor de la tarjeta */
+body.dark-mode .auth-container {
+  background-color: #16213e !important; /* El azul oscuro del login */
+  color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+  border: 1px solid #0f3460;
+}
+
+/* Títulos y Subtítulos */
+body.dark-mode .brand-logo,
+body.dark-mode h2 {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .brand-subtitle,
+body.dark-mode .text-muted,
+body.dark-mode p {
+  color: #a0a0a0 !important;
+}
+
+/* Cuadro de Instrucciones */
+body.dark-mode .instructions {
+  background-color: #1a1a2e !important; /* Fondo más profundo */
+  border: 1px solid #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .instructions strong {
+  color: #10bb82;
+}
+
+/* Icono de seguridad */
+body.dark-mode .recovery-icon {
+  background-color: #0f3460 !important;
+}
+
+body.dark-mode .recovery-icon i {
+  color: #10bb82 !important;
+}
+
+/* Pasos (Step Indicator) */
+body.dark-mode .step {
+  background-color: #1a1a2e;
+  border-color: #0f3460;
+  color: #a0a0a0;
+}
+
+body.dark-mode .step.active {
+  background-color: #10bb82;
+  border-color: #10bb82;
+  color: #16213e;
+}
+
+/* Formulario e Inputs */
+body.dark-mode .form-label {
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-control {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #666 !important;
+}
+
+/* Botón Volver (Outline) */
+body.dark-mode .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  border-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Footer y Enlaces */
+body.dark-mode .auth-footer {
+  border-top: 1px solid #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .auth-footer a {
+  color: #10bb82 !important;
+}

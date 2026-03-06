@@ -112,3 +112,35 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(16, 187, 130, 0.3);
 }
+
+/* === MODO OSCURO === */
+body.dark-mode .politica-container {
+  background-color: #1a1a2e;
+}
+
+body.dark-mode .hero-section {
+  background: linear-gradient(135deg, #10bb82, #0daa75);
+}
+
+body.dark-mode .politica-content {
+  background-color: #16213e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .politica-content h2 {
+  color: #10bb82;
+}
+
+body.dark-mode .politica-content p,
+body.dark-mode .politica-content ul {
+  color: #e0e0e0;
+}
+
+body.dark-mode .politica-content li {
+  color: #e0e0e0;
+}
+
+body.dark-mode .firma {
+  background-color: rgba(16, 187, 130, 0.15);
+  color: #e0e0e0;
+}

@@ -146,3 +146,47 @@
     flex-direction: column;
   }
 }
+
+/* === MODO OSCURO === */
+body.dark-mode .conocenos-container {
+  background-color: #1a1a2e;
+}
+
+body.dark-mode .hero-section {
+  background: linear-gradient(135deg, #10bb82, #0daa75);
+}
+
+body.dark-mode .conocenos-content {
+  background-color: transparent;
+}
+
+body.dark-mode .section-card {
+  background-color: #16213e;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .section-card h2 {
+  color: #10bb82;
+}
+
+body.dark-mode .section-card p,
+body.dark-mode .section-card ul {
+  color: #e0e0e0;
+}
+
+body.dark-mode .valor-item {
+  background-color: rgba(16, 187, 130, 0.2);
+  color: #10bb82;
+}
+
+body.dark-mode .stat-card {
+  background-color: #16213e;
+}
+
+body.dark-mode .stat-card h3 {
+  color: #10bb82;
+}
+
+body.dark-mode .stat-card p {
+  color: #e0e0e0;
+}

@@ -1,3 +1,6 @@
+/* ===================================================
+   === VARIABLES Y CONFIGURACIÓN BASE ===
+   =================================================== */
 :root {
   --primary-light: #c7fae9;
   --primary: #10bb82;
@@ -7,9 +10,14 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
+  min-height: 100vh;
   padding: 20px;
+  transition: background-color 0.3s ease;
 }
 
+/* ===================================================
+   === CONTENEDOR DEL FORMULARIO ===
+   =================================================== */
 .property-form-container {
   background-color: var(--white);
   border-radius: 15px;
@@ -48,94 +56,9 @@ body {
   font-size: 1.2rem;
 }
 
-.form-control, .form-select {
-  border-radius: 10px;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
-}
-
-.btn-primary {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  border-radius: 30px;
-  padding: 12px 25px;
-  font-weight: 600;
-}
-
-.btn-primary:hover {
-  background-color: #0daa75;
-  border-color: #0daa75;
-}
-
-.btn-outline-secondary {
-  border-radius: 30px;
-  padding: 10px 20px;
-  font-weight: 600;
-}
-
-.form-label {
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.form-check-input {
-  border-radius: 50%;
-  margin-right: 8px;
-}
-
-.form-check-input:checked {
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-
-/*#propertyMap {
-  height: 300px;
-  border-radius: 10px;
-  margin-top: 15px;
-  z-index: 1;
-}
-
- */
-
-#mapa {
-  width: 100%;
-  height: 300px;
-}
-
-.location-search {
-  position: relative;
-}
-
-.suggestions-box {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 0 0 10px 10px;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-  display: none;
-}
-
-.suggestion-item {
-  padding: 10px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-}
-
-.suggestion-item:hover {
-  background-color: var(--primary-light);
-}
-
+/* ===================================================
+   === PASOS (STEPS INDICATOR) ===
+   =================================================== */
 .form-steps {
   display: flex;
   justify-content: space-between;
@@ -191,80 +114,16 @@ body {
   font-weight: 600;
 }
 
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.image-upload {
-  border: 2px dashed #ddd;
+/* ===================================================
+   === INPUTS Y CARGA DE ARCHIVOS ===
+   =================================================== */
+.form-control, .form-select {
   border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.image-upload:hover {
-  border-color: var(--primary);
-  background-color: var(--primary-light);
-}
-
-.upload-icon {
-  font-size: 2rem;
-  color: var(--primary);
-  margin-bottom: 10px;
-}
-
-.form-navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.map-container {
-  position: relative;
-}
-
-.map-overlay {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-.back-button {
-  margin-bottom: 20px;
-}
-
-#imagePreview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-#imagePreview .card {
-  width: 100%;
-  max-width: 180px;
+  padding: 12px 15px;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-#imagePreview img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  display: block;
-}
-
-.pdf-upload {
+.image-upload, .pdf-upload {
   border: 2px dashed #ddd;
   border-radius: 10px;
   padding: 20px;
@@ -272,9 +131,10 @@ textarea {
   cursor: pointer;
   transition: all 0.3s;
   background-color: #fefefe;
+  margin-bottom: 15px;
 }
 
-.pdf-upload:hover {
+.image-upload:hover, .pdf-upload:hover {
   border-color: var(--primary);
   background-color: var(--primary-light);
 }
@@ -285,17 +145,20 @@ textarea {
   margin-bottom: 10px;
 }
 
-.disabled-upload {
-  opacity: 0.5;
-  cursor: not-allowed;
+#mapa {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
+/* ===================================================
+   === OVERLAYS Y MODALES DE CARGA ===
+   =================================================== */
 .loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
@@ -309,4 +172,54 @@ textarea {
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* ===================================================
+   === MODO OSCURO (UNIFICADO) ===
+   =================================================== */
+body.dark-mode { background-color: #1a1a2e; }
+
+body.dark-mode .property-form-container,
+body.dark-mode .loading-modal {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+}
+
+body.dark-mode .form-section { border-bottom: 1px solid #0f3460 !important; }
+
+body.dark-mode .form-header h1,
+body.dark-mode .section-title { color: #10bb82 !important; }
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .step {
+  background-color: #1a1a2e !important;
+  border-color: #0f3460 !important;
+}
+
+body.dark-mode .step.active {
+  background-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+body.dark-mode .image-upload,
+body.dark-mode .pdf-upload {
+  background-color: #1a1a2e !important;
+  border: 2px dashed #0f3460 !important;
+}
+
+body.dark-mode #mapa {
+  filter: grayscale(0.8) invert(0.9) hue-rotate(180deg) brightness(0.9);
+}
+
+body.dark-mode .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+  border: none !important;
 }
