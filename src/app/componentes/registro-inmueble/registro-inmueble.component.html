@@ -1,13 +1,13 @@
 <div class="property-form-container">
   <div class="back-button">
     <button type="button" class="btn btn-outline-secondary" routerLink="/inicio">
-      <i class="bi bi-arrow-left"></i> Volver al Inicio
+      <i class="bi bi-arrow-left"></i> {{ t.registroInmueble.volverInicio }}
     </button>
   </div>
 
   <div class="form-header">
-    <h1>Cuéntanos sobre tu inmueble</h1>
-    <p>Completa la información para publicar tu propiedad</p>
+    <h1>{{ t.registroInmueble.titulo }}</h1>
+    <p>{{ t.registroInmueble.subtitulo }}</p>
   </div>
 
   <div class="form-steps">
@@ -21,37 +21,37 @@
 
     <!-- Información básica -->
     <div class="form-section">
-      <h3 class="section-title">Información básica</h3>
+      <h3 class="section-title">{{ t.registroInmueble.infoBasica }}</h3>
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label class="form-label">Tipo de negocio</label>
+          <label class="form-label">{{ t.registroInmueble.tipoNegocio }}</label>
           <select class="form-select" formControlName="tipoNegocio" required>
-            <option value="" disabled>Seleccionar</option>
-            <option value="VENTA">Venta</option>
-            <option value="ALQUILER">Alquiler</option>
-            <option value="PERMUTACION">Permuta</option>
+            <option value="" disabled>{{ t.registroInmueble.seleccionar }}</option>
+            <option value="VENTA">{{ t.registroInmueble.venta }}</option>
+            <option value="ALQUILER">{{ t.registroInmueble.alquiler }}</option>
+            <option value="PERMUTACION">{{ t.registroInmueble.permuta }}</option>
           </select>
           <div *ngIf="registroInmuebleForm.get('tipoNegocio')?.touched && registroInmuebleForm.get('tipoNegocio')?.invalid">
             <small class="text-danger">
-              Debe seleccionar un tipo de negocio.
+              {{ t.registroInmueble.errorTipoNegocio }}
             </small>
           </div>
         </div>
 
         <div class="col-md-6 mb-3">
-          <label class="form-label">Tipo de inmueble</label>
+          <label class="form-label">{{ t.registroInmueble.tipoInmueble }}</label>
           <select class="form-select" formControlName="tipo" required>
-            <option value="">Seleccionar</option>
-            <option value="CASA">Casa</option>
-            <option value="APARTAMENTO">Apartamento</option>
-            <option value="LOCAL">Local Comercial</option>
-            <option value="LOTE">Lote</option>
-            <option value="FINCA">Finca</option>
-            <option value="OFICINA">Oficina</option>
+            <option value="">{{ t.registroInmueble.seleccionar }}</option>
+            <option value="CASA">{{ t.registroInmueble.casa }}</option>
+            <option value="APARTAMENTO">{{ t.registroInmueble.apartamento }}</option>
+            <option value="LOCAL">{{ t.registroInmueble.local }}</option>
+            <option value="LOTE">{{ t.registroInmueble.lote }}</option>
+            <option value="FINCA">{{ t.registroInmueble.finca }}</option>
+            <option value="OFICINA">{{ t.registroInmueble.oficina }}</option>
           </select>
           <div *ngIf="registroInmuebleForm.get('tipo')?.touched && registroInmuebleForm.get('tipo')?.invalid">
             <small class="text-danger">
-              Debe seleccionar un tipo de inmueble.
+              {{ t.registroInmueble.errorTipoInmueble }}
             </small>
           </div>
         </div>
@@ -60,16 +60,16 @@
 
     <!-- Valor y estado -->
     <div class="form-section">
-      <h3 class="section-title">Valor y estado</h3>
+      <h3 class="section-title">{{ t.registroInmueble.valorEstado }}</h3>
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label class="form-label">Precio</label>
+          <label class="form-label">{{ t.registroInmueble.precio }}</label>
           <div class="input-group">
             <span class="input-group-text">$</span>
             <input type="number" class="form-control" formControlName="precio" placeholder="Ej: 250000000" min="0" step="1">
             <div *ngIf="registroInmuebleForm.get('precio')?.touched && registroInmuebleForm.get('precio')?.invalid">
               <small class="text-danger" *ngIf="registroInmuebleForm.get('precio')?.errors?.['required']">
-                El precio es obligatorio.
+                {{ t.registroInmueble.errorPrecio }}
               </small>
             </div>
           </div>

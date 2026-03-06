@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -8,6 +8,9 @@ import {AuthService} from '../../servicios/auth.service';
 import {NgClass, NgIf} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {RedireccionService} from '../../servicios/redireccion.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,17 +18,36 @@ import {RedireccionService} from '../../servicios/redireccion.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   loading: boolean = false;
   verContra = false;
+  t: typeof ES;
+  private sub!: Subscription;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, protected redireccionamiento: RedireccionService,private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    protected redireccionamiento: RedireccionService,
+    private router: Router,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   onSubmit() {

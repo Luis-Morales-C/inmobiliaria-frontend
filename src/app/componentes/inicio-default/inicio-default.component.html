@@ -8,19 +8,19 @@
     <div class="collapse navbar-collapse" id="navbarNavInvitado">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">HAGAMOS NEGOCIOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">{{ t.nav.hagamosNegocios }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">CONÓCENOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">{{ t.nav.conocenos }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">CONTÁCTENOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">{{ t.nav.contactenos }}</a>
         </li>
       </ul>
 
       <div class="d-flex">
-        <button class="btn btn-iniciar-sesion"  (click)="redireccionamiento.redirigirALogin()">INICIAR SESIÓN</button>
-        <button class="btn btn-registrarse" (click)="redireccionamiento.redirigirARegistro()">REGISTRARSE</button>
+        <button class="btn btn-iniciar-sesion"  (click)="redireccionamiento.redirigirALogin()">{{ t.nav.iniciarSesion }}</button>
+        <button class="btn btn-registrarse" (click)="redireccionamiento.redirigirARegistro()">{{ t.nav.registrarse }}</button>
       </div>
 
     </div>
@@ -33,9 +33,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <h1 class="display-4 fw-bold mb-4">Bienvenido a EDÉN</h1>
-          <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
-          <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Explorar Propiedades</a>
+          <h1 class="display-4 fw-bold mb-4">{{ t.inicio.bienvenido }}</h1>
+          <p class="lead mb-4">{{ t.inicio.subtitulo }}</p>
+          <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">{{ t.inicio.explorarPropiedades }}</a>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
 
 <!-- Propiedades destacadas igual a INVITADO -->
 <section class="container mb-5">
-  <h2 class="section-title">Propiedades Destacadas</h2>
+  <h2 class="section-title">{{ t.inicio.propiedadesDestacadas }}</h2>
   <div class="row">
     <div class="col-md-4" *ngFor="let propiedad of propiedadesDestacadas">
       <div class="property-card card">
@@ -62,11 +62,11 @@
           </div>
           <hr>
           <div class="d-flex justify-content-between">
-            <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} Habitaciones</span>
-            <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
+            <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} {{ t.inicio.habitaciones }}</span>
+            <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} {{ t.inicio.banos }}</span>
           </div>
           <div class="d-grid gap-2 mt-3">
-              <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">Ver Detalles</button>
+              <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">{{ t.inicio.verDetalles }}</button>
           </div>
         </div>
       </div>
@@ -78,9 +78,9 @@
 <!-- Call to Action igual a INVITADO -->
 <section class="bg-light-primary py-5 mb-5">
   <div class="container text-center">
-    <h2 class="mb-4">¿Necesitas ayuda para encontrar tu propiedad ideal?</h2>
-    <p class="lead mb-4">Nuestros asesores están listos para ayudarte a encontrar la propiedad perfecta para ti.</p>
-    <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Contactar un Asesor</a>
+    <h2 class="mb-4">{{ t.inicio.necesitasAyuda }}</h2>
+    <p class="lead mb-4">{{ t.inicio.asesoresListos }}</p>
+    <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">{{ t.inicio.contactarAsesor }}</a>
   </div>
 </section>
 
@@ -88,7 +88,7 @@
 <div class="modal-overlay" *ngIf="mostrarModalDetalle">
   <div class="modal-container modal-lg">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5>Detalles del inmueble</h5>
+      <h5>{{ t.inicio.detallesInmueble }}</h5>
       <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
     </div>
 
@@ -158,36 +158,36 @@
 
           <!-- Datos Generales -->
           <div class="mb-3 pb-2 border-bottom">
-            <h6 class="fw-bold text-primary mb-3">Datos Generales</h6>
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.datosGenerales }}</h6>
 
             <div class="row">
               <div class="col-6">
-                <small class="text-muted">ID</small>
+                <small class="text-muted">{{ t.inicio.id }}</small>
                 <p class="mb-2">{{ detalleInmueble.id }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Estado Transacción</small>
+                <small class="text-muted">{{ t.inicio.estadoTransaccion }}</small>
                 <p class="mb-2">{{ detalleInmueble.estadoTransa }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Propietario</small>
+                <small class="text-muted">{{ t.inicio.propietario }}</small>
                 <p class="mb-2">{{ detalleInmueble.propietario }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Agente Asociado</small>
+                <small class="text-muted">{{ t.inicio.agenteAsociado }}</small>
                 <p class="mb-2">{{ detalleInmueble.agenteAsociado }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Asesor Legal</small>
+                <small class="text-muted">{{ t.inicio.asesorLegal }}</small>
                 <p class="mb-2">{{ detalleInmueble.asesorLegal }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Estado del Inmueble</small>
+                <small class="text-muted">{{ t.inicio.estadoInmueble }}</small>
                 <p class="mb-2">{{ detalleInmueble.estado }}</p>
               </div>
             </div>
@@ -196,36 +196,36 @@
 
           <!-- Características -->
           <div class="mb-3 pb-2 border-bottom">
-            <h6 class="fw-bold text-primary mb-3">Características</h6>
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.caracteristicas }}</h6>
 
             <div class="row">
               <div class="col-6">
-                <small class="text-muted">Tipo Negocio</small>
+                <small class="text-muted">{{ t.inicio.tipoNegocioLabel }}</small>
                 <p class="mb-2">{{ detalleInmueble.tipoNegocio }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Tipo Inmueble</small>
+                <small class="text-muted">{{ t.inicio.tipoInmuebleLabel }}</small>
                 <p class="mb-2">{{ detalleInmueble.tipo }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Medidas</small>
+                <small class="text-muted">{{ t.inicio.medidas }}</small>
                 <p class="mb-2">{{ detalleInmueble.medidas }} m²</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Habitaciones</small>
+                <small class="text-muted">{{ t.inicio.habitaciones }}</small>
                 <p class="mb-2">{{ detalleInmueble.habitaciones }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Baños</small>
+                <small class="text-muted">{{ t.inicio.banos }}</small>
                 <p class="mb-2">{{ detalleInmueble.banos }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Parqueaderos</small>
+                <small class="text-muted">{{ t.inicio.parqueaderos }}</small>
                 <p class="mb-2">{{ detalleInmueble.cantidadParqueaderos }}</p>
               </div>
             </div>
@@ -234,21 +234,21 @@
 
           <!-- Ubicación y Contacto -->
           <div class="mb-3 pb-2 border-bottom">
-            <h6 class="fw-bold text-primary mb-3">Ubicación y Contacto</h6>
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.ubicacionContacto }}</h6>
 
             <div class="row">
               <div class="col-6">
-                <small class="text-muted">Latitud</small>
+                <small class="text-muted">{{ t.inicio.latitud }}</small>
                 <p class="mb-2">{{ detalleInmueble.latitud }}</p>
               </div>
 
               <div class="col-6">
-                <small class="text-muted">Longitud</small>
+                <small class="text-muted">{{ t.inicio.longitud }}</small>
                 <p class="mb-2">{{ detalleInmueble.longitud }}</p>
               </div>
 
               <div class="col-12">
-                <small class="text-muted">Contacto</small>
+                <small class="text-muted">{{ t.inicio.contacto }}</small>
                 <p class="mb-2">
                   {{ detalleInmueble.nombreContacto }} <br>
                   {{ detalleInmueble.telefonoContacto }} <br>
@@ -261,7 +261,7 @@
 
           <!-- Precio -->
           <div>
-            <h6 class="fw-bold text-success mb-2">Precio</h6>
+            <h6 class="fw-bold text-success mb-2">{{ t.inicio.precio }}</h6>
             <h4 class="fw-bold">
               {{ detalleInmueble.precio | currency:'COP':'symbol':'1.0-0' }}
             </h4>
@@ -272,7 +272,7 @@
     </div>
 
     <div class="text-end mt-3">
-      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
+      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">{{ t.inicio.cerrar }}</button>
     </div>
   </div>
 </div>

@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RedireccionService } from '../../servicios/redireccion.service';
 import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
 import { InmuebleResponse } from '../../dto/inmueble-response';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio-default',
@@ -11,15 +14,24 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
   templateUrl: './inicio-default.component.html',
   styleUrls: ['./inicio-default.component.css']
 })
-export class InicioDefaultComponent implements OnInit {
+export class InicioDefaultComponent implements OnInit, OnDestroy {
   propiedadesDestacadas: InmuebleResponse[] = [];
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     protected redireccionamiento: RedireccionService,
-    protected inmuebleService: InmuebleServiceService
-  ) {}
+    protected inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
+  }
 
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     this.inmuebleService.obtenerListaDeInmuebles().subscribe({
       next: (inmuebles) => {
         this.propiedadesDestacadas = inmuebles;
@@ -29,6 +41,10 @@ export class InicioDefaultComponent implements OnInit {
         console.error('Error al obtener inmuebles', err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   mostrarModalDetalle = false;

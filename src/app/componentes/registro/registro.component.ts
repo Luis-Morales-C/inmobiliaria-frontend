@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {NgClass, NgIf} from '@angular/common';
 import { UserRegistrationRequest } from '../../dto/user-registration-request';
@@ -6,6 +6,9 @@ import { UsersService } from '../../servicios/users.service';
 import { ErrorResponse } from '../../dto/error-response';
 import { Router, RouterLink } from '@angular/router';
 import {RedireccionService} from '../../servicios/redireccion.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
@@ -13,20 +16,34 @@ import {RedireccionService} from '../../servicios/redireccion.service';
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit, OnDestroy {
   registroForm!: FormGroup;
   result = '';
   classResult = 'success';
   verContra = false;
   verConfirmContra = false;
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private router: Router,
-    protected redireccionamiento: RedireccionService
+    protected redireccionamiento: RedireccionService,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     this.crearFormulario();
+  }
+
+  ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   private crearFormulario() {

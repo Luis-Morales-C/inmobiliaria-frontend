@@ -12,76 +12,76 @@
 <div class="register-container">
   <div class="back-button">
     <button type="button"  routerLink="/login" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Volver al Login
+      <i class="bi bi-arrow-left"></i> {{ t.registro.volverLogin }}
     </button>
   </div>
 
   <div class="register-header">
     <h2>EDÉN</h2>
-    <p>Crear cuenta de cliente</p>
+    <p>{{ t.registro.titulo }}</p>
   </div>
 
   <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
-          <label for="firstName" class="form-label">NOMBRE</label>
-          <input type="text" class="form-control" formControlName="nombre" id="firstName" placeholder="Ingresa tu nombre" required >
+          <label for="firstName" class="form-label">{{ t.registro.nombre }}</label>
+          <input type="text" class="form-control" formControlName="nombre" id="firstName" [placeholder]="t.registro.placeholderNombre" required >
           <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="text-danger">
-            <div *ngIf="registroForm.get('nombre')?.errors?.['required']">Debe escribir su nombre.</div>
-            <div *ngIf="registroForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder 50 caracteres.</div>
+            <div *ngIf="registroForm.get('nombre')?.errors?.['required']">{{ t.registro.errorNombreReq }}</div>
+            <div *ngIf="registroForm.get('nombre')?.errors?.['maxlength']">{{ t.registro.errorNombreMax }}</div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="mb-3">
-          <label for="lastName" class="form-label">APELLIDO</label>
-          <input type="text" class="form-control"  formControlName="apellido" id="lastName" placeholder="Ingresa tu apellido" required>
+          <label for="lastName" class="form-label">{{ t.registro.apellido }}</label>
+          <input type="text" class="form-control"  formControlName="apellido" id="lastName" [placeholder]="t.registro.placeholderApellido" required>
           <div *ngIf="registroForm.get('apellido')?.invalid && registroForm.get('apellido')?.touched" class="text-danger">
-            <div *ngIf="registroForm.get('apellido')?.errors?.['required']">Debe escribir su apellido.</div>
-            <div *ngIf="registroForm.get('apellido')?.errors?.['maxlength']">El apellido no puede exceder 50 caracteres.</div>
+            <div *ngIf="registroForm.get('apellido')?.errors?.['required']">{{ t.registro.errorApellidoReq }}</div>
+            <div *ngIf="registroForm.get('apellido')?.errors?.['maxlength']">{{ t.registro.errorApellidoMax }}</div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="documentId" class="form-label">DOCUMENTO DE IDENTIDAD</label>
-      <input type="text" class="form-control" id="documentId" formControlName="documentoIdentidad" placeholder="Número de documento" required>
+      <label for="documentId" class="form-label">{{ t.registro.documentoIdentidad }}</label>
+      <input type="text" class="form-control" id="documentId" formControlName="documentoIdentidad" [placeholder]="t.registro.placeholderDocumento" required>
       <div *ngIf="registroForm.get('documentoIdentidad')?.invalid && registroForm.get('documentoIdentidad')?.touched" class="text-danger">
-        <div *ngIf="registroForm.get('documentoIdentidad')?.errors?.['required']">Debe escribir su documento de identidad.</div>
-        <div *ngIf="registroForm.get('documentoIdentidad')?.errors?.['maxlength']">El documento de identidad no puede exceder 20 caracteres.</div>
+        <div *ngIf="registroForm.get('documentoIdentidad')?.errors?.['required']">{{ t.registro.errorDocumentoReq }}</div>
+        <div *ngIf="registroForm.get('documentoIdentidad')?.errors?.['maxlength']">{{ t.registro.errorDocumentoMax }}</div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="phone" class="form-label">TELÉFONO</label>
-      <input type="tel" class="form-control" formControlName="telefono" id="phone" placeholder="Número de teléfono" required>
+      <label for="phone" class="form-label">{{ t.registro.telefono }}</label>
+      <input type="tel" class="form-control" formControlName="telefono" id="phone" [placeholder]="t.registro.placeholderTelefono" required>
       <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="text-danger">
-        <div *ngIf="registroForm.get('telefono')?.errors?.['required']">Debe escribir su telefono.</div>
-        <div *ngIf="registroForm.get('telefono')?.errors?.['maxlength']">El teléfono no puede exceder 20 caracteres.</div>
+        <div *ngIf="registroForm.get('telefono')?.errors?.['required']">{{ t.registro.errorTelefonoReq }}</div>
+        <div *ngIf="registroForm.get('telefono')?.errors?.['maxlength']">{{ t.registro.errorTelefonoMax }}</div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="email" class="form-label">CORREO ELECTRÓNICO</label>
-      <input type="email" class="form-control"  formControlName="email" id="email" placeholder="ejemplo@correo.com" required>
+      <label for="email" class="form-label">{{ t.registro.correoElectronico }}</label>
+      <input type="email" class="form-control"  formControlName="email" id="email" [placeholder]="t.registro.placeholderEmail" required>
       <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="text-danger">
-        <div *ngIf="registroForm.get('email')?.errors?.['required']">Debe escribir su correo electronico.</div>
-        <div *ngIf="registroForm.get('email')?.errors?.['email']">Debe ingresar un correo válido.</div>
-        <div *ngIf="registroForm.get('email')?.errors?.['maxlength']">El correo no puede exceder 150 caracteres.</div>
+        <div *ngIf="registroForm.get('email')?.errors?.['required']">{{ t.registro.errorEmailReq }}</div>
+        <div *ngIf="registroForm.get('email')?.errors?.['email']">{{ t.registro.errorEmailInvalido }}</div>
+        <div *ngIf="registroForm.get('email')?.errors?.['maxlength']">{{ t.registro.errorEmailMax }}</div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="password" class="form-label">CONTRASEÑA</label>
+      <label for="password" class="form-label">{{ t.registro.contrasena }}</label>
       <div class="password-toggle">
-        <input [type]="verContra ? 'text' : 'password'" class="form-control" id="password" formControlName="contrasena" placeholder="Crea una contraseña segura" required>
+        <input [type]="verContra ? 'text' : 'password'" class="form-control" id="password" formControlName="contrasena" [placeholder]="t.registro.placeholderContrasena" required>
         <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="text-danger">
-          <div *ngIf="registroForm.get('contrasena')?.errors?.['required']">Debe escribir su contraseña.</div>
-          <div *ngIf="registroForm.get('contrasena')?.errors?.['minlength']">La contraseña debe tener mínimo 8 caracteres.</div>
+          <div *ngIf="registroForm.get('contrasena')?.errors?.['required']">{{ t.registro.errorContrasenaReq }}</div>
+          <div *ngIf="registroForm.get('contrasena')?.errors?.['minlength']">{{ t.registro.errorContrasenaMin }}</div>
           <div *ngIf="registroForm.get('contrasena')?.errors?.['pattern']">
-            Debe incluir mayúscula, minúscula, número y símbolo.
+            {{ t.registro.errorContrasenaPattern }}
           </div>
         </div>
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
@@ -91,19 +91,19 @@
     </div>
 
     <div class="mb-3">
-      <label for="confirmPassword" class="form-label">CONFIRMAR CONTRASEÑA</label>
+      <label for="confirmPassword" class="form-label">{{ t.registro.confirmarContrasena }}</label>
       <div class="password-toggle">
-        <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" id="confirmPassword" formControlName="confirmcontrasena" placeholder="Repite tu contraseña" required>
+        <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" id="confirmPassword" formControlName="confirmcontrasena" [placeholder]="t.registro.placeholderConfirmar" required>
         <div *ngIf="registroForm.get('confirmcontrasena')?.invalid && registroForm.get('confirmcontrasena')?.touched" class="text-danger">
-          <div *ngIf="registroForm.get('confirmcontrasena')?.errors?.['required']">Debe confirmar su contraseña.</div>
-          <div *ngIf="registroForm.get('confirmcontrasena')?.errors?.['minlength']">La contraseña debe tener mínimo 8 caracteres.</div>
+          <div *ngIf="registroForm.get('confirmcontrasena')?.errors?.['required']">{{ t.registro.errorConfirmarReq }}</div>
+          <div *ngIf="registroForm.get('confirmcontrasena')?.errors?.['minlength']">{{ t.registro.errorContrasenaMin }}</div>
         </div>
         <span class="password-toggle-icon" (click)="mostrarConfirmContrasenia()">
                         <i class="bi" [ngClass]="verConfirmContra ? 'bi-eye-slash' : 'bi-eye'"></i>
                     </span>
       </div>
       <div *ngIf="registroForm.errors?.['passwordsMismatch'] && registroForm.get('confirmcontrasena')?.touched" class="text-danger">
-        Las contraseñas no coinciden.
+        {{ t.registro.errorContrasenaNoCoincide }}
       </div>
     </div>
 
@@ -116,21 +116,21 @@
         formControlName="aceptaPolitica"
       >
       <label class="form-check-label" for="politicaCheck">
-        ¿Está de acuerdo con nuestra
+        {{ t.registro.aceptaPolitica }}
         <a
           (click)="redirigirPoliticaDatosConLocalStorage()"
           class="politica-link"
         >
-          Política de Tratamiento de Datos
+          {{ t.registro.politicaDatos }}
         </a>?
       </label>
     </div>
 
-    <button type="submit" [disabled]="registroForm.invalid" class="btn btn-primary">CREAR CUENTA</button>
+    <button type="submit" [disabled]="registroForm.invalid" class="btn btn-primary">{{ t.registro.crearCuenta }}</button>
   </form>
 
   <div class="register-footer">
-    <p>¿Ya tienes una cuenta? <a (click)="redireccionamiento.redirigirALogin()">Inicia sesión aquí</a></p>
+    <p>{{ t.registro.yaTieneCuenta }} <a (click)="redireccionamiento.redirigirALogin()">{{ t.registro.iniciaSesion }}</a></p>
   </div>
 
   <div [class]="classResult" *ngIf="result">
@@ -138,7 +138,7 @@
   </div>
 
   <div *ngIf="classResult === 'success' && result.includes('registrado correctamente')" class="alert alert-info mt-3">
-    <i class="bi bi-info-circle"></i> Se ha enviado un código de activación a tu correo electrónico. Serás redirigido automáticamente para activar tu cuenta.
+    <i class="bi bi-info-circle"></i> {{ t.registro.codigoActivacion }}
   </div>
 </div>
 

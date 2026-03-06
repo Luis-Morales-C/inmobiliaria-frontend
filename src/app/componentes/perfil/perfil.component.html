@@ -1,5 +1,5 @@
 <button class="btn-volver" (click)="volver()">
-  <i class="fa-solid fa-arrow-left"></i> Volver a la pestaña de inicio
+  <i class="fa-solid fa-arrow-left"></i> {{ t.perfil.volverInicio }}
 </button>
 
 <main class="container" [formGroup]="perfilForm">
@@ -15,42 +15,42 @@
         <h1 *ngIf="!editando">{{ nombre }} {{ apellido }}</h1>
 
         <div *ngIf="editando" class="nombre-apellido-editar">
-          <input type="text" class="campo-editar" placeholder="Nombre" formControlName="nombreTemporal">
-          <input type="text" class="campo-editar" placeholder="Apellido" formControlName="apellidoTemporal">
+          <input type="text" class="campo-editar" [placeholder]="t.perfil.placeholderNombre" formControlName="nombreTemporal">
+          <input type="text" class="campo-editar" [placeholder]="t.perfil.placeholderApellido" formControlName="apellidoTemporal">
         </div>
       </div>
     </div>
 
     <div class="perfil-detalles">
-      <h2>Información personal</h2>
+      <h2>{{ t.perfil.infoPersonal }}</h2>
 
       <div class="info-grid">
         <div>
-          <strong>Correo:</strong>
+          <strong>{{ t.perfil.correo }}</strong>
           <p>{{ email }}</p>
         </div>
 
         <div>
-          <strong>Teléfono:</strong>
+          <strong>{{ t.perfil.telefono }}</strong>
           <p *ngIf="!editando">{{ telefono }}</p>
-          <input *ngIf="editando" type="text" class="campo-editar" placeholder="Teléfono" formControlName="telefonoTemporal">
+          <input *ngIf="editando" type="text" class="campo-editar" [placeholder]="t.perfil.placeholderTelefono" formControlName="telefonoTemporal">
         </div>
 
         <div>
-          <strong>Documento de identidad:</strong>
+          <strong>{{ t.perfil.documentoIdentidad }}</strong>
           <p *ngIf="!editando">{{ documentoIdentidad }}</p>
-          <input *ngIf="editando" type="text" class="campo-editar" placeholder="Documento de identidad" formControlName="documentoIdentidadTemporal">
+          <input *ngIf="editando" type="text" class="campo-editar" [placeholder]="t.perfil.placeholderDocumento" formControlName="documentoIdentidadTemporal">
         </div>
 
         <div>
-          <strong>Tipo de cuenta:</strong>
+          <strong>{{ t.perfil.tipoCuenta }}</strong>
           <p>{{ rol }}</p>
         </div>
       </div>
 
       <div class="overlay" *ngIf="mostrarConfirmacion">
         <div class="ventana-confirmacion">
-          <p>¿Seguro que quieres desvincularte de la empresa?</p>
+          <p>{{ t.perfil.confirmarDesvinculacion }}</p>
           <div class="botones-confirmacion">
             <button class="btn-verde" (click)="confirmarDesvinculacion()">
               <i class="fa-solid fa-check"></i>
@@ -63,7 +63,7 @@
       </div>
 
       <div style="margin-top: 20px;">
-        <button *ngIf="!editando" class="btn-verde" (click)="activarEdicion()">Editar información</button>
+        <button *ngIf="!editando" class="btn-verde" (click)="activarEdicion()">{{ t.perfil.editarInfo }}</button>
 
         <div *ngIf="editando" class="botones-edicion">
           <button class="btn-verde" (click)="guardarCambios()">
@@ -74,7 +74,7 @@
           </button>
         </div>
 
-        <button class="btn-rojo" *ngIf="!editando" (click)="desvincularEmpresa()">Desvincularme de la empresa</button>
+        <button class="btn-rojo" *ngIf="!editando" (click)="desvincularEmpresa()">{{ t.perfil.desvincularEmpresa }}</button>
       </div>
     </div>
 

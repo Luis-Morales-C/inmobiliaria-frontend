@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import { AuthService } from '../../servicios/auth.service';
 import {CommonModule, NgClass} from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -6,6 +6,9 @@ import {UsersService} from '../../servicios/users.service';
 import {Router} from '@angular/router';
 import {RedireccionService} from '../../servicios/redireccion.service';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-perfil',
@@ -19,7 +22,9 @@ import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent implements OnInit, OnDestroy {
+  t: typeof ES;
+  private sub!: Subscription;
   perfilForm!: FormGroup;
   email = 'correoUsuario';
   nombre = 'Nombre Usuario';
@@ -41,7 +46,15 @@ export class PerfilComponent implements OnInit {
   loading: boolean = false;
 
 
-  constructor(private authService: AuthService,private userService:UsersService, private fb: FormBuilder,private redireccionamiento: RedireccionService, protected inmuebleService: InmuebleServiceService) {
+  constructor(
+    private authService: AuthService,
+    private userService:UsersService,
+    private fb: FormBuilder,
+    private redireccionamiento: RedireccionService,
+    protected inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.email = this.authService.getUserEmail() || 'correoUsuario';
     this.nombre = this.authService.obtenerNombreUsuario() || 'Nombre Usuario';
     this.apellido = this.authService.obtenerApellidoUsuario() || 'Apellido Usuario';
@@ -68,6 +81,10 @@ export class PerfilComponent implements OnInit {
   propiedades: any[] = [];
 
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     const correoUsuario = localStorage.getItem('userEmail') || '';
 
     this.inmuebleService.obtenerListaInmueblesUsuario(correoUsuario).subscribe({
@@ -79,6 +96,10 @@ export class PerfilComponent implements OnInit {
         console.error('Error al obtener propiedades del usuario:', err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
 

@@ -8,6 +8,9 @@ import {RedireccionService} from '../../servicios/redireccion.service';
 import {CommonModule} from '@angular/common';
 import {CaptacionInmuebleDTO} from '../../dto/captacion-inmueble-dto';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro-inmueble',
@@ -24,6 +27,8 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   registroInmuebleForm!: FormGroup;
   imagenes: File[] = [];
   imagenesPreview: string[] = [];
+  t: typeof ES;
+  private idiomasSub!: Subscription;
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -106,11 +111,20 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
   }
 
 
-  constructor(private formBuilder: FormBuilder, private mapaService: MapaService,protected redireccionamiento: RedireccionService,private inmuebleService: InmuebleServiceService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private mapaService: MapaService,
+    protected redireccionamiento: RedireccionService,
+    private inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.crearFormularioTexto();
   }
 
+
   ngOnDestroy(): void {
+    this.idiomasSub?.unsubscribe();
     this.imagenes = [];
     this.imagenesPreview = [];
     this.pdfArchivos = [];
@@ -124,6 +138,11 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
 
 
   ngOnInit(): void {
+    // 1. Inicializar suscripción de idioma
+    this.idiomasSub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     this.mapaService.crearMapa();
 
     this.mapaService['mapa'].on('click', (event: any) => {

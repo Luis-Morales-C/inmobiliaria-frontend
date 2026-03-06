@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, OnDestroy, Output} from '@angular/core';
 import {CommonModule, CurrencyPipe} from '@angular/common';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
 import {InmuebleResponse} from '../../dto/inmueble-response';
@@ -8,6 +8,9 @@ import {AuthService} from '../../servicios/auth.service';
 import {UsersService} from '../../servicios/users.service';
 import {UsuarioResponseDto} from '../../dto/usuario-response.dto';
 import {RedireccionService} from '../../servicios/redireccion.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inmuebles-proceso',
@@ -21,19 +24,35 @@ import {RedireccionService} from '../../servicios/redireccion.service';
     // UserMenuComponent removed because it's not used in template
   ]
 })
-export class VentanaAgenteComponent implements OnInit {
+export class VentanaAgenteComponent implements OnInit, OnDestroy {
   @Output() logout = new EventEmitter<void>();
   userName: string = '';
   propiedadesDestacadas: InmuebleResponse[] = [];
   propiedadSeleccionada: InmuebleResponse | null = null;
   correoUsuario = localStorage.getItem('userEmail') || '';
   isLogged = false;
+  t: typeof ES;
+  private sub!: Subscription;
 
-  constructor(protected inmuebleService: InmuebleServiceService,protected authservice: AuthService,protected userService:UsersService, protected redireccionamiento: RedireccionService) {
+  constructor(
+    protected inmuebleService: InmuebleServiceService,
+    protected authservice: AuthService,
+    protected userService:UsersService,
+    protected redireccionamiento: RedireccionService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.isLogged=this.authservice.isAuthenticated();
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
 
     if(this.isLogged)
     {
