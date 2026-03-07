@@ -82,6 +82,8 @@ export const EN = {
     volverInicio: 'Back to Home',
     errorEmail: 'You must enter your email address.',
     errorContrasena: 'You must enter your password.',
+    cargando: 'loading',
+    errorCaptcha: 'captcha error'
   },
 
   // === REGISTRO ===
@@ -124,6 +126,8 @@ export const EN = {
     errorConfirmarReq: 'You must confirm your password.',
     errorContrasenaNoCoincide: 'Passwords do not match.',
     codigoActivacion: 'An activation code has been sent to your email. You will be automatically redirected to activate your account.',
+    exito: 'Successful',
+    error: 'Error'
   },
 
   // === FOOTER ===
@@ -214,6 +218,7 @@ export const EN = {
     placeholderApellido: 'Last name',
     placeholderTelefono: 'Phone',
     placeholderDocumento: 'Identity document',
+    actualizacionExitosa: 'Profile updated successfully'
   },
 
   // === ACTIVAR CUENTA ===
@@ -247,6 +252,7 @@ export const EN = {
     volver: 'Back',
     errorCorreo: 'Email is required',
     alertaCorreo: 'Please enter your email address.',
+    errorCaptcha: 'Captcha error'
   },
 
   // === CAMBIAR CONTRASEÑA ===
@@ -299,6 +305,8 @@ export const EN = {
     errorTipoNegocio: 'You must select a business type.',
     errorTipoInmueble: 'You must select a property type.',
     errorPrecio: 'Price is required.',
+    exito: 'Successful',
+    error: 'Error'
   },
 
   // === VENTANA AGENTE ===

@@ -203,4 +203,37 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
     document.body.appendChild(alertDiv); // Faltaba esta línea para mostrar la alerta
     setTimeout(() => alertDiv.remove(), 3000);
   }
+  // --- MÉTODOS DE ARRASTRAR Y SOLTAR (DRAG & DROP) ---
+
+  // Previene el comportamiento por defecto para permitir soltar las imágenes
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  // Maneja el evento cuando se sueltan las imágenes
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.procesarArchivos(files);
+    }
+  }
+
+  // Previene el comportamiento por defecto para permitir soltar los PDFs
+  onDragOverPDF(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  // Maneja el evento cuando se sueltan los PDFs
+  onDropPDF(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.procesarPDFs(files);
+    }
+  }
 }

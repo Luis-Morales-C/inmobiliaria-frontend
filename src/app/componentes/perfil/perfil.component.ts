@@ -210,9 +210,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
     if (url) window.open(url, '_blank');
   }
 
-  get detalleDocumentos(): string[] {
-    return this.detalleInmueble?.documentosImportantes || [];
-  }
+
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
@@ -228,5 +226,15 @@ export class PerfilComponent implements OnInit, OnDestroy {
     } else {
       this.redireccionamiento.redirigirAHomeIngresado();
     }
+  }
+  // Busca esto en tu código:
+  get detalleDocumentos(): string[] {
+    return this.detalleInmueble?.documentosImportantes || [];
+  }
+
+  // AÑADE ESTO JUSTO DEBAJO:
+  get detalleDocumentosIndices(): number[] {
+    const docs = this.detalleDocumentos;
+    return docs.length > 0 ? docs.map((_, i) => i) : [];
   }
 }
