@@ -4,56 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - EDÉN Inmobiliaria</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
 <div class="login-container">
   <div class="back-button">
     <button routerLink="/" type="button" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Volver al Inicio
+      <i class="bi bi-arrow-left"></i> {{ t.login.volverInicio }}
     </button>
   </div>
 
   <div class="login-header">
     <h2>EDÉN</h2>
-    <p>Accede a tu cuenta de inmobiliaria</p>
+    <p>{{ t.login.titulo }}</p>
   </div>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <label for="email" class="form-label">EMAIL</label>
-      <input type="text" class="form-control" formControlName="email" id="email" placeholder="Ingresa tu email">
-      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-        debe de ingresar su correo electronico.
+      <label for="email" class="form-label">{{ t.login.email }}</label>
+      <input type="text" class="form-control" formControlName="email" id="email" [placeholder]="t.login.placeholderEmail">
+
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
+        {{ t.login.errorEmail }}
       </div>
     </div>
 
     <div class="mb-3">
-        <label for="contrasena" class="form-label">CONTRASEÑA</label>
+      <label for="contrasena" class="form-label">{{ t.login.contrasena }}</label>
       <div class="password-toggle">
+        <input [type]="verContra ? 'text' : 'password'"
+               class="form-control"
+               id="password"
+               formControlName="contrasena"
+               [placeholder]="t.login.placeholderContrasena"
+               required>
 
-        <input [type]="verContra ? 'text' : 'password'" class="form-control" id="password" formControlName="contrasena" placeholder="Crea una contraseña segura" required>
-        <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched">debe de ingresar su contraseña.</div>
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
-                        <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
-                    </span>
-        </div>
+          <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
+        </span>
+      </div>
+
+      <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched" class="text-danger">
+        {{ t.login.errorContrasena }}
+      </div>
     </div>
 
     <div class="forgot-password">
-      <a routerLink="/recuperar">¿Olvidó su contraseña?</a>
+      <a routerLink="/recuperar">{{ t.login.olvidoContrasena }}</a>
     </div>
 
+    <div class="mb-3 d-flex justify-content-center">
+      @if (captchaActivo) {
+        <re-captcha
+          (resolved)="resolved($event)"
+          [theme]="temaActual">
+        </re-captcha>
+      }
+    </div>
 
-    <button type="submit"  class="btn btn-primary">LOGIN</button>
+    <button type="submit" [disabled]="loading" class="btn btn-primary w-100">
+      {{ loading ? t.login.cargando : t.login.boton }}
+    </button>
   </form>
 
   <div class="login-footer">
-    <p>¿No tienes una cuenta? <a (click)="redireccionamiento.redirigirARegistro()">Regístrate aquí</a></p>
+    <p>
+      {{ t.login.noTieneCuenta }}
+      <a (click)="redireccionamiento.redirigirARegistro()" style="cursor: pointer;">
+        {{ t.login.registrate }}
+      </a>
+    </p>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

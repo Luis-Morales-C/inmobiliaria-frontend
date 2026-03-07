@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../servicios/auth.service';
-import {CommonModule, NgClass} from '@angular/common';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UsersService} from '../../servicios/users.service';
-import {Router} from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
-import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
-import {InmuebleResponse} from '../../dto/inmueble-response';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UsersService } from '../../servicios/users.service';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
+import { InmuebleResponse } from '../../dto/inmueble-response';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-perfil',
@@ -19,53 +21,97 @@ import {InmuebleResponse} from '../../dto/inmueble-response';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent implements OnInit, OnDestroy {
+  // Lógica de Idioma
+  t: typeof ES;
+  private sub!: Subscription;
+
+  // Propiedades del perfil
   perfilForm!: FormGroup;
-  email = 'correoUsuario';
-  nombre = 'Nombre Usuario';
-  apellido = 'Apellido Usuario';
-  documentoIdentidad = '12345678';
-  telefono = '1234567890'
-  rol = 'USUARIO';
-  id = '1';
+  email = '';
+  nombre = '';
+  apellido = '';
+  documentoIdentidad = '';
+  telefono = '';
+  rol = '';
   editando = false;
   mostrarConfirmacion: boolean = false;
-
-  nombreTemporal = '';
-  emailTemporal = '';
-  telefonoTemporal = '';
-  apellidoTemporal = '';
-  documentoIdentidadTemporal = '';
 
   errorMessage: string | null = null;
   loading: boolean = false;
 
+  // Lógica de Inmuebles
+  propiedades: InmuebleResponse[] = [];
   mostrarModalDetalle = false;
   detalleInmueble: InmuebleResponse | null = null;
   currentImageIndex: number = 0;
   currentDocIndex: number = 0;
 
+  // Confirmación de eliminación (HEAD)
   mostrarConfirmacionEliminar: boolean = false;
   inmuebleAEliminar: InmuebleResponse | null = null;
 
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+    private fb: FormBuilder,
+    private redireccionamiento: RedireccionService,
+    protected inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    // Inicialización de traducciones
+    this.t = idiomaService.t;
 
-  constructor(private authService: AuthService,private userService:UsersService, private fb: FormBuilder,private redireccionamiento: RedireccionService, protected inmuebleService: InmuebleServiceService) {
-    this.email = this.authService.getUserEmail() || 'correoUsuario';
-    this.nombre = this.authService.obtenerNombreUsuario() || 'Nombre Usuario';
-    this.apellido = this.authService.obtenerApellidoUsuario() || 'Apellido Usuario';
-    this.telefono = this.authService.obtenerTelefonoUsuario() || '1234567890';
+    // Carga de datos iniciales del usuario
+    this.email = this.authService.getUserEmail() || '';
+    this.nombre = this.authService.obtenerNombreUsuario() || '';
+    this.apellido = this.authService.obtenerApellidoUsuario() || '';
+    this.telefono = this.authService.obtenerTelefonoUsuario() || '';
     this.rol = this.authService.getRoles()[0] || 'USUARIO';
-    this.documentoIdentidad = this.authService.obtenerDocumentoUsuario() || '12345678';
+    this.documentoIdentidad = this.authService.obtenerDocumentoUsuario() || '';
 
+    // Inicialización del formulario reactivo
     this.perfilForm = this.fb.group({
-      nombreTemporal: ['',[Validators.required]],
-      apellidoTemporal: ['',[Validators.required]],
-      telefonoTemporal: ['',[Validators.required]],
-      documentoIdentidadTemporal: ['',[Validators.required]]
+      nombreTemporal: [this.nombre, [Validators.required]],
+      apellidoTemporal: [this.apellido, [Validators.required]],
+      telefonoTemporal: [this.telefono, [Validators.required]],
+      documentoIdentidadTemporal: [this.documentoIdentidad, [Validators.required]]
+    });
+  }
 
-    })
+  ngOnInit(): void {
+    // 1. Suscripción a cambios de idioma
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
 
-    this.perfilForm.setValue({
+    // 2. Carga de inmuebles vinculados al usuario
+    this.cargarPropiedades();
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  cargarPropiedades() {
+    const correoUsuario = localStorage.getItem('userEmail') || this.email;
+    if (correoUsuario) {
+      this.inmuebleService.obtenerListaInmueblesUsuario(correoUsuario).subscribe({
+        next: (inmuebles) => {
+          this.propiedades = inmuebles;
+        },
+        error: (err) => {
+          console.error('Error al obtener propiedades:', err);
+        }
+      });
+    }
+  }
+
+  activarEdicion() {
+    this.editando = true;
+    this.perfilForm.patchValue({
       nombreTemporal: this.nombre,
       apellidoTemporal: this.apellido,
       telefonoTemporal: this.telefono,
@@ -73,82 +119,45 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  propiedades: any[] = [];
-
-  ngOnInit(): void {
-    const correoUsuario = localStorage.getItem('userEmail') || '';
-
-    this.inmuebleService.obtenerListaInmueblesUsuario(correoUsuario).subscribe({
-      next: (inmuebles) => {
-        this.propiedades = inmuebles;
-        console.log('Propiedades del usuario cargadas:', inmuebles);
-      },
-      error: (err) => {
-        console.error('Error al obtener propiedades del usuario:', err);
-      }
-    });
-  }
-
-
-
-
-  activarEdicion() {
-    this.editando = true;
-    this.nombreTemporal = this.nombre;
-    this.apellidoTemporal = this.apellido;
-    this.emailTemporal = this.email;
-    this.telefonoTemporal = this.telefono;
-    this.documentoIdentidadTemporal = this.documentoIdentidad;
-  }
-
   guardarCambios() {
-    if (this.perfilForm.valid)
-    {
-        const { nombreTemporal, apellidoTemporal, telefonoTemporal, documentoIdentidadTemporal } = this.perfilForm.value;
-        this.nombre = nombreTemporal;
-        this.apellido = apellidoTemporal;
-        this.telefono = telefonoTemporal;
-        this.documentoIdentidad = documentoIdentidadTemporal;
-        this.editando = false;
+    if (this.perfilForm.valid) {
+      const { nombreTemporal, apellidoTemporal, telefonoTemporal, documentoIdentidadTemporal } = this.perfilForm.value;
 
-        this.userService.actualizarDatosUsuario(this.email, this.nombre, this.apellido, this.telefono, this.documentoIdentidad).subscribe({
-          next: (response) => {
-            console.log('Respuesta del backend:', response);
-            this.showAlert('success', 'Información actualizada exitosamente.');
-            this.authService.cambiarDatosToken(response);
-            console.log("el token cambio "+this.authService.obtenerNombreUsuario());
-            window.location.reload();
-          },
-          error: (err) => {
-            console.error('Error al actualizar datos del usuario:', err);
-            this.errorMessage = err.message || 'Error desconocido';
-            this.showAlert('error', 'Error al actualizar datos del usuario: ' + this.errorMessage);
-          }
-        });
+      this.userService.actualizarDatosUsuario(
+        this.email,
+        nombreTemporal,
+        apellidoTemporal,
+        telefonoTemporal,
+        documentoIdentidadTemporal
+      ).subscribe({
+        next: (response) => {
+          this.nombre = nombreTemporal;
+          this.apellido = apellidoTemporal;
+          this.telefono = telefonoTemporal;
+          this.documentoIdentidad = documentoIdentidadTemporal;
+          this.editando = false;
 
-
-      console.log('Información actualizada:', {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        correo: this.email,
-        telefono: this.telefono,
-        documento: this.documentoIdentidad
+          this.showAlert('success', this.t.perfil.actualizacionExitosa || 'Información actualizada.');
+          this.authService.cambiarDatosToken(response);
+          // Opcional: window.location.reload();
+        },
+        error: (err) => {
+          this.errorMessage = err.message || 'Error desconocido';
+          this.showAlert('error', 'Error: ' + this.errorMessage);
+        }
       });
+    } else {
+      this.showAlert('error', "Ingrese todos los campos correctamente");
     }
-    else
-    {
-        this.showAlert('error',"Ingrese todos los campos correctamente");
-    }
-
   }
 
   cancelarEdicion() {
-    // Restaurar y salir del modo edición
     this.editando = false;
   }
 
+  // --- GESTIÓN DE EMPRESA ---
   desvincularEmpresa() {
-    this.mostrarConfirmacion=true;
+    this.mostrarConfirmacion = true;
   }
 
   cancelarDesvinculacion() {
@@ -156,163 +165,87 @@ export class PerfilComponent implements OnInit {
   }
 
   confirmarDesvinculacion() {
-    this.loading=true;
-    this.mostrarConfirmacion=false;
+    this.loading = true;
+    this.mostrarConfirmacion = false;
     this.userService.desvincular(this.email).subscribe({
-        next: (response) => {
-          console.log('Respuesta del backend:', response);
-          this.loading = false;
-          this.showAlert('success', 'Usuario desvinculado exitosamente. Serás redirigido a la página principal.');
-          this.redireccionamiento.redirigirAHome();
-          this.authService.limpiarStorage();
-        },
-        error: (err) => {
-          console.error('Error al desvincular usuario:', err);
-          this.loading = false;
-          this.errorMessage = err.message || 'Error desconocido';
-          this.showAlert('error', 'Error al desvincular usuario:');
-        }
+      next: () => {
+        this.loading = false;
+        this.showAlert('success', 'Usuario desvinculado exitosamente.');
+        this.authService.limpiarStorage();
+        this.redireccionamiento.redirigirAHome();
+      },
+      error: () => {
+        this.loading = false;
+        this.showAlert('error', 'Error al desvincular usuario');
       }
-    )
+    });
   }
 
+  // --- GESTIÓN DE INMUEBLES (ELIMINACIÓN) ---
+  preguntarEliminar(inmueble: InmuebleResponse) {
+    this.inmuebleAEliminar = inmueble;
+    this.mostrarConfirmacionEliminar = true;
+  }
+
+  cancelarEliminar() {
+    this.mostrarConfirmacionEliminar = false;
+    this.inmuebleAEliminar = null;
+  }
+
+  confirmarEliminar() {
+    if (!this.inmuebleAEliminar) return;
+
+    const id = this.inmuebleAEliminar.id;
+    this.inmuebleService.eliminarInmueble(id).subscribe({
+      next: () => {
+        this.propiedades = this.propiedades.filter(p => p.id !== id);
+        this.showAlert('success', 'Inmueble eliminado correctamente');
+        this.mostrarConfirmacionEliminar = false;
+        this.inmuebleAEliminar = null;
+      },
+      error: (err) => {
+        console.error(err);
+        this.showAlert('error', 'No se pudo eliminar el inmueble');
+        this.mostrarConfirmacionEliminar = false;
+      }
+    });
+  }
+
+  // --- MODALES Y UTILIDADES ---
   abrirModalDetalles(inmueble: InmuebleResponse): void {
     this.detalleInmueble = inmueble;
     this.currentImageIndex = 0;
     this.currentDocIndex = 0;
     this.mostrarModalDetalle = true;
-    console.log(this.detalleInmueble.documentosImportantes.length)
   }
 
   cerrarModalDetalles(): void {
     this.mostrarModalDetalle = false;
     this.detalleInmueble = null;
-    this.currentImageIndex = 0;
-    this.currentDocIndex = 0;
-  }
-
-  // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
-  getFileNameFromUrl(url: string | undefined | null): string {
-    if (!url) return '';
-    try {
-      // Intentar usar el constructor URL para obtener el pathname
-      const u = new URL(url);
-      let filename = u.pathname.split('/').pop() || '';
-      // Quitar parámetros si los hubiera (aunque URL.pathname no incluye query)
-      const qIdx = filename.indexOf('?');
-      if (qIdx !== -1) filename = filename.substring(0, qIdx);
-      return decodeURIComponent(filename);
-    } catch (e) {
-      // Fallback sencillo si la URL no es absoluta
-      const lastSlash = url.lastIndexOf('/');
-      let filename = lastSlash !== -1 ? url.substring(lastSlash + 1) : url;
-      const qIdx = filename.indexOf('?');
-      if (qIdx !== -1) filename = filename.substring(0, qIdx);
-      try { return decodeURIComponent(filename); } catch { return filename; }
-    }
-  }
-
-  // Abrir documento en el navegador (Cloudinary)
-  abrirDocumento(url: string): void {
-    if (!url) return;
-    window.open(url, '_blank');
-  }
-
-  // Índices para los indicadores del carousel de documentos (0..n-1)
-  get detalleDocumentosIndices(): number[] {
-    const docs = this.detalleDocumentos;
-    return docs && docs.length ? docs.map((_, i) => i) : [];
   }
 
   get detalleDocumentos(): string[] {
     return this.detalleInmueble?.documentosImportantes || [];
   }
 
+  get detalleDocumentosIndices(): number[] {
+    const docs = this.detalleDocumentos;
+    return docs.length > 0 ? docs.map((_, i) => i) : [];
+  }
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} mt-3`;
+    alertDiv.className = `alert alert-${type} alert-fixed`;
     alertDiv.textContent = message;
-    alertDiv.style.position = 'fixed';
-    alertDiv.style.top = '20px';
-    alertDiv.style.right = '20px';
-    alertDiv.style.zIndex = '9999';
-    alertDiv.style.padding = '15px';
-    alertDiv.style.borderRadius = '5px';
-    alertDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
-
-    if (type === 'success') {
-      alertDiv.style.backgroundColor = '#d4edda';
-      alertDiv.style.color = '#155724';
-      alertDiv.style.borderColor = '#c3e6cb';
-    } else {
-      alertDiv.style.backgroundColor = '#f8d7da';
-      alertDiv.style.color = '#721c24';
-      alertDiv.style.borderColor = '#f5c6cb';
-    }
-
     document.body.appendChild(alertDiv);
-
-    // Eliminar la alerta después de 3 segundos
-    setTimeout(() => {
-      if (alertDiv.parentNode) {
-        alertDiv.parentNode.removeChild(alertDiv);
-      }
-    }, 3000);
+    setTimeout(() => alertDiv.remove(), 3000);
   }
 
   volver() {
-    if(this.authService.getToken()==null)
-    {
-      this.redireccionamiento.redirigirAHome()
-    }
-    else
-    {
+    if (this.authService.getToken() == null) {
+      this.redireccionamiento.redirigirAHome();
+    } else {
       this.redireccionamiento.redirigirAHomeIngresado();
-      console.log("Redirigiendo a home ingresado"+this.authService.getUserEmail() );
     }
-  }
-
-  preguntarEliminar(inmueble: InmuebleResponse){
-    this.inmuebleAEliminar = inmueble;
-    this.mostrarConfirmacionEliminar = true;
-  }
-
-  cancelarEliminar(){
-    this.mostrarConfirmacionEliminar = false;
-    this.inmuebleAEliminar = null;
-  }
-
-  confirmarEliminar(){
-
-    if(!this.inmuebleAEliminar) return;
-
-    const id = this.inmuebleAEliminar.id;
-
-    this.inmuebleService.eliminarInmueble(id).subscribe({
-
-      next: () => {
-
-        this.propiedades = this.propiedades.filter(
-          p => p.id !== id
-        );
-
-        this.showAlert('success', 'Inmueble eliminado correctamente');
-
-        this.mostrarConfirmacionEliminar = false;
-        this.inmuebleAEliminar = null;
-
-      },
-
-      error: (err) => {
-
-        console.error(err);
-
-        this.showAlert('error','No se pudo eliminar el inmueble');
-
-        this.mostrarConfirmacionEliminar = false;
-      }
-
-    });
   }
 }

@@ -5,17 +5,17 @@
 
 <!-- Menú de accesibilidad -->
 <div class="accessibility-menu" *ngIf="menuVisible">
-  <h3 class="menu-title">Accesibilidad
+  <h3 class="menu-title">{{ t.accesibilidad.titulo }}
     <i class="fa-solid fa-brain"></i>
   </h3>
 
   <!-- Control de tamaño de texto -->
   <div class="text-size-control">
-    <label for="textSize">Tamaño de texto</label>
+    <label for="textSize">{{ t.accesibilidad.tamanoTexto }}</label>
     <div class="slider-labels">
-      <span>Pequeño</span>
+      <span>{{ t.accesibilidad.pequeno }}</span>
       <span>{{ (zoom * 100) | number: '1.0-0' }}%</span>
-      <span>Grande</span>
+      <span>{{ t.accesibilidad.grande }}</span>
     </div>
     <input
       id="textSize"
@@ -28,28 +28,11 @@
     />
   </div>
 
-  <!-- Switch de alto contraste -->
-  <div class="switch-container">
-    <label for="contrasteSwitch">Alto contraste
-      <i class="fa-solid fa-circle-half-stroke"></i>
-    </label>
-    <label class="switch">
-      <input
-        id="contrasteSwitch"
-        type="checkbox"
-        [(ngModel)]="altoContraste"
-        (change)="CambiarContraste()"
-      />
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <!-- Estado visual -->
-  <p>Contraste: {{ altoContraste ? 'Activado' : 'Desactivado' }}</p>
 
   <!-- Switch de modo oscuro -->
   <div class="switch-container">
-    <label for="oscuroSwitch">Modo oscuro
+    <label for="oscuroSwitch">{{ t.accesibilidad.modoOscuro }}
 
       @if (modoOscuro)
       {
@@ -74,5 +57,28 @@
   </div>
 
   <!-- Estado visual -->
-  <p>Modo oscuro: {{ modoOscuro ? 'Activado' : 'Desactivado' }}</p>
+  <p>{{ t.accesibilidad.modoOscuro }}: {{ modoOscuro ? t.accesibilidad.activado : t.accesibilidad.desactivado }}</p>
+
+  <!-- Selector de idioma -->
+  <div class="language-control">
+    <label class="language-label">{{ t.accesibilidad.idioma }}
+      <i class="fa-solid fa-globe"></i>
+    </label>
+    <div class="language-buttons">
+      <button
+        class="lang-btn"
+        [class.active]="idiomaSeleccionado === 'es'"
+        (click)="idiomaSeleccionado = 'es'; cambiarIdioma()"
+      >
+        🇨🇴 {{ t.accesibilidad.espanol }}
+      </button>
+      <button
+        class="lang-btn"
+        [class.active]="idiomaSeleccionado === 'en'"
+        (click)="idiomaSeleccionado = 'en'; cambiarIdioma()"
+      >
+        🇺🇸 {{ t.accesibilidad.ingles }}
+      </button>
+    </div>
+  </div>
 </div>

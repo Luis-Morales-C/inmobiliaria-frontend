@@ -30,47 +30,36 @@ export class AuthService {
   constructor(private http: HttpClient, private redireccionService: RedireccionService) {}
 
   /**
-   * Envía las credenciales al backend y almacena el token.
+   * Envía las credenciales y el token de captcha al backend
    * @param email Nombre de usuario o correo
    * @param contrasena Contraseña
-   * @returns Observable con la respuesta del servidor*/
-  login(email: string, contrasena: string): Observable<TokenResponse> {
-    console.log('Enviando credenciales al backend:', { email, contrasena });
+   * @param recaptchaToken Token generado por Google reCaptcha
+   */
+  login(email: string, contrasena: string, recaptchaToken: string): Observable<TokenResponse> {
     const urlLogin = `${this.url}/login`;
-    const request = { email, contrasena };
+
+    // Ahora el request coincide con tu LoginRequest del Backend
+    const request = {
+      email,
+      contrasena,
+      recaptchaToken
+    };
 
     return this.http.post<TokenResponse>(urlLogin, request).pipe(
       tap(response => {
-        console.log('Token recibido del backend:', response);
         this.cambiarDatosToken(response);
-
-
-        // Mostrar mensaje de éxito
         this.showAlert('success', 'Inicio de sesión exitoso');
       }),
       catchError(error => {
-        console.error('Error en la llamada al backend:', error);
-
-        // Tomar el mensaje enviado por el backend
         const mensajeBackend = error.error?.message;
         let errorMsg = mensajeBackend || 'Error al iniciar sesión';
 
-        // Personalizar mensajes según el texto recibido
-        switch (mensajeBackend) {
-          case 'Usuario no encontrado':
-            errorMsg = 'El email ingresado no está registrado';
-            break;
-          case 'Contraseña incorrecta':
-            errorMsg = 'La contraseña es incorrecta';
-            break;
-          case 'Usuario bloqueado':
-            errorMsg = 'Tu cuenta está bloqueada, contacta al soporte';
-            break;
+        // Manejo de errores específico para el Captcha
+        if (error.status === 400 && errorMsg.includes('reCAPTCHA')) {
+          errorMsg = 'Por favor, completa el captcha correctamente.';
         }
 
-        // Mostrar alerta de error usando showAlert
         this.showAlert('error', errorMsg);
-
         return throwError(() => new Error(errorMsg));
       })
     );
@@ -269,43 +258,54 @@ return localStorage.getItem(this.TOKEN_KEY);
   }
 
 
-  enviarCodigoRecuperacion(email: string): Observable<string> {
+  /**
+   * Envía la solicitud para generar un código de recuperación.
+   * Ahora incluye el recaptchaToken en el cuerpo de la solicitud.
+   */
+  enviarCodigoRecuperacion(email: string, recaptchaToken: string): Observable<string> {
     const url = `${this.url}/recuperar`;
 
-    return this.http.post(url, null, {
-      params: { email },
-      responseType: 'text'
-    }).pipe(
+    // Creamos el objeto que coincide con tu SolicitarRecuperacionDto del backend
+    const body = {
+      email: email,
+      recaptchaToken: recaptchaToken
+    };
+
+    return this.http.post(url, body, { responseType: 'text' }).pipe(
       tap(() => {
-        this.showAlert('success',
-          'Si el correo está registrado, recibirás un código.');
+        this.showAlert('success', 'Si el correo está registrado, recibirás un código.');
       }),
       catchError(error => {
-        this.showAlert('error',
-          'Error al solicitar recuperación');
+        console.error('Error en recuperación:', error);
+        // Intentamos extraer el mensaje de error del backend si existe
+        const msg = error.error || 'Error al solicitar recuperación';
+        this.showAlert('error', msg);
         return throwError(() => error);
       })
     );
   }
 
+  /**
+   * Cambia la contraseña usando el código recibido por correo.
+   */
   cambiarContrasenaConCodigo(
     email: string,
     codigo: string,
     nuevaContrasena: string
   ): Observable<string> {
-
     const url = `${this.url}/recuperar/cambiar`;
 
     const body = {
       email,
       codigo,
       nuevaContrasena
+
     };
+
 
     return this.http.post(url, body, { responseType: 'text' }).pipe(
       tap(() => {
-        this.showAlert('success',
-          'Contraseña actualizada correctamente');
+        this.showAlert('success', 'Contraseña actualizada correctamente');
       }),
       catchError(error => {
         const mensaje = error.error || 'Código inválido o expirado';
@@ -321,6 +321,7 @@ return localStorage.getItem(this.TOKEN_KEY);
     correo: string;
     asunto: string;
     mensaje: string;
+    recaptchaToken: string
   }): Observable<string> {
 
     const url = `${this.url}/contacto`;
