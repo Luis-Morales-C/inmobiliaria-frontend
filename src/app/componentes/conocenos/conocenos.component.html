@@ -3,9 +3,9 @@
   <!-- HERO -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1>Conócenos</h1>
-      <p>INMOBILIARIA EDÉN S.A.S.</p>
-      <span class="hero-subtitle">Tu espacio, nuestro compromiso</span>
+      <h1>{{ t.conocenos.titulo }}</h1>
+      <p>{{ t.conocenos.subtitulo }}</p>
+      <span class="hero-subtitle">{{ t.conocenos.heroSubtitle }}</span>
     </div>
   </section>
 
@@ -14,76 +14,56 @@
 
     <!-- HISTORIA -->
     <div class="section-card">
-      <h2>Nuestra Historia</h2>
-      <p>
-        INMOBILIARIA EDÉN S.A.S. es una empresa colombiana fundada con el propósito
-        de transformar la experiencia inmobiliaria en el país. Nacimos con la visión
-        de ofrecer un servicio transparente, cercano y profesional, brindando respaldo
-        integral en cada proceso de compra, venta y arrendamiento de bienes inmuebles.
-      </p>
-      <p>
-        Desde nuestros inicios, hemos trabajado bajo principios sólidos de ética,
-        responsabilidad y compromiso con nuestros clientes.
-      </p>
+      <h2>{{ t.conocenos.historia }}</h2>
+      <p>{{ t.conocenos.historiaTexto1 }}</p>
+      <p>{{ t.conocenos.historiaTexto2 }}</p>
     </div>
 
     <!-- TRAYECTORIA -->
     <div class="section-card">
-      <h2>Nuestra Trayectoria</h2>
-      <p>
-        Operamos en Colombia, ofreciendo soluciones inmobiliarias en el sector
-        residencial, comercial y corporativo. A lo largo de nuestra trayectoria
-        hemos acompañado a cientos de familias y empresas en la adquisición,
-        venta y administración de propiedades.
-      </p>
+      <h2>{{ t.conocenos.trayectoria }}</h2>
+      <p>{{ t.conocenos.trayectoriaTexto }}</p>
       <ul>
-        <li>✔ Gestión de compra y venta de inmuebles</li>
-        <li>✔ Administración de arrendamientos</li>
-        <li>✔ Asesoría jurídica inmobiliaria</li>
-        <li>✔ Avalúos y estudios de mercado</li>
+        <li>{{ t.conocenos.trayectoriaItem1 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem2 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem3 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem4 }}</li>
       </ul>
     </div>
 
     <!-- MISIÓN Y VISIÓN -->
     <div class="section-grid">
       <div class="section-card">
-        <h2>Misión</h2>
-        <p>
-          Ofrecer soluciones inmobiliarias seguras, eficientes y transparentes,
-          generando confianza y valor en cada relación comercial.
-        </p>
+        <h2>{{ t.conocenos.mision }}</h2>
+        <p>{{ t.conocenos.misionTexto }}</p>
       </div>
 
       <div class="section-card">
-        <h2>Visión</h2>
-        <p>
-          Consolidarnos como una inmobiliaria líder en Colombia,
-          reconocida por nuestra innovación, excelencia en el servicio
-          y compromiso con el desarrollo del sector inmobiliario.
-        </p>
+        <h2>{{ t.conocenos.vision }}</h2>
+        <p>{{ t.conocenos.visionTexto }}</p>
       </div>
     </div>
 
     <!-- VALORES -->
     <div class="section-card">
-      <h2>Nuestros Valores</h2>
+      <h2>{{ t.conocenos.valores }}</h2>
       <div class="valores-grid">
-        <div class="valor-item">Transparencia</div>
-        <div class="valor-item">Compromiso</div>
-        <div class="valor-item">Responsabilidad</div>
-        <div class="valor-item">Confianza</div>
-        <div class="valor-item">Excelencia</div>
+        <div class="valor-item">{{ t.conocenos.valor1 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor2 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor3 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor4 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor5 }}</div>
       </div>
     </div>
 
     <!-- ESTRUCTURA -->
     <div class="section-card">
-      <h2>Estructura Organizacional</h2>
+      <h2>{{ t.conocenos.estructura }}</h2>
       <ul>
-        <li><strong>Gerencia General:</strong> Dirección estratégica y toma de decisiones.</li>
-        <li><strong>Área Comercial:</strong> Gestión de ventas y atención al cliente.</li>
-        <li><strong>Área Jurídica:</strong> Soporte legal en contratos y trámites.</li>
-        <li><strong>Área Administrativa:</strong> Gestión financiera y operativa.</li>
+        <li><strong>{{ t.conocenos.estructuraItem1 }}</strong> {{ t.conocenos.estructuraItem1Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem2 }}</strong> {{ t.conocenos.estructuraItem2Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem3 }}</strong> {{ t.conocenos.estructuraItem3Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem4 }}</strong> {{ t.conocenos.estructuraItem4Desc }}</li>
       </ul>
     </div>
 
@@ -91,22 +71,22 @@
     <div class="stats-section">
       <div class="stat-card">
         <h3>+200</h3>
-        <p>Clientes Atendidos</p>
+        <p>{{ t.conocenos.clientesAtendidos }}</p>
       </div>
       <div class="stat-card">
         <h3>+300</h3>
-        <p>Propiedades Gestionadas</p>
+        <p>{{ t.conocenos.propiedadesGestionadas }}</p>
       </div>
       <div class="stat-card">
         <h3>3+</h3>
-        <p>Años de Experiencia</p>
+        <p>{{ t.conocenos.anosExperiencia }}</p>
       </div>
     </div>
 
     <!-- BOTÓN VOLVER -->
     <div class="volver-container">
       <button class="btn-volver" (click)="redirigirAlInicioMetodo()">
-        Volver al inicio
+        {{ t.conocenos.volverInicio }}
       </button>
     </div>
 

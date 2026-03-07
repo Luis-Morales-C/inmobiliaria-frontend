@@ -204,6 +204,48 @@ body.dark-mode app-accesibilidad .accessibility-menu input:checked + .slider:bef
   background-color: white !important;
 }
 
+/* === SELECTOR DE IDIOMA === */
+.language-control {
+  margin-top: 4px;
+}
+
+.language-label {
+  display: block;
+  font-weight: 600;
+  color: #10bb82;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.language-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  flex: 1;
+  padding: 5px 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.lang-btn:hover {
+  border-color: #10bb82;
+  background: #e8faf4;
+}
+
+.lang-btn.active {
+  background-color: #10bb82;
+  color: white;
+  border-color: #10bb82;
+  font-weight: 600;
+}
+
 /* === ALTO CONTRASTE === */
 body.high-contrast .accessibility-menu {
   background-color: black !important;
@@ -217,5 +259,41 @@ body.high-contrast .accessibility-menu * {
 body.high-contrast .menu-title,
 body.high-contrast .text-size-control label {
   color: yellow !important;
+}
+
+body.high-contrast .lang-btn {
+  background-color: black !important;
+  border-color: yellow !important;
+  color: yellow !important;
+}
+
+body.high-contrast .lang-btn.active {
+  background-color: yellow !important;
+  color: black !important;
+}
+
+/* === MODO OSCURO - IDIOMA === */
+body.dark-mode .language-label,
+body.dark-mode app-accesibilidad .language-label {
+  color: #10bb82 !important;
+}
+
+body.dark-mode .lang-btn,
+body.dark-mode app-accesibilidad .lang-btn {
+  background-color: #0f3460 !important;
+  border-color: #1a4a7a !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .lang-btn:hover,
+body.dark-mode app-accesibilidad .lang-btn:hover {
+  border-color: #10bb82 !important;
+}
+
+body.dark-mode .lang-btn.active,
+body.dark-mode app-accesibilidad .lang-btn.active {
+  background-color: #10bb82 !important;
+  color: white !important;
+  border-color: #10bb82 !important;
 }
 

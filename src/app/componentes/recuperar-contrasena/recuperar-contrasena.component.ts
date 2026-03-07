@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'; // Añadidos OnDestroy y ChangeDetectorRef
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { AuthService } from '../../servicios/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recuperar-contrasena',
@@ -24,26 +27,38 @@ import { environment } from '../../../environments/environment';
 export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   form!: FormGroup;
+
+  // Lógica de Captcha y Seguridad (HEAD)
   captchaToken: string | null = null;
   mostrarAlerta = false;
-
-  // Propiedades para el refresco dinámico del tema
   captchaActivo = true;
   private observer: MutationObserver | null = null;
+
+  // Lógica de Idioma (Accesibilidad)
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef // Inyectado para forzar la actualización visual
-  ) {}
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
+  }
 
   ngOnInit(): void {
+    // 1. Suscripción a traducciones
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
 
-    // CONFIGURACIÓN DEL OBSERVADOR: Detecta cambios en la clase 'dark-mode' del body
+    // 2. CONFIGURACIÓN DEL OBSERVADOR para tema (dark-mode)
     this.observer = new MutationObserver(() => {
       this.recargarCaptcha();
     });
@@ -55,7 +70,8 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Es vital desconectar el observador al destruir el componente para evitar fugas de memoria
+    // Fusión: Limpiamos ambas suscripciones en un solo método
+    this.sub?.unsubscribe();
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -63,16 +79,15 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
 
   recargarCaptcha() {
     this.captchaActivo = false;
-    this.cdr.detectChanges(); // Elimina el captcha viejo
+    this.cdr.detectChanges();
     this.captchaActivo = true;
-    this.cdr.detectChanges(); // Crea el captcha nuevo con el tema actualizado
+    this.cdr.detectChanges();
   }
 
   get email() {
     return this.form.get('email');
   }
 
-  // Getter para detectar el tema actual del body
   get temaActual(): 'light' | 'dark' {
     return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
   }
@@ -102,7 +117,7 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.isSubmitting = false;
-          this.captchaToken = null; // Resetear token por seguridad
+          this.captchaToken = null; // Resetear por seguridad
         }
       });
   }

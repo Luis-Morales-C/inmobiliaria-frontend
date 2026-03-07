@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'; // Añadidos ChangeDetectorRef, OnInit, OnDestroy
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { CommonModule } from '@angular/common';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contactenos',
@@ -26,20 +29,26 @@ import { environment } from '../../../environments/environment';
     },
   ],
 })
-export class ContactenosComponent implements OnInit, OnDestroy { // Implementamos interfaces
+export class ContactenosComponent implements OnInit, OnDestroy {
 
   contactoForm: FormGroup;
   captchaToken: string | null = null;
 
-  // Control para el refresco del captcha
+  // Lógica de Traducción
+  t: typeof ES;
+  private sub!: Subscription;
+
+  // Lógica de reCAPTCHA y Modo Oscuro
   captchaActivo = true;
   private observer: MutationObserver | null = null;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef // Inyectado para forzar renderizado
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     this.contactoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
@@ -50,7 +59,12 @@ export class ContactenosComponent implements OnInit, OnDestroy { // Implementamo
   }
 
   ngOnInit(): void {
-    // Configuramos el observador para detectar cambios de clase en el body
+    // 1. Suscripción a traducciones (Rama accesibilidad)
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
+    // 2. Observador para Modo Oscuro (Rama HEAD)
     this.observer = new MutationObserver(() => {
       this.recargarCaptcha();
     });
@@ -62,7 +76,8 @@ export class ContactenosComponent implements OnInit, OnDestroy { // Implementamo
   }
 
   ngOnDestroy(): void {
-    // Desconectamos para evitar fugas de memoria
+    // Limpieza de suscripciones y observadores para evitar fugas de memoria
+    this.sub?.unsubscribe();
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -75,7 +90,6 @@ export class ContactenosComponent implements OnInit, OnDestroy { // Implementamo
     this.cdr.detectChanges();
   }
 
-  // Getter para obtener el tema actual
   get temaActual(): 'light' | 'dark' {
     return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
   }
@@ -105,14 +119,13 @@ export class ContactenosComponent implements OnInit, OnDestroy { // Implementamo
         next: () => {
           this.contactoForm.reset();
           this.captchaToken = null;
-          // Forzamos un refresco tras el envío exitoso para limpiar el widget
           this.recargarCaptcha();
           alert('Mensaje enviado con éxito');
         },
         error: (err) => {
           console.error('Error al enviar:', err);
           this.captchaToken = null;
-          this.recargarCaptcha(); // Resetear visualmente ante error
+          this.recargarCaptcha();
         }
       });
   }

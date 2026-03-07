@@ -10,6 +10,9 @@ import { Router, RouterLink } from '@angular/router';
 import { RedireccionService } from '../../servicios/redireccion.service';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -41,27 +44,38 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   loading: boolean = false;
   verContra = false;
+
+  // Lógica de reCAPTCHA y Modo Oscuro (HEAD)
   captchaToken: string | null = null;
   captchaActivo = true;
-
-  // Guardamos el observador para poder desconectarlo al salir
   private observer: MutationObserver | null = null;
+
+  // Lógica de Idioma (Accesibilidad)
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     protected redireccionamiento: RedireccionService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required],
     });
   }
 
-  ngOnInit() {
-    // ESTA ES LA MAGIA: Observamos cambios en las clases del BODY
+  ngOnInit(): void {
+    // 1. Suscripción a traducciones (Rama accesibilidad)
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
+    // 2. Configuración del observador para Modo Oscuro (Rama HEAD)
     this.observer = new MutationObserver(() => {
       this.recargarCaptcha();
     });
@@ -72,15 +86,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    // Limpieza al salir del componente
+  ngOnDestroy(): void {
+    // Limpieza total: Desuscripción y desconexión del observador
+    this.sub?.unsubscribe();
     if (this.observer) {
       this.observer.disconnect();
     }
   }
 
   recargarCaptcha() {
-    // Solo recargamos si el tema visual realmente cambió
     this.captchaActivo = false;
     this.cdr.detectChanges();
     this.captchaActivo = true;
@@ -93,24 +107,29 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      // 1. Validación del Captcha con traducción
       if (!this.captchaToken) {
-        this.showAlert('error', 'Por favor, completa la verificación reCAPTCHA');
+        this.showAlert('error', this.t.login.errorCaptcha || 'Por favor, completa el reCAPTCHA');
         return;
       }
+
       this.loading = true;
       const { email, contrasena } = this.loginForm.value;
+
       this.authService.login(email, contrasena, this.captchaToken).subscribe({
         next: () => {
           this.loading = false;
-          this.showAlert('success', 'Inicio de sesión exitoso');
+          // No llamamos a showAlert aquí porque el AuthService ya lo hace en el .pipe(tap)
           this.router.navigate(['/inicio']);
         },
-        error: (err: any) => {
+        error: () => {
           this.loading = false;
           this.captchaToken = null;
-          this.showAlert('error', err.error?.message || 'Error al iniciar sesión');
+          this.recargarCaptcha(); // Reset visual del captcha tras error
         }
       });
+    } else {
+      this.loginForm.markAllAsTouched();
     }
   }
 

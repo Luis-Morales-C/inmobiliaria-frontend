@@ -1,17 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MapaService} from '../../mapa.service';
-import {FormBuilder, FormGroup, isFormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UsersService} from '../../servicios/users.service';
-import {RegistroInmuebleRequest} from '../../dto/registro-inmueble-request';
-import {RouterLink} from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
-import {CommonModule} from '@angular/common';
-import {CaptacionInmuebleDTO} from '../../dto/captacion-inmueble-dto';
-import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MapaService } from '../../mapa.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UsersService } from '../../servicios/users.service';
+import { RouterLink } from '@angular/router';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { CommonModule } from '@angular/common';
+import { CaptacionInmuebleDTO } from '../../dto/captacion-inmueble-dto';
+import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro-inmueble',
-  standalone:true,
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     RouterLink,
@@ -20,34 +22,65 @@ import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
   templateUrl: './registro-inmueble.component.html',
   styleUrl: './registro-inmueble.component.css'
 })
-export class RegistroInmuebleComponent implements OnInit, OnDestroy{
+export class RegistroInmuebleComponent implements OnInit, OnDestroy {
   registroInmuebleForm!: FormGroup;
+
+  // Lógica de archivos y estados (HEAD)
   imagenes: File[] = [];
   imagenesPreview: string[] = [];
+  pdfArchivos: File[] = [];
   imagenesError: boolean = false;
   pdfError: boolean = false;
   isLoading: boolean = false;
 
+  // Lógica de Idioma (Accesibilidad)
+  t: typeof ES;
+  private idiomasSub!: Subscription;
 
+  constructor(
+    private formBuilder: FormBuilder,
+    private mapaService: MapaService,
+    protected redireccionamiento: RedireccionService,
+    private inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
+    this.crearFormularioTexto();
+  }
+
+  ngOnInit(): void {
+    // 1. Suscripción de idioma
+    this.idiomasSub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
+    // 2. Inicialización del Mapa
+    this.mapaService.crearMapa();
+    this.mapaService['mapa'].on('click', (event: any) => {
+      const { lng, lat } = event.lngLat;
+      this.mapaService.agregarMarcador();
+      this.registroInmuebleForm.get('latitud')?.setValue(lat);
+      this.registroInmuebleForm.get('longitud')?.setValue(lng);
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Limpieza total para evitar fugas de memoria
+    this.idiomasSub?.unsubscribe();
+    this.imagenes = [];
+    this.imagenesPreview = [];
+    this.pdfArchivos = [];
+
+    const inputImagenes = document.getElementById('inputImagenes') as HTMLInputElement;
+    const inputPDFs = document.getElementById('inputPDFs') as HTMLInputElement;
+    if (inputImagenes) inputImagenes.value = '';
+    if (inputPDFs) inputPDFs.value = '';
+  }
+
+  // --- GESTIÓN DE IMÁGENES ---
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files) return;
-
-    this.procesarArchivos(input.files);
-  }
-
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  onDrop(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.dataTransfer?.files) {
-      console.log('archivos soltados:', event.dataTransfer.files);
-      this.procesarArchivos(event.dataTransfer.files);
-    }
+    if (input.files) this.procesarArchivos(input.files);
   }
 
   procesarArchivos(files: FileList): void {
@@ -58,11 +91,8 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
         this.imagenes.push(file);
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          console.log('Imagen cargada:', e.target.result);
-          console.log('Previsualización actual:', this.imagenesPreview);
           this.imagenesPreview.push(e.target.result);
         };
-
         reader.readAsDataURL(file);
       }
     }
@@ -74,26 +104,10 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
     this.imagenesPreview.splice(index, 1);
   }
 
-  pdfArchivos: File[] = [];
-
+  // --- GESTIÓN DE PDFS ---
   onPDFSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files) return;
-
-    this.procesarPDFs(input.files);
-  }
-
-  onDragOverPDF(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  onDropPDF(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.dataTransfer?.files) {
-      this.procesarPDFs(event.dataTransfer.files);
-    }
+    if (input.files) this.procesarPDFs(input.files);
   }
 
   procesarPDFs(files: FileList): void {
@@ -111,78 +125,27 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
     this.pdfArchivos.splice(index, 1);
   }
 
-
-  constructor(private formBuilder: FormBuilder, private mapaService: MapaService,protected redireccionamiento: RedireccionService,private inmuebleService: InmuebleServiceService) {
-    this.crearFormularioTexto();
-  }
-
-  ngOnDestroy(): void {
-    this.imagenes = [];
-    this.imagenesPreview = [];
-    this.pdfArchivos = [];
-
-    const inputImagenes = document.getElementById('inputImagenes') as HTMLInputElement;
-    const inputPDFs = document.getElementById('inputPDFs') as HTMLInputElement;
-    if (inputImagenes) inputImagenes.value = '';
-    if (inputPDFs) inputPDFs.value = '';
-
-  }
-
-
-  ngOnInit(): void {
-    this.mapaService.crearMapa();
-
-    this.mapaService['mapa'].on('click', (event: any) => {
-      const { lng, lat } = event.lngLat;
-
-      // Agrega el marcador donde se hace clic
-      this.mapaService.agregarMarcador();
-
-      // Guarda los valores en campos separados
-      this.registroInmuebleForm.get('latitud')?.setValue(lat);
-      console.log('latitud', lat);
-      console.log('longitud', lng);
-      this.registroInmuebleForm.get('longitud')?.setValue(lng);
-    });
-  }
-
-  //Modificar despues xd
+  // --- FORMULARIO Y ENVÍO ---
   private crearFormularioTexto() {
     this.registroInmuebleForm = this.formBuilder.group({
-
       tipoNegocio: ['', Validators.required],
       tipo: ['', Validators.required],
-
       precio: ['', [Validators.required, Validators.min(0)]],
       estado: ['', Validators.required],
-
       habitaciones: ['', [Validators.required, Validators.min(1)]],
       banos: ['', [Validators.required, Validators.min(1)]],
       cantidadParqueaderos: ['', [Validators.required, Validators.min(0)]],
-
       medidas: ['', [Validators.required, Validators.min(1)]],
-
       descripcion: ['', [Validators.required, Validators.maxLength(255)]],
-
       nombreContacto: ['', [Validators.required, Validators.minLength(3)]],
-
-      telefonoContacto: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9]{7,15}$/)
-        ]
-      ],
-
+      telefonoContacto: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
       correoContacto: ['', [Validators.required, Validators.email]],
-
       latitud: ['', Validators.required],
       longitud: ['', Validators.required],
     });
   }
 
   onSubmit(): void {
-
     this.imagenesError = this.imagenes.length === 0;
     this.pdfError = this.pdfArchivos.length === 0;
 
@@ -190,60 +153,27 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
       return;
     }
 
-    // 🔥 ACTIVAMOS EL MODAL
     this.isLoading = true;
-
-    const datosFormulario = this.registroInmuebleForm.value;
-
-    const dto: CaptacionInmuebleDTO = {
-      latitud: datosFormulario.latitud,
-      longitud: datosFormulario.longitud,
-      tipoNegocio: datosFormulario.tipoNegocio,
-      tipo: datosFormulario.tipo,
-      medidas: datosFormulario.medidas,
-      habitaciones: datosFormulario.habitaciones,
-      banos: datosFormulario.banos,
-      descripcion: datosFormulario.descripcion,
-      precio: datosFormulario.precio,
-      cantidadParqueaderos: datosFormulario.cantidadParqueaderos,
-      telefonoContacto: datosFormulario.telefonoContacto,
-      nombreContacto: datosFormulario.nombreContacto,
-      correoContacto: datosFormulario.correoContacto,
-      estado: datosFormulario.estado
-    };
+    const dto: CaptacionInmuebleDTO = this.registroInmuebleForm.value;
 
     const formData = new FormData();
-
     Object.entries(dto).forEach(([key, value]) => {
       formData.append(key, value.toString());
     });
 
     formData.append('correoUsuario', localStorage.getItem('userEmail') || '');
-
-    this.imagenes.forEach((img) => {
-      formData.append('imagenes', img);
-    });
-
-    this.pdfArchivos.forEach((pdf) => {
-      formData.append('documentosImportantes', pdf);
-    });
+    this.imagenes.forEach(img => formData.append('imagenes', img));
+    this.pdfArchivos.forEach(pdf => formData.append('documentosImportantes', pdf));
 
     this.inmuebleService.registrarInmueble(formData).subscribe({
       next: () => {
-
-        this.isLoading = false; // 🔥 DESACTIVAMOS MODAL
-
-        this.showAlert('success', 'Inmueble registrado exitosamente');
+        this.isLoading = false;
+        this.showAlert('success', this.t.registroInmueble.exito || 'Inmueble registrado exitosamente');
         this.redireccionamiento.redirigirAPerfil();
-
-        this.registroInmuebleForm.reset();
-        this.imagenes = [];
-        this.imagenesPreview = [];
-        this.pdfArchivos = [];
       },
       error: () => {
-        this.isLoading = false; // 🔥 IMPORTANTE también en error
-        this.showAlert('error', 'Ocurrió un error al registrar el inmueble');
+        this.isLoading = false;
+        this.showAlert('error', this.t.registroInmueble.error || 'Ocurrió un error al registrar el inmueble');
       }
     });
   }
@@ -269,9 +199,8 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy{
       alertDiv.style.color = '#721c24';
       alertDiv.style.borderColor = '#f5c6cb';
     }
+
+    document.body.appendChild(alertDiv); // Faltaba esta línea para mostrar la alerta
+    setTimeout(() => alertDiv.remove(), 3000);
   }
-
 }
-
-
-

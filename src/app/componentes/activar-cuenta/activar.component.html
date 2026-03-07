@@ -1,23 +1,23 @@
 <div class="activation-container">
   <div class="back-button">
     <button type="button"  routerLink="/registro" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Volver
+      <i class="bi bi-arrow-left"></i> {{ t.activarCuenta.volver }}
     </button>
   </div>
     <div class="brand-header">
         <div class="brand-logo">EDÉN</div>
-        <div class="brand-subtitle">Inmobiliaria</div>
+        <div class="brand-subtitle">{{ t.comun.inmobiliaria }}</div>
     </div>
 
-    <h2 class="text-center mb-4">Activación de Cuenta</h2>
-    <p class="text-center text-muted mb-4">Ingresa el código de verificación que hemos enviado a tu correo electrónico</p>
+    <h2 class="text-center mb-4">{{ t.activarCuenta.titulo }}</h2>
+    <p class="text-center text-muted mb-4">{{ t.activarCuenta.subtitulo }}</p>
 
     <div class="instructions">
-        <p class="mb-2"><strong>Instrucciones:</strong></p>
+        <p class="mb-2"><strong>{{ t.activarCuenta.instrucciones }}</strong></p>
         <ul>
-            <li>Revisa tu bandeja de entrada o spam</li>
-            <li>El código tiene una validez de 10 minutos</li>
-            <li>Si no recibiste el código, solicita uno nuevo</li>
+            <li>{{ t.activarCuenta.instruccion1 }}</li>
+            <li>{{ t.activarCuenta.instruccion2 }}</li>
+            <li>{{ t.activarCuenta.instruccion3 }}</li>
         </ul>
     </div>
 
@@ -92,11 +92,11 @@
             class="btn btn-primary mb-3"
             [disabled]="isSubmitting">
             <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" [style.display]="isSubmitting ? 'inline-block' : 'none'"></span>
-            {{ isSubmitting ? 'Verificando...' : 'Verificar Código' }}
+            {{ isSubmitting ? 'Verificando...' : t.activarCuenta.activar }}
         </button>
 
         <div class="resend-link">
-            ¿No recibiste el código? <a href="#" (click)="resendCode(); $event.preventDefault()">Reenviar código</a>
+            {{ t.activarCuenta.noRecibiste }} <a href="#" (click)="resendCode(); $event.preventDefault()">{{ t.activarCuenta.reenviar }}</a>
         </div>
     </form>
 </div>

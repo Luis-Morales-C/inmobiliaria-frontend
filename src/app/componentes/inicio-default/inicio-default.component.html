@@ -1,50 +1,51 @@
-<!-- Navbar igual a INVITADO -->
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
   <div class="container">
-    <a class="navbar-brand" >EDÉN</a>
+    <a class="navbar-brand">EDÉN</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavInvitado" aria-controls="navbarNavInvitado" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavInvitado">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">HAGAMOS NEGOCIOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirALogin()">{{ t.nav.hagamosNegocios }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">CONÓCENOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirAConocenos()">{{ t.nav.conocenos }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">CONTÁCTENOS</a>
+          <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">{{ t.nav.contactenos }}</a>
         </li>
       </ul>
 
       <div class="d-flex flex-column flex-lg-row gap-2 mt-3 mt-lg-0">
-        <button class="btn btn-iniciar-sesion"  (click)="redireccionamiento.redirigirALogin()">INICIAR SESIÓN</button>
-        <button class="btn btn-registrarse" (click)="redireccionamiento.redirigirARegistro()">REGISTRARSE</button>
+        <button class="btn btn-iniciar-sesion" (click)="redireccionamiento.redirigirALogin()">
+          {{ t.nav.iniciarSesion }}
+        </button>
+        <button class="btn btn-registrarse" (click)="redireccionamiento.redirigirARegistro()">
+          {{ t.nav.registrarse }}
+        </button>
       </div>
 
     </div>
   </div>
 </nav>
 
-<!-- Hero Section igual a INVITADO -->
 <section class="container mb-5">
   <div class="hero-section">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <h1 class="display-4 fw-bold mb-4">Bienvenido a EDÉN</h1>
-          <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
-          <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Explorar Propiedades</a>
+          <h1 class="display-4 fw-bold mb-4">{{ t.inicio.bienvenido }}</h1>
+          <p class="lead mb-4">{{ t.inicio.subtitulo }}</p>
+          <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">{{ t.inicio.explorarPropiedades }}</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Propiedades destacadas igual a INVITADO -->
 <section class="container mb-5">
-  <h2 class="section-title">Propiedades Destacadas</h2>
+  <h2 class="section-title">{{ t.inicio.propiedadesDestacadas }}</h2>
   <div class="row">
     <div class="col-md-4" *ngFor="let propiedad of propiedadesDestacadas">
       <div class="property-card card">
@@ -55,18 +56,17 @@
         <div class="card-body">
           <h5 class="property-price">{{ propiedad.precio | currency:'COP' }}</h5>
           <h6 class="card-title">{{ propiedad.tipo }}</h6>
-          <!-- <p class="card-text">{{ propiedad.descripcion }}</p>-->
           <div class="d-flex justify-content-between">
             <span><i class="bi bi-house-door"></i> {{ propiedad.estado }}</span>
             <span><i class="bi bi-geo-alt"></i> {{ propiedad.medidas }} m²</span>
           </div>
           <hr>
           <div class="d-flex justify-content-between">
-            <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} Habitaciones</span>
-            <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} Baños</span>
+            <span><i class="bi bi-door-closed"></i> {{ propiedad.habitaciones }} {{ t.inicio.habitaciones }}</span>
+            <span><i class="bi bi-droplet"></i> {{ propiedad.banos }} {{ t.inicio.banos }}</span>
           </div>
           <div class="d-grid gap-2 mt-3">
-              <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">Ver Detalles</button>
+            <button class="btn btn-outline-primary w-100" (click)="abrirModalDetalles(propiedad)">{{ t.inicio.verDetalles }}</button>
           </div>
         </div>
       </div>
@@ -74,167 +74,121 @@
   </div>
 </section>
 
-
-<!-- Call to Action igual a INVITADO -->
 <section class="bg-light-primary py-5 mb-5">
   <div class="container text-center">
-    <h2 class="mb-4">¿Necesitas ayuda para encontrar tu propiedad ideal?</h2>
-    <p class="lead mb-4">Nuestros asesores están listos para ayudarte a encontrar la propiedad perfecta para ti.</p>
-    <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">Contactar un Asesor</a>
+    <h2 class="mb-4">{{ t.inicio.necesitasAyuda }}</h2>
+    <p class="lead mb-4">{{ t.inicio.asesoresListos }}</p>
+    <a class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirALogin()">{{ t.inicio.contactarAsesor }}</a>
   </div>
 </section>
 
-<!-- Modal de Detalle del inmueble -->
 <div class="modal-overlay" *ngIf="mostrarModalDetalle">
   <div class="modal-container modal-detalle">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5>Detalles del inmueble</h5>
+      <h5>{{ t.inicio.detallesInmueble }}</h5>
       <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
     </div>
 
     <div *ngIf="detalleInmueble">
       <div class="row">
         <div class="col-md-6">
-          <!-- Carrusel de imágenes -->
           <div *ngIf="detalleInmueble.imagenes.length > 0; else imagenPlaceholder">
-
-            <div id="carouselDetalle"
-                 class="carousel slide mb-3"
-                 data-bs-ride="carousel">
-
-              <!-- Indicadores -->
+            <div id="carouselDetalle" class="carousel slide mb-3" data-bs-ride="carousel">
               <div class="carousel-indicators">
                 <button *ngFor="let img of detalleInmueble.imagenes; let i = index"
                         type="button"
                         data-bs-target="#carouselDetalle"
                         [attr.data-bs-slide-to]="i"
-                        [attr.data-slide-img]="img"
-                        [class.active]="i === 0"
-                        [attr.aria-label]="'Ir al slide ' + (i + 1)">
+                        [class.active]="i === 0">
                 </button>
               </div>
-
-              <!-- Imágenes -->
               <div class="carousel-inner">
                 <div *ngFor="let img of detalleInmueble.imagenes; let i = index"
                      class="carousel-item"
                      [class.active]="i === 0">
-
-                  <img [src]="img"
-                       class="d-block w-100 rounded"
-                       style="object-fit: cover;"
-                       alt="Imagen {{ i + 1 }}">
+                  <img [src]="img" class="d-block w-100 rounded" style="height: 300px; object-fit: cover;" alt="Imagen">
                 </div>
               </div>
-
-              <!-- Botones -->
-              <button class="carousel-control-prev"
-                      type="button"
-                      data-bs-target="#carouselDetalle"
-                      data-bs-slide="prev">
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselDetalle" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
               </button>
-
-              <button class="carousel-control-next"
-                      type="button"
-                      data-bs-target="#carouselDetalle"
-                      data-bs-slide="next">
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselDetalle" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
               </button>
-
             </div>
-
           </div>
-
-          <!-- Imagen por defecto si no hay imágenes -->
           <ng-template #imagenPlaceholder>
-            <img src="https://via.placeholder.com/600x400"
-                 class="img-fluid mb-3 rounded"
-                 alt="Sin imagen">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid mb-3 rounded" alt="Sin imagen">
           </ng-template>
-
         </div>
+
         <div class="col-md-6">
-
-          <!-- Características -->
           <div class="mb-3 pb-2 border-bottom">
-            <h6 class="fw-bold text-primary mb-3">Características</h6>
-
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.datosGenerales }}</h6>
             <div class="row">
               <div class="col-6">
-                <small class="text-muted">Tipo Negocio</small>
+                <small class="text-muted">{{ t.inicio.id }}</small>
+                <p class="mb-2">{{ detalleInmueble.id }}</p>
+              </div>
+              <div class="col-6">
+                <small class="text-muted">{{ t.inicio.estadoTransaccion }}</small>
+                <p class="mb-2">{{ detalleInmueble.estadoTransa }}</p>
+              </div>
+              <div class="col-6">
+                <small class="text-muted">{{ t.inicio.propietario }}</small>
+                <p class="mb-2">{{ detalleInmueble.propietario }}</p>
+              </div>
+              <div class="col-6">
+                <small class="text-muted">{{ t.inicio.estadoInmueble }}</small>
+                <p class="mb-2">{{ detalleInmueble.estado }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 pb-2 border-bottom">
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.caracteristicas }}</h6>
+            <div class="row">
+              <div class="col-6">
+                <small class="text-muted">{{ t.inicio.tipoNegocioLabel }}</small>
                 <p class="mb-2">{{ detalleInmueble.tipoNegocio }}</p>
               </div>
-
               <div class="col-6">
-                <small class="text-muted">Tipo Inmueble</small>
+                <small class="text-muted">{{ t.inicio.tipoInmuebleLabel }}</small>
                 <p class="mb-2">{{ detalleInmueble.tipo }}</p>
               </div>
-
               <div class="col-6">
-                <small class="text-muted">Medidas</small>
+                <small class="text-muted">{{ t.inicio.medidas }}</small>
                 <p class="mb-2">{{ detalleInmueble.medidas }} m²</p>
               </div>
-
               <div class="col-6">
-                <small class="text-muted">Habitaciones</small>
+                <small class="text-muted">{{ t.inicio.habitaciones }}</small>
                 <p class="mb-2">{{ detalleInmueble.habitaciones }}</p>
               </div>
-
-              <div class="col-6">
-                <small class="text-muted">Baños</small>
-                <p class="mb-2">{{ detalleInmueble.banos }}</p>
-              </div>
-
-              <div class="col-6">
-                <small class="text-muted">Parqueaderos</small>
-                <p class="mb-2">{{ detalleInmueble.cantidadParqueaderos }}</p>
-              </div>
             </div>
           </div>
 
-
-          <!-- Ubicación y Contacto -->
           <div class="mb-3 pb-2 border-bottom">
-            <h6 class="fw-bold text-primary mb-3">Ubicación y Contacto</h6>
-
-            <div class="row">
-              <div class="col-6">
-                <small class="text-muted">Latitud</small>
-                <p class="mb-2">{{ detalleInmueble.latitud }}</p>
-              </div>
-
-              <div class="col-6">
-                <small class="text-muted">Longitud</small>
-                <p class="mb-2">{{ detalleInmueble.longitud }}</p>
-              </div>
-
-              <div class="col-12">
-                <small class="text-muted">Contacto</small>
-                <p class="mb-2">
-                  {{ detalleInmueble.agenteAsociado.nombre }} <br>
-                  {{ detalleInmueble.agenteAsociado.telefono }} <br>
-                  {{ detalleInmueble.agenteAsociado.email }}
-                </p>
-              </div>
+            <h6 class="fw-bold text-primary mb-3">{{ t.inicio.ubicacionContacto }}</h6>
+            <div class="col-12">
+              <small class="text-muted">{{ t.inicio.contacto }}</small>
+              <p class="mb-2" *ngIf="detalleInmueble.agenteAsociado">
+                {{ detalleInmueble.agenteAsociado.nombre }}<br>
+                {{ detalleInmueble.agenteAsociado.telefono }}<br>
+                {{ detalleInmueble.agenteAsociado.email }}
+              </p>
             </div>
           </div>
 
-
-          <!-- Precio -->
           <div>
-            <h6 class="fw-bold text-success mb-2">Precio</h6>
-            <h4 class="fw-bold">
-              {{ detalleInmueble.precio | currency:'COP':'symbol':'1.0-0' }}
-            </h4>
+            <h6 class="fw-bold text-success mb-2">{{ t.inicio.precio }}</h6>
+            <h4 class="fw-bold">{{ detalleInmueble.precio | currency:'COP':'symbol':'1.0-0' }}</h4>
           </div>
-
         </div>
       </div>
     </div>
 
     <div class="text-end mt-3">
-      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
+      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">{{ t.inicio.cerrar }}</button>
     </div>
   </div>
 </div>

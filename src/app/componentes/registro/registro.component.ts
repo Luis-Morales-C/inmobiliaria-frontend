@@ -1,13 +1,15 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core'; // Importado ChangeDetectorRef, OnInit, OnDestroy
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
-import { UserRegistrationRequest } from '../../dto/user-registration-request';
 import { UsersService } from '../../servicios/users.service';
 import { ErrorResponse } from '../../dto/error-response';
 import { Router, RouterLink } from '@angular/router';
 import { RedireccionService } from '../../servicios/redireccion.service';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
@@ -24,30 +26,41 @@ import { environment } from '../../../environments/environment';
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-export class RegistroComponent implements OnInit, OnDestroy { // Implementamos OnInit y OnDestroy
+export class RegistroComponent implements OnInit, OnDestroy {
   registroForm!: FormGroup;
   result = '';
   classResult = 'success';
   verContra = false;
   verConfirmContra = false;
-  captchaToken: string | null = null;
 
-  // Control para el re-renderizado del captcha
+  // Lógica reCAPTCHA y Modo Oscuro (HEAD)
+  captchaToken: string | null = null;
   captchaActivo = true;
   private observer: MutationObserver | null = null;
+
+  // Lógica de Idioma (Accesibilidad)
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private router: Router,
     protected redireccionamiento: RedireccionService,
-    private cdr: ChangeDetectorRef // Inyectamos ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     this.crearFormulario();
   }
 
-  ngOnInit() {
-    // Configuramos el observador para detectar cambios en las clases del body (Modo Oscuro)
+  ngOnInit(): void {
+    // 1. Suscripción a idiomas
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
+    // 2. Observador para cambios de tema (Dark Mode)
     this.observer = new MutationObserver(() => {
       this.recargarCaptcha();
     });
@@ -58,8 +71,9 @@ export class RegistroComponent implements OnInit, OnDestroy { // Implementamos O
     });
   }
 
-  ngOnDestroy() {
-    // Limpiamos el observador al destruir el componente
+  ngOnDestroy(): void {
+    // Limpieza de suscripciones y observadores
+    this.sub?.unsubscribe();
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -98,7 +112,8 @@ export class RegistroComponent implements OnInit, OnDestroy { // Implementamos O
 
   onSubmit(): void {
     if (!this.captchaToken) {
-      this.result = 'Por favor, completa la verificación de seguridad (Captcha).';
+      // Idealmente usar t.registro.errorCaptcha cuando esté disponible
+      this.result = this.t.login?.errorCaptcha || 'Por favor, completa la verificación de seguridad (Captcha).';
       this.classResult = 'text-danger';
       return;
     }
@@ -148,15 +163,14 @@ export class RegistroComponent implements OnInit, OnDestroy { // Implementamos O
   }
 
   mostrarConfirmContrasenia() {
-    this.verConfirmContra=!this.verConfirmContra;
+    this.verConfirmContra = !this.verConfirmContra;
   }
 
   redirigirPoliticaDatosConLocalStorage() {
-    localStorage.setItem('migaPan','registro');
+    localStorage.setItem('migaPan', 'registro');
     this.redireccionamiento.redirigirAPoliticaDatos();
   }
 
-  // Getter para pasar el tema al componente re-captcha
   get temaActual(): 'light' | 'dark' {
     return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
   }

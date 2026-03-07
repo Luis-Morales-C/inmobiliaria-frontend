@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,9 @@ import { UserMenuComponent } from '../user-menu/user-menu.component';
 import { RedireccionService } from '../../servicios/redireccion.service';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
 import {InmuebleResponse} from '../../dto/inmueble-response';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio',
@@ -16,7 +19,7 @@ import {InmuebleResponse} from '../../dto/inmueble-response';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, UserMenuComponent]
 })
-export class InicioComponent implements OnInit, AfterViewInit {
+export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   isLogged = false;
   usuarioConectado = '';
   userEmail: string | null = null;
@@ -24,8 +27,18 @@ export class InicioComponent implements OnInit, AfterViewInit {
   userName: string = '';
   inicioDeUsuario = '';
   propiedadesDestacadas: InmuebleResponse[] = [];// Inicializamos como cadena vacía
+  t: typeof ES;
+  private sub!: Subscription;
 
-  constructor(private authService: AuthService, private router: Router, private mapaService: MapaService,protected redireccionamiento:RedireccionService,protected inmuebleService: InmuebleServiceService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private mapaService: MapaService,
+    protected redireccionamiento:RedireccionService,
+    protected inmuebleService: InmuebleServiceService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.isLogged = this.authService.isAuthenticated();
     // Utilizar decodeTokenRoles para obtener los roles directamente del token
     const rolesArr = this.authService.decodeTokenRoles();
@@ -48,7 +61,15 @@ export class InicioComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     // Si no está autenticado, redirige a la vista de visitante
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/']);

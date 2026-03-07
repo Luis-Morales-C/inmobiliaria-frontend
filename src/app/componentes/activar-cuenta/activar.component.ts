@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import { ActivarCuentaService, ActivationResponse, ResendCodeResponse } from '../../servicios/activar-cuenta.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activar',
@@ -10,7 +13,7 @@ import { ActivarCuentaService, ActivationResponse, ResendCodeResponse } from '..
   templateUrl: './activar.component.html',
   styleUrls: ['./activar.component.css']
 })
-export class ActivarComponent implements OnInit {
+export class ActivarComponent implements OnInit, OnDestroy {
   // Formulario reactivo para la activación
   activationForm: FormGroup;
   // Variables para controlar la UI
@@ -19,12 +22,16 @@ export class ActivarComponent implements OnInit {
   errorMessage = '';
   // Almacenar el email del usuario
   userEmail: string = '';
+  t: typeof ES;
+  private sub!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private activarCuentaService: ActivarCuentaService
+    private activarCuentaService: ActivarCuentaService,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     // Inicializar el formulario con 6 campos para el código de activación
     this.activationForm = this.formBuilder.group({
       digit1: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]')]],
@@ -37,6 +44,10 @@ export class ActivarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     // Intentar obtener el email del usuario del localStorage o de parámetros de la ruta
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state?.['email']) {
@@ -47,6 +58,10 @@ export class ActivarComponent implements OnInit {
       // Recuperar del localStorage si existe
       this.userEmail = localStorage.getItem('pendingActivationEmail') || '';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   /**

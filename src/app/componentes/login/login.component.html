@@ -9,37 +9,47 @@
 <div class="login-container">
   <div class="back-button">
     <button routerLink="/" type="button" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Volver al Inicio
+      <i class="bi bi-arrow-left"></i> {{ t.login.volverInicio }}
     </button>
   </div>
 
   <div class="login-header">
     <h2>EDÉN</h2>
-    <p>Accede a tu cuenta de inmobiliaria</p>
+    <p>{{ t.login.titulo }}</p>
   </div>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <label for="email" class="form-label">EMAIL</label>
-      <input type="text" class="form-control" formControlName="email" id="email" placeholder="Ingresa tu email">
+      <label for="email" class="form-label">{{ t.login.email }}</label>
+      <input type="text" class="form-control" formControlName="email" id="email" [placeholder]="t.login.placeholderEmail">
+
       <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
-        debe de ingresar su correo electronico.
+        {{ t.login.errorEmail }}
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="contrasena" class="form-label">CONTRASEÑA</label>
+      <label for="contrasena" class="form-label">{{ t.login.contrasena }}</label>
       <div class="password-toggle">
-        <input [type]="verContra ? 'text' : 'password'" class="form-control" id="password" formControlName="contrasena" placeholder="Crea una contraseña segura" required>
+        <input [type]="verContra ? 'text' : 'password'"
+               class="form-control"
+               id="password"
+               formControlName="contrasena"
+               [placeholder]="t.login.placeholderContrasena"
+               required>
+
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
           <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
         </span>
       </div>
-      <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched" class="text-danger">debe de ingresar su contraseña.</div>
+
+      <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched" class="text-danger">
+        {{ t.login.errorContrasena }}
+      </div>
     </div>
 
     <div class="forgot-password">
-      <a routerLink="/recuperar">¿Olvidó su contraseña?</a>
+      <a routerLink="/recuperar">{{ t.login.olvidoContrasena }}</a>
     </div>
 
     <div class="mb-3 d-flex justify-content-center">
@@ -52,12 +62,17 @@
     </div>
 
     <button type="submit" [disabled]="loading" class="btn btn-primary w-100">
-      {{ loading ? 'CARGANDO...' : 'LOGIN' }}
+      {{ loading ? t.login.cargando : t.login.boton }}
     </button>
   </form>
 
   <div class="login-footer">
-    <p>¿No tienes una cuenta? <a (click)="redireccionamiento.redirigirARegistro()" style="cursor: pointer;">Regístrate aquí</a></p>
+    <p>
+      {{ t.login.noTieneCuenta }}
+      <a (click)="redireccionamiento.redirigirARegistro()" style="cursor: pointer;">
+        {{ t.login.registrate }}
+      </a>
+    </p>
   </div>
 </div>
 </body>
