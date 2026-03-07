@@ -268,42 +268,17 @@ body {
 
 /* ===== CARRUSEL DOCUMENTOS PDF ===== */
 
-/* Flechas verdes */
-#carouselDocumentos .carousel-control-prev-icon,
-#carouselDocumentos .carousel-control-next-icon {
-  background-image: none; /* quitamos el svg por defecto */
-  width: 35px;
-  height: 35px;
+#carouselDetalle .carousel-control-prev-icon,
+#carouselDetalle .carousel-control-next-icon {
   background-color: var(--primary);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.3s ease;
+  width: 35px;
+  height: 35px;
 }
 
-/* Flecha izquierda */
-#carouselDocumentos .carousel-control-prev-icon::after {
-  content: "‹";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Flecha derecha */
-#carouselDocumentos .carousel-control-next-icon::after {
-  content: "›";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Hover */
-#carouselDocumentos .carousel-control-prev-icon:hover,
-#carouselDocumentos .carousel-control-next-icon:hover {
+#carouselDetalle .carousel-control-prev-icon:hover,
+#carouselDetalle .carousel-control-next-icon:hover {
   background-color: #0daa75;
-  transform: scale(1.1);
 }
 
 /* ===== LABEL PDF ===== */
@@ -446,5 +421,7 @@ body {
   .modal-detalle p {
     font-size: 0.85rem;
   }
+
+
 
 }

@@ -152,29 +152,264 @@
   </section>
 </main>
 
+<!-- Modal de Detalle del inmueble -->
 <div class="modal-overlay" *ngIf="mostrarModalDetalle">
   <div class="modal-container modal-detalle">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5>Detalles del inmueble</h5>
-      <button
-        class="btn-close"
-        aria-label="Close"
-        (click)="cerrarModalDetalles()">
-      </button>
+      <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
     </div>
-  </div>
-</div>
 
-<div class="overlay" *ngIf="mostrarConfirmacionEliminar">
-  <div class="ventana-confirmacion">
-    <p>¿Seguro que quieres eliminar este inmueble?</p>
-    <div class="botones-confirmacion">
-      <button class="btn-verde" (click)="confirmarEliminar()">
-        <i class="fa-solid fa-check"></i>
-      </button>
-      <button class="btn-rojo" (click)="cancelarEliminar()">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+    <div *ngIf="detalleInmueble">
+      <div class="row">
+        <!-- Columna izquierda -->
+        <div class="col-md-6">
+          <!-- Carrusel de imágenes -->
+          <div *ngIf="detalleInmueble.imagenes.length > 0; else imagenPlaceholder">
+
+            <div id="carouselDetalle"
+                 class="carousel slide mb-3"
+                 data-bs-ride="carousel">
+
+              <!-- Indicadores -->
+              <div class="carousel-indicators">
+                <button *ngFor="let img of detalleInmueble.imagenes; let i = index"
+                        type="button"
+                        data-bs-target="#carouselDetalle"
+                        [attr.data-bs-slide-to]="i"
+                        [attr.data-slide-img]="img"
+                        [class.active]="i === 0"
+                        [attr.aria-label]="'Ir al slide ' + (i + 1)">
+                </button>
+              </div>
+
+              <!-- Imágenes -->
+              <div class="carousel-inner">
+                <div *ngFor="let img of detalleInmueble.imagenes; let i = index"
+                     class="carousel-item"
+                     [class.active]="i === 0">
+
+                  <img [src]="img"
+                       class="d-block w-100 rounded"
+                       style="object-fit: cover;"
+                       alt="Imagen {{ i + 1 }}">
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <button class="carousel-control-prev"
+                      type="button"
+                      data-bs-target="#carouselDetalle"
+                      data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+
+              <button class="carousel-control-next"
+                      type="button"
+                      data-bs-target="#carouselDetalle"
+                      data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Imagen por defecto si no hay imágenes -->
+          <ng-template #imagenPlaceholder>
+            <img src="https://via.placeholder.com/600x400"
+                 class="img-fluid mb-3 rounded"
+                 alt="Sin imagen">
+          </ng-template>
+
+          <!-- Documentos: ahora DENTRO de la columna izquierda, debajo de las imágenes -->
+          <div class="mt-4" *ngIf="detalleDocumentos.length > 0; else sinDocumentos">
+            <h6 class="fw-bold text-primary mb-3">Documentos Asociados</h6>
+
+            <div id="carouselDocumentos"
+                 class="carousel slide"
+                 data-bs-ride="carousel">
+
+              <!-- Indicadores -->
+              <div class="carousel-indicators">
+                <button *ngFor="let i of detalleDocumentosIndices" type="button" data-bs-target="#carouselDocumentos" [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
+              </div>
+
+              <!-- Slides -->
+              <div class="carousel-inner text-center">
+
+                <div *ngFor="let doc of detalleDocumentos; let i = index" class="carousel-item" [class.active]="i === 0">
+                  <div class="mb-3">
+                    <i class="fa-solid fa-file-pdf fa-5x" [ngClass]="{
+                          'text-danger': i % 4 === 0,
+                          'text-primary': i % 4 === 1,
+                          'text-success': i % 4 === 2,
+                          'text-warning': i % 4 === 3
+                        }"></i>
+                  </div>
+
+                  <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-outline-primary btn-sm me-2" (click)="abrirDocumento(doc)">Abrir documento</button>
+                  </div>
+
+                  <!-- Label con parte del nombre del archivo -->
+                  <div class="pdf-label"
+                       [title]="getFileNameFromUrl(doc)">
+                    <i class="fa-solid fa-file-lines me-2"></i>
+                    {{ getFileNameFromUrl(doc) | slice:0:35 }}
+                    {{ (getFileNameFromUrl(doc) || '').length > 35 ? '...' : '' }}
+                  </div>
+
+                </div>
+
+              </div>
+
+              <button class="carousel-control-prev"
+                      type="button"
+                      data-bs-target="#carouselDocumentos"
+                      data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+
+              <button class="carousel-control-next"
+                      type="button"
+                      data-bs-target="#carouselDocumentos"
+                      data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Mensaje si no hay documentos -->
+          <ng-template #sinDocumentos>
+            <div class="text-center py-5 border rounded bg-light">
+              <i class="fa-regular fa-face-smile fa-3x text-warning mb-3"></i>
+              <p class="text-muted fw-semibold">No se encontraron resultados</p>
+            </div>
+          </ng-template>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <!-- Datos Generales -->
+          <div class="mb-3 pb-2 border-bottom">
+            <h6 class="fw-bold text-primary mb-3">Datos Generales</h6>
+
+            <div class="row">
+              <div class="col-6">
+                <small class="text-muted">ID</small>
+                <p class="mb-2">{{ detalleInmueble.id }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Estado Transacción</small>
+                <p class="mb-2">{{ detalleInmueble.estadoTransa }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Propietario</small>
+                <p class="mb-2">{{ detalleInmueble.propietario }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Agente Asociado</small>
+                <p class="mb-2">{{ detalleInmueble.agenteAsociado.nombre }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Asesor Legal</small>
+                <p class="mb-2">{{ detalleInmueble.asesorLegal }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Estado del Inmueble</small>
+                <p class="mb-2">{{ detalleInmueble.estado }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Características -->
+          <div class="mb-3 pb-2 border-bottom">
+            <h6 class="fw-bold text-primary mb-3">Características</h6>
+
+            <div class="row">
+              <div class="col-6">
+                <small class="text-muted">Tipo Negocio</small>
+                <p class="mb-2">{{ detalleInmueble.tipoNegocio }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Tipo Inmueble</small>
+                <p class="mb-2">{{ detalleInmueble.tipo }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Medidas</small>
+                <p class="mb-2">{{ detalleInmueble.medidas }} m²</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Habitaciones</small>
+                <p class="mb-2">{{ detalleInmueble.habitaciones }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Baños</small>
+                <p class="mb-2">{{ detalleInmueble.banos }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Parqueaderos</small>
+                <p class="mb-2">{{ detalleInmueble.cantidadParqueaderos }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Ubicación y Contacto -->
+          <div class="mb-3 pb-2 border-bottom">
+            <h6 class="fw-bold text-primary mb-3">Ubicación y Contacto</h6>
+
+            <div class="row">
+              <div class="col-6">
+                <small class="text-muted">Latitud</small>
+                <p class="mb-2">{{ detalleInmueble.latitud }}</p>
+              </div>
+
+              <div class="col-6">
+                <small class="text-muted">Longitud</small>
+                <p class="mb-2">{{ detalleInmueble.longitud }}</p>
+              </div>
+
+              <div class="col-12">
+                <small class="text-muted">Contacto</small>
+                <p class="mb-2">
+                  {{ detalleInmueble.nombreContacto }} <br>
+                  {{ detalleInmueble.telefonoContacto }} <br>
+                  {{ detalleInmueble.correoContacto }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Precio -->
+          <div>
+            <h6 class="fw-bold text-success mb-2">Precio</h6>
+            <h4 class="fw-bold">
+              {{ detalleInmueble.precio | currency:'COP':'symbol':'1.0-0' }}
+            </h4>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
     </div>
   </div>
 </div>

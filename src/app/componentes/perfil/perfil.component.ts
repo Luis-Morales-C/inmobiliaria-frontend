@@ -34,6 +34,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
   documentoIdentidad = '';
   telefono = '';
   rol = '';
+  id='';
   editando = false;
   mostrarConfirmacion: boolean = false;
 
@@ -211,17 +212,47 @@ export class PerfilComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- MODALES Y UTILIDADES ---
   abrirModalDetalles(inmueble: InmuebleResponse): void {
     this.detalleInmueble = inmueble;
     this.currentImageIndex = 0;
     this.currentDocIndex = 0;
     this.mostrarModalDetalle = true;
+    console.log(this.detalleInmueble.documentosImportantes.length)
   }
+
 
   cerrarModalDetalles(): void {
     this.mostrarModalDetalle = false;
     this.detalleInmueble = null;
+    this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
+  }
+
+  // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
+  getFileNameFromUrl(url: string | undefined | null): string {
+    if (!url) return '';
+    try {
+      // Intentar usar el constructor URL para obtener el pathname
+      const u = new URL(url);
+      let filename = u.pathname.split('/').pop() || '';
+      // Quitar parámetros si los hubiera (aunque URL.pathname no incluye query)
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      return decodeURIComponent(filename);
+    } catch (e) {
+      // Fallback sencillo si la URL no es absoluta
+      const lastSlash = url.lastIndexOf('/');
+      let filename = lastSlash !== -1 ? url.substring(lastSlash + 1) : url;
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      try { return decodeURIComponent(filename); } catch { return filename; }
+    }
+  }
+
+  // Abrir documento en el navegador (Cloudinary)
+  abrirDocumento(url: string): void {
+    if (!url) return;
+    window.open(url, '_blank');
   }
 
   get detalleDocumentos(): string[] {
@@ -235,17 +266,47 @@ export class PerfilComponent implements OnInit, OnDestroy {
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-fixed`;
+    alertDiv.className = `alert alert-${type} mt-3`;
     alertDiv.textContent = message;
+    alertDiv.style.position = 'fixed';
+    alertDiv.style.top = '20px';
+    alertDiv.style.right = '20px';
+    alertDiv.style.zIndex = '9999';
+    alertDiv.style.padding = '15px';
+    alertDiv.style.borderRadius = '5px';
+    alertDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+
+    if (type === 'success') {
+      alertDiv.style.backgroundColor = '#d4edda';
+      alertDiv.style.color = '#155724';
+      alertDiv.style.borderColor = '#c3e6cb';
+    } else {
+      alertDiv.style.backgroundColor = '#f8d7da';
+      alertDiv.style.color = '#721c24';
+      alertDiv.style.borderColor = '#f5c6cb';
+    }
+
     document.body.appendChild(alertDiv);
-    setTimeout(() => alertDiv.remove(), 3000);
+
+    // Eliminar la alerta después de 3 segundos
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.parentNode.removeChild(alertDiv);
+      }
+    }, 3000);
   }
 
+
   volver() {
-    if (this.authService.getToken() == null) {
-      this.redireccionamiento.redirigirAHome();
-    } else {
+    if(this.authService.getToken()==null)
+    {
+      this.redireccionamiento.redirigirAHome()
+    }
+    else
+    {
       this.redireccionamiento.redirigirAHomeIngresado();
+      console.log("Redirigiendo a home ingresado"+this.authService.getUserEmail() );
     }
   }
+
 }
