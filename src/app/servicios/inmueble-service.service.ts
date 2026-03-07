@@ -39,5 +39,7 @@ export class InmuebleServiceService {
     return this.http.get<UserResponse[]>(`${this.url}/agente/obtenerTodos`);
   }
 
-
+  public eliminarInmueble(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 }

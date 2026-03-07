@@ -45,6 +45,9 @@ export class PerfilComponent implements OnInit {
   currentImageIndex: number = 0;
   currentDocIndex: number = 0;
 
+  mostrarConfirmacionEliminar: boolean = false;
+  inmuebleAEliminar: InmuebleResponse | null = null;
+
 
   constructor(private authService: AuthService,private userService:UsersService, private fb: FormBuilder,private redireccionamiento: RedireccionService, protected inmuebleService: InmuebleServiceService) {
     this.email = this.authService.getUserEmail() || 'correoUsuario';
@@ -270,6 +273,46 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  preguntarEliminar(inmueble: InmuebleResponse){
+    this.inmuebleAEliminar = inmueble;
+    this.mostrarConfirmacionEliminar = true;
+  }
 
+  cancelarEliminar(){
+    this.mostrarConfirmacionEliminar = false;
+    this.inmuebleAEliminar = null;
+  }
 
+  confirmarEliminar(){
+
+    if(!this.inmuebleAEliminar) return;
+
+    const id = this.inmuebleAEliminar.id;
+
+    this.inmuebleService.eliminarInmueble(id).subscribe({
+
+      next: () => {
+
+        this.propiedades = this.propiedades.filter(
+          p => p.id !== id
+        );
+
+        this.showAlert('success', 'Inmueble eliminado correctamente');
+
+        this.mostrarConfirmacionEliminar = false;
+        this.inmuebleAEliminar = null;
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.showAlert('error','No se pudo eliminar el inmueble');
+
+        this.mostrarConfirmacionEliminar = false;
+      }
+
+    });
+  }
 }
