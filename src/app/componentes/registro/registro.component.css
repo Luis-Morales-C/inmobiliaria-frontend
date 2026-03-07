@@ -1,3 +1,6 @@
+/* ===================================================
+   === VARIABLES Y CONFIGURACIÓN BASE ===
+   =================================================== */
 :root {
   --primary-light: #c7fae9;
   --primary: #10bb82;
@@ -11,17 +14,12 @@ body {
   display: flex;
   justify-content: center;
   padding: 20px;
+  transition: background-color 0.3s ease;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
+/* ===================================================
+   === CONTENEDOR REGISTRO ===
+   =================================================== */
 .register-container {
   background-color: var(--white);
   border-radius: 15px;
@@ -29,20 +27,7 @@ body {
   width: 100%;
   max-width: 500px;
   padding: 30px;
-}
-
-@media (max-width: 768px) {
-  .register-container {
-    padding: 20px;
-    border-radius: 12px;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .register-container {
-    padding: 18px;
-  }
+  transition: all 0.3s ease;
 }
 
 .register-header {
@@ -60,6 +45,15 @@ body {
   color: #6c757d;
 }
 
+/* ===================================================
+   === FORMULARIOS Y ELEMENTOS ===
+   =================================================== */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #333;
+}
+
 .form-control {
   border-radius: 30px;
   padding: 12px 20px;
@@ -70,53 +64,7 @@ body {
 .form-control:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
-}
-
-.btn-primary {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  border-radius: 30px;
-  padding: 12px 20px;
-  font-weight: 600;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.btn-primary:hover {
-  background-color: #0daa75;
-  border-color: #0daa75;
-}
-
-.btn-outline-secondary {
-  border-radius: 30px;
-  padding: 12px 20px;
-  font-weight: 600;
-  width: 100%;
-}
-
-.form-label {
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.register-footer {
-  text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-.register-footer a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.register-footer a:hover {
-  text-decoration: underline;
+  outline: none;
 }
 
 .password-toggle {
@@ -126,10 +74,11 @@ body {
 .password-toggle-icon {
   position: absolute;
   right: 15px;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
   cursor: pointer;
   color: #6c757d;
+  z-index: 10;
 }
 
 .form-check-input {
@@ -147,74 +96,123 @@ body {
   color: #6c757d;
 }
 
-.back-button {
-  margin-bottom: 20px;
-}
-
 .politica-link {
-  color: #10bb82; /* Verde principal */
+  color: var(--primary);
   font-weight: 500;
   text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 2px 5px;
+  border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 .politica-link:hover {
+  background-color: rgba(16, 187, 130, 0.1);
   color: #0c8f65;
-  background-color: rgba(16, 187, 130, 0.15);
-  cursor: pointer;
+}
+
+/* ===================================================
+   === BOTONES Y FOOTER ===
+   =================================================== */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #0daa75;
+}
+
+.btn-outline-secondary {
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.register-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.register-footer a {
+  color: var(--primary);
   text-decoration: none;
+  font-weight: 600;
 }
 
-input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear {
-  display: none;
-}
-
-.password-toggle {
-  position: relative;
-}
-
-.password-toggle-icon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #6c757d;
-  z-index: 10;
-}
+/* ===================================================
+   === RESPONSIVE ===
+   =================================================== */
 @media (max-width: 768px) {
-  .row {
-    margin: 0;
-  }
-
-  .col-md-6 {
-    padding: 0;
-  }
-}
-
-.password-toggle {
-  position: relative;
-}
-
-.password-toggle-icon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #6c757d;
-  z-index: 10;
+  .register-container { padding: 20px; max-width: 100%; }
+  .row { margin: 0; }
+  .col-md-6 { padding: 0; }
 }
 
 @media (max-width: 480px) {
-  .form-check {
-    align-items: flex-start;
-  }
+  .register-container { padding: 18px; }
+  .form-check { align-items: flex-start; }
+  .form-check-label { font-size: 0.85rem; }
+  .register-header h2 { font-size: 1.6rem; }
+}
 
-  .form-check-label {
-    font-size: 0.85rem;
-  }
+/* ===================================================
+   === MODO OSCURO (DARK MODE) ===
+   =================================================== */
+body.dark-mode { background-color: #1a1a2e; }
+
+body.dark-mode .register-container {
+  background-color: #16213e;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .register-header h2,
+body.dark-mode .register-footer a,
+body.dark-mode .politica-link {
+  color: #10bb82;
+}
+
+body.dark-mode .register-header p,
+body.dark-mode .password-toggle-icon,
+body.dark-mode .terms-text,
+body.dark-mode .form-check-label,
+body.dark-mode .register-footer {
+  color: #a0a0a0;
+}
+
+body.dark-mode .form-control {
+  background-color: #1a1a2e;
+  border: 1px solid #0f3460;
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-label { color: #e0e0e0; }
+
+body.dark-mode .btn-primary {
+  background-color: #10bb82;
+  border-color: #10bb82;
+  color: #1a1a2e;
+}
+
+body.dark-mode .btn-outline-secondary {
+  background-color: #0f3460;
+  border-color: #0f3460;
+  color: #e0e0e0;
+}
+
+body.dark-mode .register-footer { border-top: 1px solid #0f3460; }
+
+body.dark-mode .alert-info {
+  background-color: #0f3460;
+  border-color: #10bb82;
+  color: #e0e0e0;
 }

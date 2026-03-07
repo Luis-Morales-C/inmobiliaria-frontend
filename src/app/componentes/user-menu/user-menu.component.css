@@ -2,3 +2,47 @@
   min-width: 180px;
 }
 
+/* ===================================================
+   === MODO OSCURO PARA USER MENU ===
+   =================================================== */
+
+/* 1. Ajuste del botón principal (el que muestra el nombre) */
+:host-context(body.dark-mode) .btn-outline-primary {
+  color: #000000 !important;
+  border-color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .btn-outline-primary:hover {
+  background-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+/* 2. El contenedor del menú desplegable */
+:host-context(body.dark-mode) .dropdown-menu {
+  background-color: #16213e !important;
+  border: 1px solid #0f3460 !important;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4) !important;
+}
+
+/* 3. Los items del menú */
+:host-context(body.dark-mode) .dropdown-item {
+  color: #e0e0e0 !important;
+  transition: all 0.2s;
+}
+
+/* 4. Efecto Hover en los items */
+:host-context(body.dark-mode) .dropdown-item:hover {
+  background-color: #10bb82 !important;
+  color: #16213e !important;
+}
+
+/* 5. La línea divisoria */
+:host-context(body.dark-mode) .dropdown-divider {
+  border-top: 1px solid #0f3460 !important;
+  opacity: 1;
+}
+
+/* 6. Ajuste específico para el botón de Cerrar Sesión (por si tiene estilos distintos) */
+:host-context(body.dark-mode) button.dropdown-item {
+  background-color: transparent;
+}
