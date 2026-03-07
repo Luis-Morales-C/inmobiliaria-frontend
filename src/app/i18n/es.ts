@@ -82,6 +82,8 @@ export const ES = {
     volverInicio: 'Volver al Inicio',
     errorEmail: 'debe de ingresar su correo electronico.',
     errorContrasena: 'debe de ingresar su contraseña.',
+    cargando: 'cargando',
+    errorCaptcha: 'error en el captcha'
   },
 
   // === REGISTRO ===
@@ -214,6 +216,7 @@ export const ES = {
     placeholderApellido: 'Apellido',
     placeholderTelefono: 'Teléfono',
     placeholderDocumento: 'Documento de identidad',
+    actualizacionExitosa: 'Actualizacion de perfil exitoso'
   },
 
   // === ACTIVAR CUENTA ===
@@ -247,6 +250,7 @@ export const ES = {
     volver: 'Volver',
     errorCorreo: 'El correo es requerido',
     alertaCorreo: 'Por favor ingresa tu correo electrónico.',
+    errorCaptcha: 'Error en el captcha'
   },
 
   // === CAMBIAR CONTRASEÑA ===
@@ -299,6 +303,8 @@ export const ES = {
     errorTipoNegocio: 'Debe seleccionar un tipo de negocio.',
     errorTipoInmueble: 'Debe seleccionar un tipo de inmueble.',
     errorPrecio: 'El precio es obligatorio.',
+    exito: 'exitoso',
+    error: 'error'
   },
 
   // === VENTANA AGENTE ===
