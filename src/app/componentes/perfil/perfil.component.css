@@ -554,15 +554,112 @@ body {
 }
 
 
-/* =====================================
-   MODO OSCURO PARA EL CARRUSEL
-===================================== */
+/* === MODO OSCURO PARA PERFIL DE USUARIO === */
 
-:host-context(body.dark-mode) #carouselDetalle .carousel-control-prev-icon,
-:host-context(body.dark-mode) #carouselDetalle .carousel-control-next-icon {
-  background-color: #10bb82;
+/* Fondo general de los contenedores blancos */
+:host-context(body.dark-mode) .perfil-header,
+:host-context(body.dark-mode) .perfil-detalles,
+:host-context(body.dark-mode) .card,
+:host-context(body.dark-mode) .btn-volver,
+:host-context(body.dark-mode) .ventana-confirmacion {
+  background-color: #16213e !important; /* Azul oscuro del login */
+  color: #e0e0e0 !important;
+  border-color: #0f3460 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }
 
-:host-context(body.dark-mode) .carousel-indicators button {
-  background-color: #10bb82;
+/* Títulos en color verde esmeralda */
+:host-context(body.dark-mode) h1,
+:host-context(body.dark-mode) h2,
+:host-context(body.dark-mode) h3,
+:host-context(body.dark-mode) .perfil-detalles h2,
+:host-context(body.dark-mode) .perfil-propiedades h2 {
+  color: #10bb82 !important;
+}
+
+/* Recuadros de información personal (grid) */
+:host-context(body.dark-mode) .info-grid div {
+  background-color: #1a1a2e !important; /* Un tono más oscuro para contraste interno */
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460;
+}
+
+/* Textos secundarios y fuertes */
+:host-context(body.dark-mode) .info-grid strong,
+:host-context(body.dark-mode) .card-body p,
+:host-context(body.dark-mode) .btn-volver {
+  color: #e0e0e0 !important;
+}
+
+/* Campos de edición (inputs) */
+:host-context(body.dark-mode) .campo-editar {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #ffffff !important;
+}
+
+:host-context(body.dark-mode) .campo-editar:focus {
+  border-color: #10bb82 !important;
+  box-shadow: 0 0 6px rgba(16, 187, 130, 0.3) !important;
+}
+
+/* Cuerpo de las tarjetas de propiedades */
+:host-context(body.dark-mode) .card-body {
+  background-color: #16213e !important;
+}
+
+/* Ajuste para el botón volver */
+:host-context(body.dark-mode) .btn-volver:hover {
+  background-color: #0f3460 !important;
+}
+
+/* Mensaje de "No tienes propiedades" */
+:host-context(body.dark-mode) .no-propiedades p,
+:host-context(body.dark-mode) .no-propiedades i {
+  color: #6c757d !important;
+}
+
+/* Ventana de confirmación en modo oscuro (Fusión Feature) */
+:host-context(body.dark-mode) .ventana-confirmacion {
+  background-color: #16213e !important;
+  color: white !important;
+  border: 2px solid #10bb82 !important;
+}
+
+/* ===== FONDO GENERAL MODO OSCURO ===== */
+
+:host-context(body.dark-mode) {
+  background-color: #0f172a;
+}
+
+:host-context(body.dark-mode) body {
+  background-color: #0f172a !important;
+}
+
+
+/* CONTENEDOR PRINCIPAL */
+
+:host-context(body.dark-mode) .perfil {
+  background-color: #16213e !important;
+}
+
+
+/* TARJETAS */
+
+:host-context(body.dark-mode) .property-card {
+  background-color: #16213e !important;
+}
+
+
+/* MODALES */
+
+:host-context(body.dark-mode) .modal-container {
+  background-color: #16213e !important;
+}
+
+
+/* VENTANA CONFIRMACIÓN */
+
+:host-context(body.dark-mode) .ventana-confirmacion {
+  background-color: #16213e !important;
 }
