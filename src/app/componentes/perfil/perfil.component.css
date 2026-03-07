@@ -1,23 +1,203 @@
-:root {
-  --primary-light: #c7fae9;
-  --primary: #10bb82;
-  --white: #ffffff;
-}
+/* perfil-usuario.component.css */
 
-/* =========================
-   GENERAL
-========================= */
+/* Body y contenedor principal */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7f9fb;
+  color: #333;
+  margin: 0;
 }
 
 .container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Header del perfil */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.perfil-info h1 {
+  margin: 0;
+}
+
+/* Botones */
+.btn-primary, .btn-verde, .btn-rojo {
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Botones principales */
+.btn-primary {
+  background: #00A36C;
+  color: white;
+  padding: 6px 16px;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background: #008f5e;
+}
+
+/* Botones adicionales */
+.btn-verde {
+  background: #00A36C;
+  color: white;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.btn-verde:hover {
+  background: #008f5e;
+}
+
+.btn-rojo {
+  background: #e53935;
+  color: white;
+  padding: 10px 20px;
+}
+
+.btn-rojo:hover {
+  background: #c62828;
+}
+
+/* Información personal */
+.perfil-detalles {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-top: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.perfil-detalles h2 {
+  margin-top: 0;
+  color: #00A36C;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.info-grid div {
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+/* Propiedades */
+.perfil-propiedades {
   margin-top: 30px;
 }
 
-/* =========================
-   BOTÓN VOLVER
-========================= */
+.perfil-propiedades h2 {
+  color: #00A36C;
+}
+
+.propiedades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-body h3 {
+  margin: 0 0 10px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.verde { background: #00A36C; }
+.azul { background: #2196f3; }
+
+/* Mensaje cuando no hay propiedades */
+.no-propiedades {
+  text-align: center;
+  font-size: 2rem;
+  color: #999;
+  padding: 40px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .avatar {
+    margin-bottom: 20px;
+  }
+}
+
+/* Campos en modo edición */
+.campo-editar {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid #ccc; /* borde gris claro */
+  background-color: #f2f2f2; /* fondo gris claro */
+  color: #000; /* texto negro */
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Efecto al hacer foco */
+.campo-editar:focus {
+  background-color: #e0e0e0; /* un poco más oscuro al hacer clic */
+  border-color: #999; /* gris medio en foco */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); /* sombra sutil negra */
+}
+
+
 .btn-volver {
   display: inline-block;
   margin-bottom: 20px;
@@ -27,217 +207,102 @@ body {
   color: #333;
   background-color: #fff;
   border: 2px solid #ccc;
-  border-radius: 30px;
+  border-radius: 30px; /* bordes redondeados */
   cursor: pointer;
   transition: all 0.3s ease;
-  text-decoration: none;
 }
 
-.btn-volver:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+btn-volver:hover {
+  background-color: #f5f5f5;
+  border-color: #999;
 }
 
-/* =========================
-   PERFIL
-========================= */
-.perfil {
-  background: #fff;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+.btn-volver:active {
+  transform: scale(0.98);
 }
 
-.perfil-header {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
+.btn-volver i {
+  margin-right: 8px;
 }
 
-.avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 4px solid var(--primary);
-  object-fit: cover;
-}
-
-.perfil-info h1 {
-  font-weight: 700;
-  color: var(--primary);
-}
-
-/* =========================
-   CAMPOS EDITAR
-========================= */
-.nombre-apellido-editar {
-  display: flex;
-  gap: 10px;
-}
-
-.campo-editar {
-  border-radius: 30px;
-  border: 1px solid #ddd;
-  padding: 6px 12px;
-}
-
-/* =========================
-   GRID INFORMACIÓN
-========================= */
-.info-grid {
+.propiedades-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap: 20px;
-  margin-top: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
-.info-grid strong {
-  color: #555;
-}
+/* === MODO OSCURO PARA PERFIL DE USUARIO === */
 
-.info-grid p {
-  margin: 5px 0 0 0;
-  font-weight: 500;
-}
-
-/* =========================
-   BOTONES PERFIL
-========================= */
-.btn-verde {
-  background-color: var(--primary);
-  border: none;
-  color: white;
-  border-radius: 30px;
-  padding: 8px 18px;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.btn-verde:hover { background-color: #0daa75; }
-
-.btn-rojo {
-  background-color: #dc3545;
-  border: none;
-  color: white;
-  border-radius: 30px;
-  padding: 8px 18px;
-  font-weight: 600;
-}
-
-.btn-rojo:hover { background-color: #c82333; }
-
-.botones-edicion {
-  display: flex;
-  gap: 10px;
-}
-
-/* =========================
-   SECCIÓN PROPIEDADES
-========================= */
-.perfil-propiedades {
-  margin-top: 40px;
-}
-
-.perfil-propiedades h2 {
-  color: var(--primary);
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-/* =========================
-   TARJETAS DE INMUEBLE (REUTILIZADAS)
-========================= */
-.property-card {
-  background-color: var(--white);
-  border-radius: 20px;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-  position: relative;
-}
-
-.property-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-}
-
-.property-card img {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.property-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: var(--primary);
-  color: white;
-  padding: 5px 15px;
-  border-radius: 30px;
-  font-weight: 600;
-}
-
-/* ===================================================
-   === MODO OSCURO (UNIFICADO) ===
-   =================================================== */
-
-body.dark-mode {
-  background-color: #1a1a2e;
-  color: #e0e0e0;
-}
-
-body.dark-mode .perfil,
-body.dark-mode .perfil-header,
-body.dark-mode .card,
-body.dark-mode .modal-container,
-body.dark-mode .modal-detalle,
-body.dark-mode .btn-volver {
-  background-color: #16213e !important;
+/* Fondo general de los contenedores blancos */
+:host-context(body.dark-mode) .perfil-header,
+:host-context(body.dark-mode) .perfil-detalles,
+:host-context(body.dark-mode) .card,
+:host-context(body.dark-mode) .btn-volver {
+  background-color: #16213e !important; /* Azul oscuro del login */
   color: #e0e0e0 !important;
   border-color: #0f3460 !important;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
 }
 
-body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
-body.dark-mode .card-title,
-body.dark-mode .property-price {
+/* Títulos en color verde esmeralda */
+:host-context(body.dark-mode) h1,
+:host-context(body.dark-mode) h2,
+:host-context(body.dark-mode) h3,
+:host-context(body.dark-mode) .perfil-detalles h2,
+:host-context(body.dark-mode) .perfil-propiedades h2 {
   color: #10bb82 !important;
 }
 
-body.dark-mode .info-grid strong {
-  color: #a0a0a0 !important;
+/* Recuadros de información personal (grid) */
+:host-context(body.dark-mode) .info-grid div {
+  background-color: #1a1a2e !important; /* Un tono más oscuro para contraste interno */
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460;
 }
 
-body.dark-mode .info-grid div {
-  background-color: #1a1a2e !important;
-  padding: 10px;
-  border-radius: 10px;
+/* Textos secundarios y fuertes */
+:host-context(body.dark-mode) .info-grid strong,
+:host-context(body.dark-mode) .card-body p,
+:host-context(body.dark-mode) .btn-volver {
+  color: #e0e0e0 !important;
 }
 
-body.dark-mode .campo-editar {
+/* Campos de edición (inputs) */
+:host-context(body.dark-mode) .campo-editar {
   background-color: #1a1a2e !important;
   border: 1px solid #0f3460 !important;
   color: #ffffff !important;
 }
 
-body.dark-mode .property-card {
+:host-context(body.dark-mode) .campo-editar:focus {
+  border-color: #10bb82 !important;
+  box-shadow: 0 0 6px rgba(16, 187, 130, 0.3) !important;
+}
+
+/* Cuerpo de las tarjetas de propiedades */
+:host-context(body.dark-mode) .card-body {
   background-color: #16213e !important;
 }
 
-body.dark-mode .pdf-label {
-  background: #1a1a2e;
-  color: #10bb82;
+/* Ajuste para el botón volver */
+:host-context(body.dark-mode) .btn-volver:hover {
+  background-color: #0f3460 !important;
 }
 
-/* ===================================================
-   === RESPONSIVE ===
-   =================================================== */
-@media (max-width: 768px) {
-  .perfil-header { flex-direction: column; text-align: center; }
-  .avatar { width: 90px; height: 90px; }
-  .modal-detalle { width: 95%; height: 95vh; padding: 18px; }
-  .modal-detalle .row { flex-direction: column; }
+/* Mensaje de "No tienes propiedades" */
+:host-context(body.dark-mode) .no-propiedades p,
+:host-context(body.dark-mode) .no-propiedades i {
+  color: #6c757d !important;
 }
+
+/* Ventana de confirmación (si aparece) */
+:host-context(body.dark-mode) .ventana-confirmacion {
+  background-color: #16213e !important;
+  color: white !important;
+  border: 2px solid #10bb82 !important;
+}
+
+
+
+
+
