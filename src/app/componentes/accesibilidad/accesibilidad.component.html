@@ -28,24 +28,7 @@
     />
   </div>
 
-  <!-- Switch de alto contraste -->
-  <div class="switch-container">
-    <label for="contrasteSwitch">{{ t.accesibilidad.altoContraste }}
-      <i class="fa-solid fa-circle-half-stroke"></i>
-    </label>
-    <label class="switch">
-      <input
-        id="contrasteSwitch"
-        type="checkbox"
-        [(ngModel)]="altoContraste"
-        (change)="CambiarContraste()"
-      />
-      <span class="slider"></span>
-    </label>
-  </div>
 
-  <!-- Estado visual -->
-  <p>{{ t.accesibilidad.contraste }}: {{ altoContraste ? t.accesibilidad.activado : t.accesibilidad.desactivado }}</p>
 
   <!-- Switch de modo oscuro -->
   <div class="switch-container">
