@@ -415,4 +415,23 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
     </div>
   </div>
+
+</div>
+
+<div class="overlay" *ngIf="mostrarConfirmacionEliminar">
+  <div class="ventana-confirmacion">
+
+    <p>¿Seguro que deseas eliminar este inmueble?</p>
+
+    <div class="botones-confirmacion">
+
+      <button class="btn-verde" (click)="confirmarEliminar()">
+        <i class="fa-solid fa-check"></i>
+      </button>
+
+      <button class="btn-rojo" (click)="cancelarEliminar()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
 </div>

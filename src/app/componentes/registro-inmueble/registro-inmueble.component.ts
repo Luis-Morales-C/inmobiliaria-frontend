@@ -135,7 +135,11 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
       habitaciones: ['', [Validators.required, Validators.min(1)]],
       banos: ['', [Validators.required, Validators.min(1)]],
       cantidadParqueaderos: ['', [Validators.required, Validators.min(0)]],
-      medidas: ['', [Validators.required, Validators.min(1)]],
+      medidas: ['', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+$/),
+        Validators.min(1)
+      ]],
       descripcion: ['', [Validators.required, Validators.maxLength(255)]],
       nombreContacto: ['', [Validators.required, Validators.minLength(3)]],
       telefonoContacto: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],

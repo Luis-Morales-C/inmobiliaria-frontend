@@ -228,6 +228,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
     this.currentDocIndex = 0;
   }
 
+
   // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
   getFileNameFromUrl(url: string | undefined | null): string {
     if (!url) return '';
