@@ -258,29 +258,34 @@ return localStorage.getItem(this.TOKEN_KEY);
   }
 
 
-  /**
-   * Envía la solicitud para generar un código de recuperación.
-   * Ahora incluye el recaptchaToken en el cuerpo de la solicitud.
-   */
   enviarCodigoRecuperacion(email: string, recaptchaToken: string): Observable<string> {
     const url = `${this.url}/recuperar`;
-
-    // Creamos el objeto que coincide con tu SolicitarRecuperacionDto del backend
-    const body = {
-      email: email,
-      recaptchaToken: recaptchaToken
-    };
+    const body = { email, recaptchaToken };
 
     return this.http.post(url, body, { responseType: 'text' }).pipe(
       tap(() => {
-        this.showAlert('success', 'Si el correo está registrado, recibirás un código.');
+        // Este mensaje solo saldrá si el servidor responde 200 OK
+        this.showAlert('success', 'Se ha enviado un código a tu correo.');
       }),
       catchError(error => {
         console.error('Error en recuperación:', error);
-        // Intentamos extraer el mensaje de error del backend si existe
-        const msg = error.error || 'Error al solicitar recuperación';
-        this.showAlert('error', msg);
-        return throwError(() => error);
+
+        let errorMsg = 'Error al solicitar recuperación';
+
+        // Intentamos extraer el mensaje real del backend (ValueConflictException)
+        if (error.error) {
+          try {
+            // Si el backend envía un JSON como string, lo parseamos
+            const errorBody = JSON.parse(error.error);
+            errorMsg = errorBody.message || errorMsg;
+          } catch (e) {
+            // Si no es un JSON, puede que el mensaje venga directo
+            errorMsg = error.error || errorMsg;
+          }
+        }
+
+        this.showAlert('error', errorMsg);
+        return throwError(() => errorMsg);
       })
     );
   }

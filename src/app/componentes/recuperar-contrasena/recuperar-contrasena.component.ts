@@ -79,6 +79,7 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
 
   recargarCaptcha() {
     this.captchaActivo = false;
+    this.captchaToken = null; // Limpiamos el token anterior para que no bloquee
     this.cdr.detectChanges();
     this.captchaActivo = true;
     this.cdr.detectChanges();
@@ -94,6 +95,8 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
 
   onCaptchaResolved(token: string | null) {
     this.captchaToken = token;
+    // Si resuelve el captcha, quitamos la alerta visual de error
+    if (token) this.mostrarAlerta = false;
   }
 
   solicitarCodigo() {
@@ -108,6 +111,8 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
     const email = this.form.value.email!;
 
+
+
     this.authService.enviarCodigoRecuperacion(email, this.captchaToken)
       .subscribe({
         next: () => {
@@ -116,8 +121,11 @@ export class RecuperarContrasenaComponent implements OnInit, OnDestroy {
           this.router.navigate(['/cambiar-contrasena']);
         },
         error: () => {
-          this.isSubmitting = false;
-          this.captchaToken = null; // Resetear por seguridad
+          // --- SOLUCIÓN AL BLOQUEO ---
+          this.isSubmitting = false; // Habilitamos el botón de nuevo
+          this.captchaToken = null;  // Reseteamos el token inválido
+          this.recargarCaptcha();    // Forzamos al usuario a resolver un nuevo captcha
+          this.cdr.detectChanges();
         }
       });
   }
