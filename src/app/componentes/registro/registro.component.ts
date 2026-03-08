@@ -33,12 +33,15 @@ export class RegistroComponent implements OnInit, OnDestroy {
   verContra = false;
   verConfirmContra = false;
 
-  // Lógica reCAPTCHA y Modo Oscuro (HEAD)
+  // Nueva variable para controlar el estado del botón
+  cargando = false;
+
+  // Lógica reCAPTCHA y Modo Oscuro
   captchaToken: string | null = null;
   captchaActivo = true;
   private observer: MutationObserver | null = null;
 
-  // Lógica de Idioma (Accesibilidad)
+  // Lógica de Idioma
   t: typeof ES;
   private sub!: Subscription;
 
@@ -55,12 +58,10 @@ export class RegistroComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // 1. Suscripción a idiomas
     this.sub = this.idiomaService.traducciones$.subscribe(t => {
       this.t = t;
     });
 
-    // 2. Observador para cambios de tema (Dark Mode)
     this.observer = new MutationObserver(() => {
       this.recargarCaptcha();
     });
@@ -72,7 +73,6 @@ export class RegistroComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpieza de suscripciones y observadores
     this.sub?.unsubscribe();
     if (this.observer) {
       this.observer.disconnect();
@@ -81,6 +81,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
   recargarCaptcha() {
     this.captchaActivo = false;
+    this.captchaToken = null; // Limpiar token al recargar
     this.cdr.detectChanges();
     this.captchaActivo = true;
     this.cdr.detectChanges();
@@ -111,43 +112,56 @@ export class RegistroComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    // 1. Validar si el captcha está resuelto
     if (!this.captchaToken) {
-      // Idealmente usar t.registro.errorCaptcha cuando esté disponible
-      this.result = this.t.login?.errorCaptcha || 'Por favor, completa la verificación de seguridad (Captcha).';
-      this.classResult = 'text-danger';
+      this.result = this.t.login?.errorCaptcha || 'Por favor, completa la verificación (Captcha).';
+      this.classResult = 'text-danger text-center fw-bold';
       return;
     }
 
+    // 2. Bloquear botón y limpiar mensajes anteriores
+    this.cargando = true;
+    this.result = '';
+
     const newUser: any = {
-      nombre: this.registroForm.get('nombre')?.value,
-      apellido: this.registroForm.get('apellido')?.value,
-      documentoIdentidad: this.registroForm.get('documentoIdentidad')?.value,
-      telefono: this.registroForm.get('telefono')?.value,
-      email: this.registroForm.get('email')?.value,
-      contrasena: this.registroForm.get('contrasena')?.value,
+      ...this.registroForm.value,
       recaptchaToken: this.captchaToken
     };
 
+
+
     this.usersService.registrar(newUser).subscribe({
       next: (data) => {
-        this.result = 'Usuario registrado correctamente. Redirigiendo a la activación de cuenta...';
-        this.classResult = 'success';
+        this.cargando = false;
+        this.result = 'Usuario registrado correctamente. Redirigiendo...';
+        this.classResult = 'text-success text-center fw-bold';
+
         const userEmail = this.registroForm.get('email')?.value;
         localStorage.setItem('pendingActivationEmail', userEmail);
+
         setTimeout(() => {
           this.router.navigate(['/activar'], { state: { email: userEmail } });
         }, 2000);
       },
       error: (error) => {
-        this.captchaToken = null;
-        if (error.error && error.error instanceof Array) {
-          this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
-        } else if (error.error && error.error.message) {
+        // --- LIBERAR BLOQUEO ---
+        this.cargando = false;
+        this.recargarCaptcha(); // El token ya no sirve si el backend dio error
+
+        this.classResult = 'text-danger text-center fw-bold';
+
+        // Capturar el mensaje real de ValueConflictException o error genérico
+        if (error.error && error.error.message) {
           this.result = error.error.message;
+        } else if (error.error && error.error instanceof Array) {
+          this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
+        } else if (typeof error.error === 'string') {
+          this.result = error.error;
         } else {
-          this.result = 'Error al registrar el usuario. Por favor, inténtelo más tarde.';
+          this.result = 'Error al registrar el usuario. El correo o cédula ya podrían estar en uso.';
         }
-        this.classResult = 'text-danger';
+
+        this.cdr.detectChanges();
       }
     });
   }
