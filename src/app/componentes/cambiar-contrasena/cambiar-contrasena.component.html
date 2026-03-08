@@ -44,7 +44,7 @@
       <div class="password-toggle">
         <input [type]="verContra ? 'text' : 'password'" class="form-control" formControlName="nuevaContrasena" [placeholder]="t.cambiarContrasena.placeholderNueva">
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
-
+           <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
         </span>
       </div>
       <div *ngIf="form.get('nuevaContrasena')?.invalid && (form.get('nuevaContrasena')?.touched || submitAttempted)" class="text-danger">
@@ -60,6 +60,7 @@
       <div class="password-toggle">
         <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" formControlName="confirmarContrasena" [placeholder]="t.cambiarContrasena.placeholderConfirmar">
         <span class="password-toggle-icon" (click)="mostrarConfirmContrasenia()">
+          <i class="bi" [ngClass]="verConfirmContra ? 'bi-eye-slash' : 'bi-eye'"></i>
         </span>
       </div>
       <div *ngIf="(form.get('confirmarContrasena')?.invalid && (form.get('confirmarContrasena')?.touched || submitAttempted)) || (form.errors?.['passwordsMismatch'] && submitAttempted)" class="text-danger">

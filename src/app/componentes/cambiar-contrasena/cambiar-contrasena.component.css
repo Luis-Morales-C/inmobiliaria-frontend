@@ -212,5 +212,36 @@
   border-top: 1px solid #0f3460 !important;
 }
 
+/* Posicionamiento del icono */
+.password-toggle {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-icon i {
+  font-size: 1.2rem;
+}
+
+/* Ajuste para el Modo Oscuro */
+:host-context(body.dark-mode) .password-toggle-icon {
+  color: #10bb82 !important; /* Verde esmeralda de EDÉN */
+}
+
+/* Ocultar el ojo nativo de Edge para que no se duplique */
+input::-ms-reveal {
+  display: none;
+}
+
 
 

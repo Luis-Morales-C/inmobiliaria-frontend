@@ -209,3 +209,7 @@ body.dark-mode .login-footer {
 body.dark-mode .text-danger {
   color: #ff6b6b !important;
 }
+
+input::-ms-reveal {
+  display: none;
+}
