@@ -34,6 +34,10 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
   t: typeof ES;
   private sub!: Subscription;
 
+  isLoading = false;
+
+
+
   constructor(
     protected inmuebleService: InmuebleServiceService,
     protected authservice: AuthService,
@@ -70,6 +74,8 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
   }
 
   aceptarProceso(inmueble: InmuebleResponse): void {
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     let nuevoEstado = 'EN_PROCESO';
@@ -101,6 +107,8 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
 
 
   cancelarProceso(inmueble: InmuebleResponse): void {
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     let nuevoEstado = 'NOADMITIDA';
@@ -119,6 +127,9 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
   }
 
   deshacerRechazo(inmueble: InmuebleResponse): void {
+
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     this.inmuebleService.actualizarEstadoTransaccion(inmueble.id, 'PENDIENTE').subscribe({
@@ -189,28 +200,6 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
     this.detalleInmueble = null;
     this.currentImageIndex = 0;
     this.currentDocIndex = 0;
-  }
-
-  // Avanzar imagen
-  nextImage(): void {
-    const imgs = this.detalleImagenes;
-    if (!imgs.length) return;
-    this.currentImageIndex = (this.currentImageIndex + 1) % imgs.length;
-  }
-
-  // Retroceder imagen
-  prevImage(): void {
-    const imgs = this.detalleImagenes;
-    if (!imgs.length) return;
-    this.currentImageIndex = (this.currentImageIndex - 1 + imgs.length) % imgs.length;
-  }
-
-  // Seleccionar imagen por índice (por ejemplo al hacer click en miniatura)
-  selectImage(index: number): void {
-    if (index < 0) index = 0;
-    const imgs = this.detalleImagenes;
-    if (index >= imgs.length) index = imgs.length - 1;
-    this.currentImageIndex = index;
   }
 
   // Ejecutar la transferencia
