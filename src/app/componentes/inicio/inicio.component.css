@@ -272,6 +272,6 @@ body {
 }
 
 :host-context(body.dark-mode) .btn-outline-primary {
-  color: #10bb82 !important; /* Corregido de 000000 a primary para que se vea */
+  color: #000000 !important; /* Corregido de 000000 a primary para que se vea */
   border-color: #10bb82 !important;
 }
