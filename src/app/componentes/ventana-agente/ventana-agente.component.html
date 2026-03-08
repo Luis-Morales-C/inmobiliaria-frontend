@@ -51,8 +51,6 @@
           </span>
           </div>
 
-
-
           <!-- Botones de acción -->
           <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
             <!-- Aceptar y Cancelar: solo si está PENDIENTE -->
@@ -260,14 +258,14 @@
 
                   <button class="carousel-control-prev"
                           type="button"
-                          data-bs-target="#carouselDocumentos"
+                          data-bs-target="#carouselDetalles"
                           data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>
                   </button>
 
                   <button class="carousel-control-next"
                           type="button"
-                          data-bs-target="#carouselDocumentos"
+                          data-bs-target="#carouselDetalles"
                           data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
                   </button>
@@ -304,17 +302,17 @@
 
                   <div class="col-6">
                     <small class="text-muted">Propietario</small>
-                    <p class="mb-2">{{ detalleInmueble.propietario }}</p>
+                    <p class="mb-2">{{ detalleInmueble.propietario.nombre + ' ' + detalleInmueble.propietario.apellido}}</p>
                   </div>
 
                   <div class="col-6">
                     <small class="text-muted">Agente Asociado</small>
-                    <p class="mb-2">{{ detalleInmueble.agenteAsociado.nombre }}</p>
+                    <p class="mb-2">{{ detalleInmueble.agenteAsociado.nombre+ ' ' + detalleInmueble.agenteAsociado.apellido }}</p>
                   </div>
 
                   <div class="col-6">
                     <small class="text-muted">Asesor Legal</small>
-                    <p class="mb-2">{{ detalleInmueble.asesorLegal }}</p>
+                    <p class="mb-2">{{  detalleInmueble.asesorLegal.nombre+ ' ' + detalleInmueble.asesorLegal.apellido }}</p>
                   </div>
 
                   <div class="col-6">

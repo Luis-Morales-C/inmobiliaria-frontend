@@ -1,4 +1,4 @@
-export interface AgenteResponse {
+export interface AsesorResponse {
   id: number;
   nombre: string;
   email: string;

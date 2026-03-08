@@ -158,7 +158,7 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
 
     // Llamar al servicio para obtener la lista de usuarios habilitados
     console.log("Enviando"+inmueble.propietario);
-    this.userService.obtenerTodosLosUsuariosHabilitados(inmueble.propietario,<string>this.authservice.getToken()).subscribe({
+    this.userService.obtenerTodosLosUsuariosHabilitados(inmueble.propietario.id,<string>this.authservice.getToken()).subscribe({
       next: (usuarios: UsuarioResponseDto[]) => {
         this.listaUsuarios = usuarios;
         console.log('Usuarios habilitados cargados:', usuarios);
