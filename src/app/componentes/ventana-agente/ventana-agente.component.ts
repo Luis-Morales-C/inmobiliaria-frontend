@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, OnDestroy, Output} from '@angular/core';
 import {CommonModule, CurrencyPipe} from '@angular/common';
 import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
 import {InmuebleResponse} from '../../dto/inmueble-response';
@@ -8,6 +8,9 @@ import {AuthService} from '../../servicios/auth.service';
 import {UsersService} from '../../servicios/users.service';
 import {UsuarioResponseDto} from '../../dto/usuario-response.dto';
 import {RedireccionService} from '../../servicios/redireccion.service';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inmuebles-proceso',
@@ -21,19 +24,39 @@ import {RedireccionService} from '../../servicios/redireccion.service';
     // UserMenuComponent removed because it's not used in template
   ]
 })
-export class VentanaAgenteComponent implements OnInit {
+export class VentanaAgenteComponent implements OnInit, OnDestroy {
   @Output() logout = new EventEmitter<void>();
   userName: string = '';
   propiedadesDestacadas: InmuebleResponse[] = [];
   propiedadSeleccionada: InmuebleResponse | null = null;
   correoUsuario = localStorage.getItem('userEmail') || '';
   isLogged = false;
+  t: typeof ES;
+  private sub!: Subscription;
 
-  constructor(protected inmuebleService: InmuebleServiceService,protected authservice: AuthService,protected userService:UsersService, protected redireccionamiento: RedireccionService) {
+  isLoading = false;
+
+
+
+  constructor(
+    protected inmuebleService: InmuebleServiceService,
+    protected authservice: AuthService,
+    protected userService:UsersService,
+    protected redireccionamiento: RedireccionService,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.isLogged=this.authservice.isAuthenticated();
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
 
     if(this.isLogged)
     {
@@ -51,6 +74,8 @@ export class VentanaAgenteComponent implements OnInit {
   }
 
   aceptarProceso(inmueble: InmuebleResponse): void {
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     let nuevoEstado = 'EN_PROCESO';
@@ -82,6 +107,8 @@ export class VentanaAgenteComponent implements OnInit {
 
 
   cancelarProceso(inmueble: InmuebleResponse): void {
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     let nuevoEstado = 'NOADMITIDA';
@@ -100,6 +127,9 @@ export class VentanaAgenteComponent implements OnInit {
   }
 
   deshacerRechazo(inmueble: InmuebleResponse): void {
+
+    this.isLoading = true;
+
     console.log('Inmueble recibido desde el botón:', inmueble);
 
     this.inmuebleService.actualizarEstadoTransaccion(inmueble.id, 'PENDIENTE').subscribe({
@@ -139,7 +169,7 @@ export class VentanaAgenteComponent implements OnInit {
 
     // Llamar al servicio para obtener la lista de usuarios habilitados
     console.log("Enviando"+inmueble.propietario);
-    this.userService.obtenerTodosLosUsuariosHabilitados(inmueble.propietario,<string>this.authservice.getToken()).subscribe({
+    this.userService.obtenerTodosLosUsuariosHabilitados(inmueble.propietario.id,<string>this.authservice.getToken()).subscribe({
       next: (usuarios: UsuarioResponseDto[]) => {
         this.listaUsuarios = usuarios;
         console.log('Usuarios habilitados cargados:', usuarios);
@@ -157,40 +187,19 @@ export class VentanaAgenteComponent implements OnInit {
     this.inmuebleSeleccionado = null;
   }
 
-  // Abrir modal de detalles: setear detalleInmueble y reiniciar índice
   abrirModalDetalles(inmueble: InmuebleResponse): void {
     this.detalleInmueble = inmueble;
-    this.currentImageIndex = 0; // reiniciamos el carrusel
+    this.currentImageIndex = 0;
+    this.currentDocIndex = 0;
     this.mostrarModalDetalle = true;
+    console.log(this.detalleInmueble.documentosImportantes.length)
   }
 
-  // Cerrar modal de detalles
   cerrarModalDetalles(): void {
     this.mostrarModalDetalle = false;
     this.detalleInmueble = null;
     this.currentImageIndex = 0;
-  }
-
-  // Avanzar imagen
-  nextImage(): void {
-    const imgs = this.detalleImagenes;
-    if (!imgs.length) return;
-    this.currentImageIndex = (this.currentImageIndex + 1) % imgs.length;
-  }
-
-  // Retroceder imagen
-  prevImage(): void {
-    const imgs = this.detalleImagenes;
-    if (!imgs.length) return;
-    this.currentImageIndex = (this.currentImageIndex - 1 + imgs.length) % imgs.length;
-  }
-
-  // Seleccionar imagen por índice (por ejemplo al hacer click en miniatura)
-  selectImage(index: number): void {
-    if (index < 0) index = 0;
-    const imgs = this.detalleImagenes;
-    if (index >= imgs.length) index = imgs.length - 1;
-    this.currentImageIndex = index;
+    this.currentDocIndex = 0;
   }
 
   // Ejecutar la transferencia
@@ -225,5 +234,47 @@ export class VentanaAgenteComponent implements OnInit {
     }
   }
 
+  // ================== DOCUMENTOS ==================
+
+// Obtener lista de PDFs del inmueble
+  get detalleDocumentos(): string[] {
+    return this.detalleInmueble?.documentosImportantes || [];
+  }
+
+  // Índices para los indicadores del carousel de documentos (0..n-1)
+  get detalleDocumentosIndices(): number[] {
+    const docs = this.detalleDocumentos;
+    return docs && docs.length ? docs.map((_, i) => i) : [];
+  }
+
+// Índice actual del carrusel de documentos
+  currentDocIndex: number = 0;
+
+// Abrir documento en el navegador (Cloudinary)
+  abrirDocumento(url: string): void {
+    if (!url) return;
+    window.open(url, '_blank');
+  }
+
+  // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
+  getFileNameFromUrl(url: string | undefined | null): string {
+    if (!url) return '';
+    try {
+      // Intentar usar el constructor URL para obtener el pathname
+      const u = new URL(url);
+      let filename = u.pathname.split('/').pop() || '';
+      // Quitar parámetros si los hubiera (aunque URL.pathname no incluye query)
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      return decodeURIComponent(filename);
+    } catch (e) {
+      // Fallback sencillo si la URL no es absoluta
+      const lastSlash = url.lastIndexOf('/');
+      let filename = lastSlash !== -1 ? url.substring(lastSlash + 1) : url;
+      const qIdx = filename.indexOf('?');
+      if (qIdx !== -1) filename = filename.substring(0, qIdx);
+      try { return decodeURIComponent(filename); } catch { return filename; }
+    }
+  }
 
 }

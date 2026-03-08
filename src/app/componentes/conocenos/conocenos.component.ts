@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {AuthService} from '../../servicios/auth.service';
 import {RedireccionService} from '../../servicios/redireccion.service';
-import { AuthService } from '../../servicios/auth.service';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
 
 
+
 @Component({
-  selector: 'app-footer',
-  imports: [],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  selector: 'app-conocenos',
+  templateUrl: './conocenos.component.html',
+  styleUrl: './conocenos.component.css'
 })
-export class FooterComponent implements OnInit, OnDestroy {
+export class ConocenosComponent implements OnInit, OnDestroy {
   t: typeof ES;
   private sub!: Subscription;
 
@@ -34,16 +34,11 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-
-
-  redirigirARegistroInmueble() {
-    if(this.authservice.getToken()==null)
-    {
-      this.redireccionamiento.redirigirALogin();
-    }
-    else
-    {
-      this.redireccionamiento.redirigirARegistroInmueble();
+  redirigirAlInicioMetodo() {
+    if (this.authservice.getToken() != null) {
+      this.redireccionamiento.redirigirAHomeIngresado();
+    } else {
+      this.redireccionamiento.redirigirAHome();
     }
   }
 }

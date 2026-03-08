@@ -2,24 +2,24 @@
 
   <div class="back-button">
     <button type="button" routerLink="/recuperar" class="btn btn-outline-secondary">
-      <i class="bi bi-arrow-left"></i> Volver
+      <i class="bi bi-arrow-left"></i> {{ t.cambiarContrasena.volver }}
     </button>
   </div>
 
   <div class="brand-header">
     <div class="brand-logo">EDÉN</div>
-    <div class="brand-subtitle">Inmobiliaria</div>
+    <div class="brand-subtitle">{{ t.comun.inmobiliaria }}</div>
   </div>
 
-  <h2 class="text-center mb-3">Cambiar contraseña</h2>
-  <p class="text-center text-muted mb-4">Ingresa el código recibido y crea una nueva contraseña segura</p>
+  <h2 class="text-center mb-3">{{ t.cambiarContrasena.titulo }}</h2>
+  <p class="text-center text-muted mb-4">{{ t.cambiarContrasena.subtitulo }}</p>
 
   <div class="instructions">
-    <p class="mb-2"><strong>Instrucciones:</strong></p>
+    <p class="mb-2"><strong>{{ t.cambiarContrasena.instrucciones }}</strong></p>
     <ul>
-      <li>Introduce el código enviado a tu correo</li>
-      <li>El código es válido por tiempo limitado</li>
-      <li>La nueva contraseña debe ser segura</li>
+      <li>{{ t.cambiarContrasena.instruccion1 }}</li>
+      <li>{{ t.cambiarContrasena.instruccion2 }}</li>
+      <li>{{ t.cambiarContrasena.instruccion3 }}</li>
     </ul>
   </div>
 
@@ -31,45 +31,46 @@
 
     <!-- CÓDIGO -->
     <div class="mb-3">
-      <label class="form-label">CÓDIGO DE VERIFICACIÓN</label>
-      <input type="text" class="form-control" formControlName="codigo" placeholder="Ingresa el código recibido">
+      <label class="form-label">{{ t.cambiarContrasena.codigoVerificacion }}</label>
+      <input type="text" class="form-control" formControlName="codigo" [placeholder]="t.cambiarContrasena.placeholderCodigo">
       <div *ngIf="form.get('codigo')?.invalid && (form.get('codigo')?.touched || submitAttempted)" class="text-danger">
-        <div *ngIf="form.get('codigo')?.errors?.['required']">Debe ingresar el código.</div>
+        <div *ngIf="form.get('codigo')?.errors?.['required']">{{ t.cambiarContrasena.errorCodigoReq }}</div>
       </div>
     </div>
 
     <!-- NUEVA CONTRASEÑA -->
     <div class="mb-3">
-      <label class="form-label">NUEVA CONTRASEÑA</label>
+      <label class="form-label">{{ t.cambiarContrasena.nuevaContrasena }}</label>
       <div class="password-toggle">
-        <input [type]="verContra ? 'text' : 'password'" class="form-control" formControlName="nuevaContrasena" placeholder="Nueva contraseña">
+        <input [type]="verContra ? 'text' : 'password'" class="form-control" formControlName="nuevaContrasena" [placeholder]="t.cambiarContrasena.placeholderNueva">
         <span class="password-toggle-icon" (click)="mostrarContrasenia()">
-
+           <i class="bi" [ngClass]="verContra ? 'bi-eye-slash' : 'bi-eye'"></i>
         </span>
       </div>
       <div *ngIf="form.get('nuevaContrasena')?.invalid && (form.get('nuevaContrasena')?.touched || submitAttempted)" class="text-danger">
-        <div *ngIf="form.get('nuevaContrasena')?.errors?.['required']">Debe escribir la contraseña.</div>
-        <div *ngIf="form.get('nuevaContrasena')?.errors?.['minlength']">La contraseña debe tener mínimo 8 caracteres.</div>
-        <div *ngIf="form.get('nuevaContrasena')?.errors?.['pattern']">Debe incluir mayúscula, minúscula, número y símbolo.</div>
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['required']">{{ t.cambiarContrasena.errorContrasenaReq }}</div>
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['minlength']">{{ t.cambiarContrasena.errorContrasenaMin }}</div>
+        <div *ngIf="form.get('nuevaContrasena')?.errors?.['pattern']">{{ t.cambiarContrasena.errorContrasenaPattern }}</div>
       </div>
     </div>
 
     <!-- CONFIRMAR CONTRASEÑA -->
     <div class="mb-3">
-      <label class="form-label">CONFIRMAR CONTRASEÑA</label>
+      <label class="form-label">{{ t.cambiarContrasena.confirmarContrasena }}</label>
       <div class="password-toggle">
-        <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" formControlName="confirmarContrasena" placeholder="Repite la contraseña">
+        <input [type]="verConfirmContra ? 'text' : 'password'" class="form-control" formControlName="confirmarContrasena" [placeholder]="t.cambiarContrasena.placeholderConfirmar">
         <span class="password-toggle-icon" (click)="mostrarConfirmContrasenia()">
+          <i class="bi" [ngClass]="verConfirmContra ? 'bi-eye-slash' : 'bi-eye'"></i>
         </span>
       </div>
       <div *ngIf="(form.get('confirmarContrasena')?.invalid && (form.get('confirmarContrasena')?.touched || submitAttempted)) || (form.errors?.['passwordsMismatch'] && submitAttempted)" class="text-danger">
-        <div *ngIf="form.get('confirmarContrasena')?.errors?.['required']">Debe confirmar la contraseña.</div>
-        <div *ngIf="form.errors?.['passwordsMismatch']">Las contraseñas no coinciden.</div>
+        <div *ngIf="form.get('confirmarContrasena')?.errors?.['required']">{{ t.cambiarContrasena.errorConfirmarReq }}</div>
+        <div *ngIf="form.errors?.['passwordsMismatch']">{{ t.cambiarContrasena.errorNoCoincide }}</div>
       </div>
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-      {{ isSubmitting ? 'Actualizando...' : 'CAMBIAR CONTRASEÑA' }}
+      {{ isSubmitting ? t.cambiarContrasena.actualizando : t.cambiarContrasena.cambiarContrasena }}
     </button>
 
   </form>
@@ -79,7 +80,7 @@
   </div>
 
   <div class="auth-footer mt-3">
-    ¿Recordaste tu contraseña? <a routerLink="/login">Inicia sesión aquí</a>
+    {{ t.cambiarContrasena.recordaste }} <a routerLink="/login">{{ t.cambiarContrasena.iniciaSesion }}</a>
   </div>
 
 </div>

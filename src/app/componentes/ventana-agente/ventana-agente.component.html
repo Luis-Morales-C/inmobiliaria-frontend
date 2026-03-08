@@ -1,19 +1,19 @@
 <section class="container my-5 position-relative">
   <button class="btn-volver" (click)="volver()">
-    <i class="fa-solid fa-arrow-left"></i> Volver a la pestaña de inicio
+    <i class="fa-solid fa-arrow-left"></i> {{ t.ventanaAgente.volverInicio }}
   </button>
 
-  <h2 class="section-title text-center">Anuncios de Inmuebles</h2>
+  <h2 class="section-title text-center">{{ t.ventanaAgente.titulo }}</h2>
   <p class="text-center mb-4">
-    Selecciona los inmuebles que deseas incluir en el proceso y presiona “Aceptar proceso”.
+    {{ t.ventanaAgente.subtitulo }}
   </p>
 
   <!-- Loader -->
   <div *ngIf="propiedadesDestacadas.length === 0" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Cargando...</span>
+      <span class="visually-hidden">{{ t.ventanaAgente.cargando }}</span>
     </div>
-    <p class="mt-3 text-muted">Cargando inmuebles...</p>
+    <p class="mt-3 text-muted">{{ t.ventanaAgente.cargandoInmuebles }}</p>
   </div>
 
   <!-- Lista de inmuebles -->
@@ -51,33 +51,31 @@
           </span>
           </div>
 
-
-
           <!-- Botones de acción -->
-          <div class="d-flex justify-content-center gap-2">
+          <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
             <!-- Aceptar y Cancelar: solo si está PENDIENTE -->
             <ng-container *ngIf="inmueble.estadoTransa === 'PENDIENTE'">
               <button
                 class="btn btn-success btn-sm btn-action"
                 (click)="aceptarProceso(inmueble)">
-                Aceptar proceso
+                {{ t.ventanaAgente.aceptarProceso }}
               </button>
 
               <button
                 class="btn btn-danger btn-sm btn-action"
                 (click)="cancelarProceso(inmueble)">
-                Cancelar proceso
+                {{ t.ventanaAgente.cancelarProceso }}
               </button>
             </ng-container>
 
             <!-- Botón de Transferir: si no está PENDIENTE ni NOADMITIDA -->
             <ng-container *ngIf="inmueble.estadoTransa !== 'PENDIENTE' && inmueble.estadoTransa !== 'NOADMITIDA'">
               <button class="btn btn-primary btn-sm btn-action" (click)="abrirModalTransferencia(inmueble)">
-                Transferir
+                {{ t.ventanaAgente.transferir }}
               </button>
 
               <button class="btn btn-danger btn-sm btn-action" (click)="deshacerRechazo(inmueble)">
-                Reenviar a pendiente
+                {{ t.ventanaAgente.reenviarPendiente }}
               </button>
             </ng-container>
 
@@ -148,7 +146,7 @@
 
     <!-- Modal de Detalle del inmueble -->
     <div class="modal-overlay" *ngIf="mostrarModalDetalle">
-      <div class="modal-container modal-lg">
+      <div class="modal-container modal-detalle">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5>Detalles del inmueble</h5>
           <button class="btn-close" aria-label="Close" (click)="cerrarModalDetalles()"></button>
@@ -156,6 +154,7 @@
 
         <div *ngIf="detalleInmueble">
           <div class="row">
+            <!-- Columna izquierda -->
             <div class="col-md-6">
               <!-- Carrusel de imágenes -->
               <div *ngIf="detalleInmueble.imagenes.length > 0; else imagenPlaceholder">
@@ -184,7 +183,7 @@
 
                       <img [src]="img"
                            class="d-block w-100 rounded"
-                           style="height: 400px; object-fit: cover;"
+                           style="object-fit: cover;"
                            alt="Imagen {{ i + 1 }}">
                     </div>
                   </div>
@@ -215,7 +214,75 @@
                      alt="Sin imagen">
               </ng-template>
 
+              <!-- Documentos: ahora DENTRO de la columna izquierda, debajo de las imágenes -->
+              <div class="mt-4" *ngIf="detalleDocumentos.length > 0; else sinDocumentos">
+                <h6 class="fw-bold text-primary mb-3">Documentos Asociados</h6>
+
+                <div id="carouselDocumentos"
+                     class="carousel slide"
+                     data-bs-ride="carousel">
+
+                  <!-- Indicadores -->
+                  <div class="carousel-indicators">
+                    <button *ngFor="let i of detalleDocumentosIndices" type="button" data-bs-target="#carouselDocumentos" [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
+                  </div>
+
+                  <!-- Slides -->
+                  <div class="carousel-inner text-center">
+
+                    <div *ngFor="let doc of detalleDocumentos; let i = index" class="carousel-item" [class.active]="i === 0">
+                      <div class="mb-3">
+                        <i class="fa-solid fa-file-pdf fa-5x" [ngClass]="{
+                          'text-danger': i % 4 === 0,
+                          'text-primary': i % 4 === 1,
+                          'text-success': i % 4 === 2,
+                          'text-warning': i % 4 === 3
+                        }"></i>
+                      </div>
+
+                      <div class="d-flex justify-content-center mb-2">
+                        <button class="btn btn-outline-primary btn-sm me-2" (click)="abrirDocumento(doc)">Abrir documento</button>
+                      </div>
+
+                      <!-- Label con parte del nombre del archivo -->
+                      <div class="pdf-label"
+                           [title]="getFileNameFromUrl(doc)">
+                        <i class="fa-solid fa-file-lines me-2"></i>
+                        {{ getFileNameFromUrl(doc) | slice:0:35 }}
+                        {{ (getFileNameFromUrl(doc) || '').length > 35 ? '...' : '' }}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <button class="carousel-control-prev"
+                          type="button"
+                          data-bs-target="#carouselDetalles"
+                          data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </button>
+
+                  <button class="carousel-control-next"
+                          type="button"
+                          data-bs-target="#carouselDetalles"
+                          data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </button>
+
+                </div>
+              </div>
+
+              <!-- Mensaje si no hay documentos -->
+              <ng-template #sinDocumentos>
+                <div class="text-center py-5 border rounded bg-light">
+                  <i class="fa-regular fa-face-smile fa-3x text-warning mb-3"></i>
+                  <p class="text-muted fw-semibold">No se encontraron resultados</p>
+                </div>
+              </ng-template>
+
             </div>
+
             <div class="col-md-6">
 
               <!-- Datos Generales -->
@@ -235,17 +302,17 @@
 
                   <div class="col-6">
                     <small class="text-muted">Propietario</small>
-                    <p class="mb-2">{{ detalleInmueble.propietario }}</p>
+                    <p class="mb-2">{{ detalleInmueble.propietario.nombre + ' ' + detalleInmueble.propietario.apellido}}</p>
                   </div>
 
                   <div class="col-6">
                     <small class="text-muted">Agente Asociado</small>
-                    <p class="mb-2">{{ detalleInmueble.agenteAsociado }}</p>
+                    <p class="mb-2">{{ detalleInmueble.agenteAsociado.nombre+ ' ' + detalleInmueble.agenteAsociado.apellido }}</p>
                   </div>
 
                   <div class="col-6">
                     <small class="text-muted">Asesor Legal</small>
-                    <p class="mb-2">{{ detalleInmueble.asesorLegal }}</p>
+                    <p class="mb-2">{{  detalleInmueble.asesorLegal.nombre+ ' ' + detalleInmueble.asesorLegal.apellido }}</p>
                   </div>
 
                   <div class="col-6">
@@ -329,13 +396,21 @@
                 </h4>
               </div>
 
-            </div>
           </div>
         </div>
+      </div>
 
         <div class="text-end mt-3">
           <button class="btn btn-secondary btn-sm" (click)="cerrarModalDetalles()">Cerrar</button>
         </div>
+      </div>
+    </div>
+
+    <!-- LOADER GLOBAL -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-box">
+        <div class="spinner-border text-dark" role="status"></div>
+        <p class="mt-3">Procesando solicitud...</p>
       </div>
     </div>
 

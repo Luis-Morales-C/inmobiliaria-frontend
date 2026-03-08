@@ -156,3 +156,59 @@
 .instructions li {
   margin-bottom: 6px;
 }
+
+/* === SOLUCIÓN DEFINITIVA PARA ANGULAR (ESPECIFICIDAD) === */
+
+:host-context(body.dark-mode) .auth-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+  border: none !important;
+}
+
+:host-context(body.dark-mode) .brand-logo,
+:host-context(body.dark-mode) h2,
+:host-context(body.dark-mode) .recovery-icon i {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .brand-subtitle,
+:host-context(body.dark-mode) .text-muted,
+:host-context(body.dark-mode) p,
+:host-context(body.dark-mode) .instructions li {
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .instructions {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .step {
+  background-color: #1a1a2e !important;
+  border-color: #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .step.active {
+  background-color: #10bb82 !important;
+  border-color: #10bb82 !important;
+  color: #1a1a2e !important;
+}
+
+:host-context(body.dark-mode) .form-control {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+  border: none !important;
+}
+
+:host-context(body.dark-mode) .auth-footer {
+  border-top: 1px solid #0f3460 !important;
+}

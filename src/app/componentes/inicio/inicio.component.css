@@ -8,6 +8,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* --- Estilos Base --- */
 .navbar {
   background-color: var(--white);
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -67,6 +68,7 @@ body {
   color: white;
   border-radius: 15px;
   margin-top: 20px;
+  padding: 60px 40px;
 }
 
 .search-box {
@@ -90,20 +92,9 @@ body {
   margin-bottom: 25px;
 }
 
-.property-card:hover {
-  transform: translateY(-5px);
-}
-
-.property-card img {
-  height: 200px;
-  object-fit: cover;
-}
-
-.property-price {
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 1.5rem;
-}
+.property-card:hover { transform: translateY(-5px); }
+.property-card img { height: 200px; object-fit: cover; }
+.property-price { color: var(--primary); font-weight: 700; font-size: 1.5rem; }
 
 .property-badge {
   position: absolute;
@@ -123,34 +114,13 @@ body {
   margin-bottom: 30px;
 }
 
-
 .section-title:after {
-  content: '';
-  display: block;
-  width: 50px;
-  height: 3px;
-  background-color: var(--primary);
-  margin-top: 15px;
+  content: ''; display: block; width: 50px; height: 3px;
+  background-color: var(--primary); margin-top: 15px;
 }
 
-.bg-light-primary {
-  background-color: var(--primary-light);
-}
-
-#mapSection {
-  padding: 60px 0;
-}
-
-/*#propertyMap {
-  width: 100vw;
-  height: 100vh;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  margin-top: 20px;
-}
-
- */
+.bg-light-primary { background-color: var(--primary-light); }
+#mapSection { padding: 60px 0; }
 
 .map-search-container {
   background-color: var(--white);
@@ -160,11 +130,33 @@ body {
   margin-bottom: 20px;
 }
 
-.map-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.modal-title-green{
+  color: var(--primary);
+  font-weight: 700;
 }
+
+/* ======================================
+   Flechas verdes para carrusel
+====================================== */
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+  background-color: var(--primary);
+  border-radius: 50%;
+  padding: 18px;
+  background-size: 60% 60%;
+  filter: none;
+  transition: all 0.25s ease;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover{
+  background-color: #0da874;
+  transform: scale(1.1);
+}
+
+
+.map-controls { display: flex; justify-content: space-between; margin-bottom: 20px; }
 
 .map-filter-btn {
   background-color: var(--primary-light);
@@ -180,65 +172,19 @@ body {
   color: white;
 }
 
-/* Estilos para los marcadores del mapa */
-.custom-marker {
-  background-color: var(--primary);
-  width: 30px;
-  height: 30px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-.custom-marker i {
-  transform: rotate(45deg);
-  color: white;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: 8px;
-}
-
-.leaflet-popup-content {
-  margin: 12px;
-}
-
-.map-popup-content img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.map-popup-content .price {
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
 #mapa {
-  width: 70vw;
-  height: 85vh;
+  width: 100%;
+  height: 500px;
   margin: auto;
-  /* Asegurarse de que el contenedor del mapa sea visible */
   border: 1px solid #ddd;
   border-radius: 8px;
 }
 
-/* ===== Estilos del modal (copiados de ventana-agente.component.css) ===== */
+/* --- Modales --- */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1050;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5); display: flex; align-items: center;
+  justify-content: center; z-index: 1050;
 }
 
 .modal-container {
@@ -251,29 +197,81 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
+.modal-detalle {
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.carousel-img { width: 100%; height: 400px; object-fit: cover; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-container table {
-  font-size: 0.85rem;
+/* ===================================================
+   === MEDIA QUERIES (RESPONSIVE) ===
+   =================================================== */
+@media (max-width: 768px) {
+  .map-controls { flex-direction: column; gap: 10px; }
+  .map-controls > div { display: flex; flex-wrap: wrap; gap: 8px; }
+  #mapa { height: 350px; }
+
+  .modal-container { width: 95%; height: 90%; overflow-y: auto; padding: 20px; }
+  .carousel-inner img { height: 220px !important; }
+  .carousel-img { height: 220px; }
+
+  .section-title { font-size: 1.5rem; text-align: center; }
+  .hero-section { height: auto; padding: 60px 20px; text-align: center; }
+  .hero-section h1 { font-size: 1.6rem; }
+  .search-box { padding: 15px; }
+
+  .modal-detalle {
+    width: 95%; height: 95vh; max-height: 95vh; padding: 18px; border-radius: 15px;
+  }
+  .modal-detalle .row { flex-direction: column; }
 }
 
-.modal-container h5 {
-  color: var(--primary);
-  font-weight: 700;
+/* ===================================================
+   === MODO OSCURO (DARK MODE) ===
+   =================================================== */
+:host-context(body.dark-mode) .navbar {
+  background-color: #16213e !important;
+  border-bottom: 1px solid #0f3460;
 }
 
-/* pequeño ajuste para cerrar (si usas .btn-close nativa de bootstrap no es estrictamente necesario) */
-.btn-close {
-  background: transparent;
-  border: none;
+:host-context(body.dark-mode) .nav-link { color: #e0e0e0 !important; }
+
+:host-context(body.dark-mode) .search-box,
+:host-context(body.dark-mode) .map-search-container,
+:host-context(body.dark-mode) .modal-container,
+:host-context(body.dark-mode) .modal-detalle,
+:host-context(body.dark-mode) .property-card.card {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #0f3460;
 }
 
-.card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 0.5rem;
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #e0e0e0 !important;
+}
+
+:host-context(body.dark-mode) #mapa {
+  filter: grayscale(0.8) invert(0.9) hue-rotate(180deg) brightness(0.9);
+}
+
+:host-context(body.dark-mode) .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+:host-context(body.dark-mode) .btn-outline-primary {
+  color: #000000 !important; /* Corregido de 000000 a primary para que se vea */
+  border-color: #10bb82 !important;
 }

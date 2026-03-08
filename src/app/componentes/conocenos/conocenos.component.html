@@ -1,0 +1,94 @@
+<main class="conocenos-container">
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>{{ t.conocenos.titulo }}</h1>
+      <p>{{ t.conocenos.subtitulo }}</p>
+      <span class="hero-subtitle">{{ t.conocenos.heroSubtitle }}</span>
+    </div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <section class="conocenos-content">
+
+    <!-- HISTORIA -->
+    <div class="section-card">
+      <h2>{{ t.conocenos.historia }}</h2>
+      <p>{{ t.conocenos.historiaTexto1 }}</p>
+      <p>{{ t.conocenos.historiaTexto2 }}</p>
+    </div>
+
+    <!-- TRAYECTORIA -->
+    <div class="section-card">
+      <h2>{{ t.conocenos.trayectoria }}</h2>
+      <p>{{ t.conocenos.trayectoriaTexto }}</p>
+      <ul>
+        <li>{{ t.conocenos.trayectoriaItem1 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem2 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem3 }}</li>
+        <li>{{ t.conocenos.trayectoriaItem4 }}</li>
+      </ul>
+    </div>
+
+    <!-- MISIÓN Y VISIÓN -->
+    <div class="section-grid">
+      <div class="section-card">
+        <h2>{{ t.conocenos.mision }}</h2>
+        <p>{{ t.conocenos.misionTexto }}</p>
+      </div>
+
+      <div class="section-card">
+        <h2>{{ t.conocenos.vision }}</h2>
+        <p>{{ t.conocenos.visionTexto }}</p>
+      </div>
+    </div>
+
+    <!-- VALORES -->
+    <div class="section-card">
+      <h2>{{ t.conocenos.valores }}</h2>
+      <div class="valores-grid">
+        <div class="valor-item">{{ t.conocenos.valor1 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor2 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor3 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor4 }}</div>
+        <div class="valor-item">{{ t.conocenos.valor5 }}</div>
+      </div>
+    </div>
+
+    <!-- ESTRUCTURA -->
+    <div class="section-card">
+      <h2>{{ t.conocenos.estructura }}</h2>
+      <ul>
+        <li><strong>{{ t.conocenos.estructuraItem1 }}</strong> {{ t.conocenos.estructuraItem1Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem2 }}</strong> {{ t.conocenos.estructuraItem2Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem3 }}</strong> {{ t.conocenos.estructuraItem3Desc }}</li>
+        <li><strong>{{ t.conocenos.estructuraItem4 }}</strong> {{ t.conocenos.estructuraItem4Desc }}</li>
+      </ul>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <h3>+200</h3>
+        <p>{{ t.conocenos.clientesAtendidos }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>+300</h3>
+        <p>{{ t.conocenos.propiedadesGestionadas }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>3+</h3>
+        <p>{{ t.conocenos.anosExperiencia }}</p>
+      </div>
+    </div>
+
+    <!-- BOTÓN VOLVER -->
+    <div class="volver-container">
+      <button class="btn-volver" (click)="redirigirAlInicioMetodo()">
+        {{ t.conocenos.volverInicio }}
+      </button>
+    </div>
+
+  </section>
+</main>

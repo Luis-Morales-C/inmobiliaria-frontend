@@ -189,3 +189,81 @@ body {
     font-size: 1.4rem;
   }
 }
+
+/*Modo oscuro*/
+:host-context(body.dark-mode) .activation-container {
+  background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+  border: none !important;
+}
+
+:host-context(body.dark-mode) .brand-logo,
+:host-context(body.dark-mode) h2 {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .brand-subtitle,
+:host-context(body.dark-mode) .text-muted,
+:host-context(body.dark-mode) p,
+:host-context(body.dark-mode) .instructions li,
+:host-context(body.dark-mode) .resend-link {
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .instructions {
+  background-color: #1a1a2e !important;
+  border: 1px solid #0f3460 !important;
+  color: #a0a0a0 !important;
+}
+
+:host-context(body.dark-mode) .instructions strong {
+  color: #10bb82;
+}
+
+:host-context(body.dark-mode) .code-input {
+  background-color: #1a1a2e !important;
+  border: 2px solid #0f3460 !important;
+  color: #ffffff !important;
+}
+
+:host-context(body.dark-mode) .code-input:focus {
+  border-color: #10bb82 !important;
+  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25) !important;
+}
+
+:host-context(body.dark-mode) .btn-primary {
+  background-color: #10bb82 !important;
+  border-color: #10bb82 !important;
+  color: #1a1a2e !important;
+}
+
+:host-context(body.dark-mode) .btn-outline-secondary {
+  background-color: #0f3460 !important;
+  color: #e0e0e0 !important;
+  border: none !important;
+}
+
+:host-context(body.dark-mode) .resend-link a {
+  color: #10bb82 !important;
+}
+
+:host-context(body.dark-mode) .success-message {
+  background-color: rgba(16, 187, 130, 0.15) !important;
+  color: #10bb82 !important;
+  border: 1px solid #10bb82;
+}
+
+:host-context(body.dark-mode) .error-message {
+  background-color: rgba(229, 57, 53, 0.15) !important;
+  color: #ff6b6b !important;
+  border: 1px solid #e53935;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .code-input { width: 52px; height: 52px; font-size: 1.5rem; }
+}
+@media (max-width: 480px) {
+  .code-input { width: 42px; height: 42px; font-size: 1.2rem; }
+}

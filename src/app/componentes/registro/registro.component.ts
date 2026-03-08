@@ -1,32 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {NgClass, NgIf} from '@angular/common';
-import { UserRegistrationRequest } from '../../dto/user-registration-request';
+import { NgClass, NgIf } from '@angular/common';
 import { UsersService } from '../../servicios/users.service';
 import { ErrorResponse } from '../../dto/error-response';
 import { Router, RouterLink } from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
-  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass, RecaptchaModule],
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit, OnDestroy {
   registroForm!: FormGroup;
   result = '';
   classResult = 'success';
   verContra = false;
   verConfirmContra = false;
 
+  // Nueva variable para controlar el estado del botón
+  cargando = false;
+
+  // Lógica reCAPTCHA y Modo Oscuro
+  captchaToken: string | null = null;
+  captchaActivo = true;
+  private observer: MutationObserver | null = null;
+
+  // Lógica de Idioma
+  t: typeof ES;
+  private sub!: Subscription;
+
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private router: Router,
-    protected redireccionamiento: RedireccionService
+    protected redireccionamiento: RedireccionService,
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
   ) {
+    this.t = idiomaService.t;
     this.crearFormulario();
+  }
+
+  ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
+    this.observer = new MutationObserver(() => {
+      this.recargarCaptcha();
+    });
+
+    this.observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  recargarCaptcha() {
+    this.captchaActivo = false;
+    this.captchaToken = null; // Limpiar token al recargar
+    this.cdr.detectChanges();
+    this.captchaActivo = true;
+    this.cdr.detectChanges();
   }
 
   private crearFormulario() {
@@ -49,44 +107,61 @@ export class RegistroComponent {
       });
   }
 
+  onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
   onSubmit(): void {
-    // Crear objeto con los campos requeridos por el backend
-    const newUser: UserRegistrationRequest = {
-      nombre: this.registroForm.get('nombre')?.value,
-      apellido: this.registroForm.get('apellido')?.value,
-      documentoIdentidad: this.registroForm.get('documentoIdentidad')?.value,
-      telefono: this.registroForm.get('telefono')?.value,
-      email: this.registroForm.get('email')?.value,
-      contrasena: this.registroForm.get('contrasena')?.value
+    // 1. Validar si el captcha está resuelto
+    if (!this.captchaToken) {
+      this.result = this.t.login?.errorCaptcha || 'Por favor, completa la verificación (Captcha).';
+      this.classResult = 'text-danger text-center fw-bold';
+      return;
+    }
+
+    // 2. Bloquear botón y limpiar mensajes anteriores
+    this.cargando = true;
+    this.result = '';
+
+    const newUser: any = {
+      ...this.registroForm.value,
+      recaptchaToken: this.captchaToken
     };
+
+
 
     this.usersService.registrar(newUser).subscribe({
       next: (data) => {
-        console.log('El usuario ha sido registrado correctamente: ', data);
-        this.result = 'Usuario registrado correctamente. Redirigiendo a la activación de cuenta...';
-        this.classResult = 'success';
+        this.cargando = false;
+        this.result = 'Usuario registrado correctamente. Redirigiendo...';
+        this.classResult = 'text-success text-center fw-bold';
 
-        // Guardar el email en localStorage y redirigir a la página de activación
         const userEmail = this.registroForm.get('email')?.value;
         localStorage.setItem('pendingActivationEmail', userEmail);
 
-        // Redirigir a la página de activación de cuenta después de un breve retraso
         setTimeout(() => {
           this.router.navigate(['/activar'], { state: { email: userEmail } });
         }, 2000);
       },
       error: (error) => {
-        console.log('Se presentó un problema al registrar el usuario: ', error);
-        // Manejar correctamente el error cuando error.error es null
-        if (error.error && error.error instanceof Array) {
-          this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
-        } else if (error.error && error.error.message) {
+        // --- LIBERAR BLOQUEO ---
+        this.cargando = false;
+        this.recargarCaptcha(); // El token ya no sirve si el backend dio error
+
+        this.classResult = 'text-danger text-center fw-bold';
+
+        // Capturar el mensaje real de ValueConflictException o error genérico
+        if (error.error && error.error.message) {
           this.result = error.error.message;
+        } else if (error.error && error.error instanceof Array) {
+          this.result = error.error.map((item: ErrorResponse) => item.message).join(', ');
+        } else if (typeof error.error === 'string') {
+          this.result = error.error;
         } else {
-          // Mensaje de error por defecto cuando no hay detalles específicos
-          this.result = 'Error al registrar el usuario. Por favor, inténtelo más tarde.';
+          this.result = 'Error al registrar el usuario. El correo o cédula ya podrían estar en uso.';
         }
-        this.classResult = 'text-danger';
+
+        this.cdr.detectChanges();
       }
     });
   }
@@ -94,7 +169,6 @@ export class RegistroComponent {
   passwordMatchValidator(formGroup: FormGroup): any {
     const password = formGroup.get('contrasena')?.value;
     const confirmPassword = formGroup.get('confirmcontrasena')?.value;
-    // Si las contraseñas no coinciden, devuelve un error, de lo contrario, null
     return password === confirmPassword ? null : { passwordsMismatch: true };
   }
 
@@ -103,13 +177,15 @@ export class RegistroComponent {
   }
 
   mostrarConfirmContrasenia() {
-    this.verConfirmContra=!this.verConfirmContra;
+    this.verConfirmContra = !this.verConfirmContra;
   }
 
   redirigirPoliticaDatosConLocalStorage() {
-    localStorage.setItem('migaPan','registro');
+    localStorage.setItem('migaPan', 'registro');
     this.redireccionamiento.redirigirAPoliticaDatos();
   }
 
-
+  get temaActual(): 'light' | 'dark' {
+    return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
 }

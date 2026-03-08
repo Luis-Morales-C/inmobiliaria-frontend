@@ -1,87 +1,137 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
-import {AuthService} from '../../servicios/auth.service';
-import {NgClass, NgIf} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
-import {RedireccionService} from '../../servicios/redireccion.service';
+import { AuthService } from '../../servicios/auth.service';
+import { NgClass, NgIf } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { RedireccionService } from '../../servicios/redireccion.service';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from '../../../environments/environment';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, MessageModule, NgIf, RouterLink, NgClass],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    MessageModule,
+    NgIf,
+    RouterLink,
+    NgClass,
+    RecaptchaModule
+  ],
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   loading: boolean = false;
   verContra = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, protected redireccionamiento: RedireccionService,private router: Router) {
+  // Lógica de reCAPTCHA y Modo Oscuro (HEAD)
+  captchaToken: string | null = null;
+  captchaActivo = true;
+  private observer: MutationObserver | null = null;
+
+  // Lógica de Idioma (Accesibilidad)
+  t: typeof ES;
+  private sub!: Subscription;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    protected redireccionamiento: RedireccionService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       contrasena: ['', Validators.required],
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      const { email, contrasena } = this.loginForm.value;
+  ngOnInit(): void {
+    // 1. Suscripción a traducciones (Rama accesibilidad)
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
 
-      this.authService.login(email, contrasena).subscribe({
-        next: (response) => {
-          this.loading = false;
-          // Mensaje de éxito usando showAlert
-          this.showAlert('success', 'Inicio de sesión exitoso');
-          /*const primerRol = this.authService.getPrimerRol();
-          if (primerRol === 'AGENTE')
-          {
-            this.router.navigate(['/ventanaAgente']);
-          }
-          else if (primerRol === 'CLIENTE')
-          {
-            this.router.navigate(['/inicio']);
-          }
-           */
-          this.router.navigate(['/inicio']);
-        },
-        error: (err: any) => {
-          this.loading = false;
+    // 2. Configuración del observador para Modo Oscuro (Rama HEAD)
+    this.observer = new MutationObserver(() => {
+      this.recargarCaptcha();
+    });
 
-          // Tomar el mensaje enviado por el backend
-          const mensajeBackend = err.error?.message;
+    this.observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
 
-          // Decidir el mensaje a mostrar según el contenido
-          let mensajeAMostrar = mensajeBackend || 'Error desconocido';
-
-          switch (mensajeBackend) {
-            case 'Usuario no encontrado':
-              mensajeAMostrar = 'El email ingresado no está registrado';
-              break;
-            case 'Contraseña incorrecta':
-              mensajeAMostrar = 'La contraseña es incorrecta';
-              break;
-            case 'Usuario bloqueado':
-              mensajeAMostrar = 'Tu cuenta está bloqueada, contacta al soporte';
-              break;
-            // Puedes agregar más casos según los mensajes que devuelva tu backend
-          }
-
-          // Mostrar el mensaje con showAlert
-          this.showAlert('error', mensajeAMostrar);
-        }
-      });
-    } else {
-      console.warn('Formulario inválido:', this.loginForm);
-      this.showAlert('error', 'Por favor completa todos los campos correctamente');
+  ngOnDestroy(): void {
+    // Limpieza total: Desuscripción y desconexión del observador
+    this.sub?.unsubscribe();
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 
+  recargarCaptcha() {
+    this.captchaActivo = false;
+    this.cdr.detectChanges();
+    this.captchaActivo = true;
+    this.cdr.detectChanges();
+  }
+
+  resolved(token: string | null) {
+    this.captchaToken = token;
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      // 1. Validación del Captcha con traducción
+      if (!this.captchaToken) {
+        this.showAlert('error', this.t.login.errorCaptcha || 'Por favor, completa el reCAPTCHA');
+        return;
+      }
+
+      this.loading = true;
+      const { email, contrasena } = this.loginForm.value;
+
+      this.authService.login(email, contrasena, this.captchaToken).subscribe({
+        next: () => {
+          this.loading = false;
+          // No llamamos a showAlert aquí porque el AuthService ya lo hace en el .pipe(tap)
+          this.router.navigate(['/inicio']);
+        },
+        error: () => {
+          this.loading = false;
+          this.captchaToken = null;
+          this.recargarCaptcha(); // Reset visual del captcha tras error
+        }
+      });
+    } else {
+      this.loginForm.markAllAsTouched();
+    }
+  }
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
@@ -93,21 +143,15 @@ export class LoginComponent {
     alertDiv.style.zIndex = '9999';
     alertDiv.style.padding = '15px';
     alertDiv.style.borderRadius = '5px';
-    alertDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
-
-    if (type === 'success') {
-      alertDiv.style.backgroundColor = '#d4edda';
-      alertDiv.style.color = '#155724';
-      alertDiv.style.borderColor = '#c3e6cb';
-    } else {
-      alertDiv.style.backgroundColor = '#f8d7da';
-      alertDiv.style.color = '#721c24';
-      alertDiv.style.borderColor = '#f5c6cb';
-    }
+    document.body.appendChild(alertDiv);
+    setTimeout(() => alertDiv.remove(), 3000);
   }
 
   mostrarContrasenia() {
     this.verContra = !this.verContra;
   }
 
+  get temaActual(): 'light' | 'dark' {
+    return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
 }

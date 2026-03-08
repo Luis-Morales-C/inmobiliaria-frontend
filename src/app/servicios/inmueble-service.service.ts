@@ -24,6 +24,7 @@ export class InmuebleServiceService {
 
   public obtenerListaInmueblesAgente(email: string): Observable<InmuebleResponse[]> {
     return this.http.get<InmuebleResponse[]>(`${this.url}/agente/${email}`);
+
   }
 
 
@@ -39,5 +40,7 @@ export class InmuebleServiceService {
     return this.http.get<UserResponse[]>(`${this.url}/agente/obtenerTodos`);
   }
 
-
+  public eliminarInmueble(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 }

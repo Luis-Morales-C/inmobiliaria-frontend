@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { NgIf, NgClass } from '@angular/common';
+import { IdiomaService } from '../../servicios/idioma.service';
+import { ES } from '../../i18n/es';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -11,7 +14,7 @@ import { NgIf, NgClass } from '@angular/common';
   templateUrl: './cambiar-contrasena.component.html',
   styleUrls: ['./cambiar-contrasena.component.css']
 })
-export class CambiarContrasenaComponent implements OnInit {
+export class CambiarContrasenaComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
   isSubmitting = false;
@@ -22,10 +25,23 @@ export class CambiarContrasenaComponent implements OnInit {
 
   verContra = false;
   verConfirmContra = false;
+  t: typeof ES;
+  private sub!: Subscription;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    public idiomaService: IdiomaService
+  ) {
+    this.t = idiomaService.t;
+  }
 
   ngOnInit(): void {
+    this.sub = this.idiomaService.traducciones$.subscribe(t => {
+      this.t = t;
+    });
+
     this.form = this.fb.group({
       codigo: ['', Validators.required],
       nuevaContrasena: ['', [
@@ -35,6 +51,10 @@ export class CambiarContrasenaComponent implements OnInit {
       ]],
       confirmarContrasena: ['', Validators.required]
     }, { validators: this.passwordsMatchValidator });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   passwordsMatchValidator(form: AbstractControl) {

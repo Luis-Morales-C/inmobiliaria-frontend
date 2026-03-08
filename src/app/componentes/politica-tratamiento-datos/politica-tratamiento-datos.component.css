@@ -1,82 +1,146 @@
-.politica-container {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f7f9fb;
-  color: #333;
-  padding-bottom: 50px;
+:root {
+  --primary-light: #c7fae9;
+  --primary: #10bb82;
+  --white: #ffffff;
 }
 
+.politica-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* HERO MÁS MODERNO */
 .hero-section {
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-  url('https://cdn.pixabay.com/photo/2017/08/06/22/01/house-2593570_1280.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, var(--primary), #0daa75);
   color: white;
   text-align: center;
-  padding: 80px 20px;
-  border-radius: 0 0 40px 40px;
+  padding: 70px 20px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .hero-section h1 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 10px;
-  font-weight: 600;
 }
 
 .hero-section p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
+/* CONTENIDO PRINCIPAL */
 .politica-content {
-  background: white;
-  max-width: 1100px;
-  margin: 40px auto;
+  background: var(--white);
+  max-width: 900px;
+  margin: -40px auto 40px auto;
   border-radius: 20px;
-  padding: 40px 50px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 50px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
+/* TÍTULOS */
 .politica-content h2 {
-  color: #00A36C;
-  margin-top: 30px;
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 35px;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  position: relative;
+  padding-left: 15px;
 }
 
+.politica-content h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  height: 18px;
+  width: 5px;
+  background-color: var(--primary);
+  border-radius: 3px;
+}
+
+/* TEXTO */
 .politica-content p,
 .politica-content ul {
-  line-height: 1.7;
-  font-size: 1rem;
-  color: #444;
+  line-height: 1.8;
+  font-size: 0.95rem;
+  color: #555;
 }
 
 .politica-content ul {
   padding-left: 20px;
 }
 
+.politica-content li {
+  margin-bottom: 8px;
+}
+
+/* FIRMA */
 .firma {
   margin-top: 50px;
   text-align: center;
-  color: #00A36C;
+  padding: 20px;
+  background-color: var(--primary-light);
+  border-radius: 15px;
   font-weight: 500;
+  color: #333;
 }
 
+/* BOTÓN VOLVER estilo registro */
 .volver-container {
   text-align: center;
   margin-top: 40px;
 }
 
 .btn-volver {
-  background-color: #00A36C;
-  color: white;
+  background-color: var(--primary);
   border: none;
-  padding: 12px 24px;
+  padding: 12px 25px;
   border-radius: 30px;
-  font-size: 1rem;
-  cursor: pointer;
+  font-weight: 600;
+  color: white;
   transition: all 0.3s ease;
 }
 
-.btn-volver i {
-  margin-right: 8px;
+.btn-volver:hover {
+  background-color: #0daa75;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 187, 130, 0.3);
 }
 
-.btn-volver:hover {
-  background-color: #00915f;
-  transform: translateY(-2px);
+/* === MODO OSCURO === */
+body.dark-mode .politica-container {
+  background-color: #1a1a2e;
+}
+
+body.dark-mode .hero-section {
+  background: linear-gradient(135deg, #10bb82, #0daa75);
+}
+
+body.dark-mode .politica-content {
+  background-color: #16213e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .politica-content h2 {
+  color: #10bb82;
+}
+
+body.dark-mode .politica-content p,
+body.dark-mode .politica-content ul {
+  color: #e0e0e0;
+}
+
+body.dark-mode .politica-content li {
+  color: #e0e0e0;
+}
+
+body.dark-mode .firma {
+  background-color: rgba(16, 187, 130, 0.15);
+  color: #e0e0e0;
 }

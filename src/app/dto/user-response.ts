@@ -6,4 +6,5 @@ export interface UserResponse {
   telefono: string,
   contrasenia: string
   rol: string
+  recaptchaToken: string;
 }
