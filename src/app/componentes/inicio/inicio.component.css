@@ -130,6 +130,32 @@ body {
   margin-bottom: 20px;
 }
 
+.modal-title-green{
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ======================================
+   Flechas verdes para carrusel
+====================================== */
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+  background-color: var(--primary);
+  border-radius: 50%;
+  padding: 18px;
+  background-size: 60% 60%;
+  filter: none;
+  transition: all 0.25s ease;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover{
+  background-color: #0da874;
+  transform: scale(1.1);
+}
+
+
 .map-controls { display: flex; justify-content: space-between; margin-bottom: 20px; }
 
 .map-filter-btn {
