@@ -32,7 +32,7 @@ export const routes: Routes = [
     path: 'inicio',
     component: InicioComponent,
     canActivate: [authGuard, rolesGuard],
-    data: { expectedRoles: ["CLIENTE", "ASESOR","AGENTE"] }
+    data: { expectedRoles: ["CLIENTE", "ASESOR","AGENTE","ADMIN"] }
   },
   {
     path: 'login',

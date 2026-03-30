@@ -19,7 +19,7 @@ export class MetricasService {
   }
 
   getTiempoRespuestaLogin(): Observable<number> {
-    const q = `avg(rate(http_server_requests_seconds_sum{uri="/api/auth/login",method="POST"}[1h]) / rate(http_server_requests_seconds_count{uri="/api/auth/login",method="POST"}[1h]))`;
+    const q = `rate(http_server_requests_seconds_sum{uri="/api/auth/login", method="POST"}[1h])/rate(http_server_requests_seconds_count{uri="/api/auth/login", method="POST"}[1h])`;
     return this.query(q).pipe(
       map(res => {
         const value = res?.data?.result?.[0]?.value?.[1];

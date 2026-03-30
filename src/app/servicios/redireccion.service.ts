@@ -54,5 +54,8 @@ export class RedireccionService {
   redirigirAContactenos() {
     this.router.navigate(['/contactenos']);
   }
+  redirigirAMetricas() {
+    this.router.navigate(['/metricas-admin']);
+  }
 
 }
