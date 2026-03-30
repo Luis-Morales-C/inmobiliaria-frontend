@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MetricasService} from '../../servicios/metricas.service';
+import { MetricasService } from '../../servicios/metricas.service';
 
 @Component({
   selector: 'app-metricas-admin',
@@ -11,9 +11,12 @@ import { MetricasService} from '../../servicios/metricas.service';
 })
 export class MetricasAdminComponent implements OnInit {
 
-  tiempoRespuesta: number = 0;
-  tasaExito: number = 0;
-  tasaErrores: number = 0;
+  tiempoRespuestaLogin: number = 0;
+  tasaExitoLogin: number = 0;
+  tiempoRespuestaRegistroUsuario: number = 0;
+  tasaErroresRegistroUsuario: number = 0;
+  tiempoRespuestaRegistroInmueble: number = 0;
+  tasaExitoActualizacionEstado: number = 0;
   cargando: boolean = true;
 
   constructor(private metricasService: MetricasService) {}
@@ -26,9 +29,12 @@ export class MetricasAdminComponent implements OnInit {
     this.cargando = true;
     this.metricasService.getTodasLasMetricas().subscribe({
       next: (data) => {
-        this.tiempoRespuesta = data.tiempoRespuesta;
-        this.tasaExito = data.tasaExito;
-        this.tasaErrores = data.tasaErrores;
+        this.tiempoRespuestaLogin = data.tiempoRespuestaLogin;
+        this.tasaExitoLogin = data.tasaExitoLogin;
+        this.tiempoRespuestaRegistroUsuario = data.tiempoRespuestaRegistroUsuario;
+        this.tasaErroresRegistroUsuario = data.tasaErroresRegistroUsuario;
+        this.tiempoRespuestaRegistroInmueble = data.tiempoRespuestaRegistroInmueble;
+        this.tasaExitoActualizacionEstado = data.tasaExitoActualizacionEstado;
         this.cargando = false;
       },
       error: (err) => {

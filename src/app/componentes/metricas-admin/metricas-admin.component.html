@@ -1,67 +1,119 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Panel de Métricas - Administrador</h2>
+  <h2 class="mb-1">Panel de Métricas - Administrador</h2>
+  <p class="text-muted mb-4">Monitoreo en tiempo real del sistema</p>
 
-  <div *ngIf="cargando" class="text-center">
+  <div *ngIf="cargando" class="text-center py-5">
     <div class="spinner-border text-primary"></div>
-    <p>Cargando métricas...</p>
+    <p class="mt-2">Cargando métricas...</p>
   </div>
 
-  <div *ngIf="!cargando" class="row g-4">
+  <div *ngIf="!cargando">
 
-    <!-- Tiempo de respuesta -->
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <h6 class="card-subtitle mb-2 text-muted">Tiempo Medio de Respuesta - Login</h6>
-          <h2 class="card-title" [ngClass]="{
-            'text-success': tiempoRespuesta < 1,
-            'text-warning': tiempoRespuesta >= 1 && tiempoRespuesta < 2,
-            'text-danger': tiempoRespuesta >= 2
-          }">
-            {{ tiempoRespuesta * 1000 | number:'1.0-0' }} ms
-          </h2>
-          <small class="text-muted">Umbral: &lt; 1000ms</small>
+    <!-- Sección: Login y Autenticación -->
+    <h5 class="text-muted mb-3 mt-2">Login y Autenticación</h5>
+    <div class="row g-3 mb-4">
+
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Tasa de Autenticaciones Exitosas</h6>
+            <h2 [ngClass]="{
+              'text-success': tasaExitoLogin >= 98,
+              'text-warning': tasaExitoLogin >= 80 && tasaExitoLogin < 98,
+              'text-danger': tasaExitoLogin < 80
+            }">{{ tasaExitoLogin | number:'1.0-1' }}%</h2>
+            <small class="text-muted">Umbral: ≥ 98%</small>
+          </div>
         </div>
       </div>
+
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Tiempo Medio de Respuesta - Login</h6>
+            <h2 [ngClass]="{
+              'text-success': tiempoRespuestaLogin < 1,
+              'text-warning': tiempoRespuestaLogin >= 1 && tiempoRespuestaLogin < 3,
+              'text-danger': tiempoRespuestaLogin >= 3
+            }">{{ tiempoRespuestaLogin * 1000 | number:'1.0-0' }} ms</h2>
+            <small class="text-muted">Umbral: ≤ 3s</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Tiempo Medio de Respuesta - Registro</h6>
+            <h2 [ngClass]="{
+              'text-success': tiempoRespuestaRegistroUsuario < 1,
+              'text-warning': tiempoRespuestaRegistroUsuario >= 1 && tiempoRespuestaRegistroUsuario < 3,
+              'text-danger': tiempoRespuestaRegistroUsuario >= 3
+            }">{{ tiempoRespuestaRegistroUsuario * 1000 | number:'1.0-0' }} ms</h2>
+            <small class="text-muted">Umbral: ≤ 3s</small>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Tasa de éxito -->
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <h6 class="card-subtitle mb-2 text-muted">Tasa de Autenticaciones Exitosas</h6>
-          <h2 class="card-title" [ngClass]="{
-            'text-success': tasaExito >= 95,
-            'text-warning': tasaExito >= 80 && tasaExito < 95,
-            'text-danger': tasaExito < 80
-          }">
-            {{ tasaExito | number:'1.0-1' }}%
-          </h2>
-          <small class="text-muted">Umbral: &gt; 95%</small>
+    <!-- Sección: Captación y Registro de Propiedades -->
+    <h5 class="text-muted mb-3">Captación y Registro de Propiedades</h5>
+    <div class="row g-3 mb-4">
+
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Eficiencia del Registro de Propiedades</h6>
+            <h2 [ngClass]="{
+              'text-success': tiempoRespuestaRegistroInmueble < 3,
+              'text-warning': tiempoRespuestaRegistroInmueble >= 3 && tiempoRespuestaRegistroInmueble < 5,
+              'text-danger': tiempoRespuestaRegistroInmueble >= 5
+            }">{{ tiempoRespuestaRegistroInmueble * 1000 | number:'1.0-0' }} ms</h2>
+            <small class="text-muted">Umbral: ≤ 5s</small>
+          </div>
         </div>
       </div>
+
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Tasa de Errores en Registro de Usuario</h6>
+            <h2 [ngClass]="{
+              'text-success': tasaErroresRegistroUsuario < 10,
+              'text-warning': tasaErroresRegistroUsuario >= 10 && tasaErroresRegistroUsuario < 20,
+              'text-danger': tasaErroresRegistroUsuario >= 20
+            }">{{ tasaErroresRegistroUsuario | number:'1.0-1' }}%</h2>
+            <small class="text-muted">Umbral: &lt; 10%</small>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Tasa de errores registro -->
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <h6 class="card-subtitle mb-2 text-muted">Tasa de Errores en Registro</h6>
-          <h2 class="card-title" [ngClass]="{
-            'text-success': tasaErrores < 10,
-            'text-warning': tasaErrores >= 10 && tasaErrores < 20,
-            'text-danger': tasaErrores >= 20
-          }">
-            {{ tasaErrores | number:'1.0-1' }}%
-          </h2>
-          <small class="text-muted">Umbral: &lt; 10%</small>
+    <!-- Sección: Gestión y Cierre de Negocio -->
+    <h5 class="text-muted mb-3">Gestión y Cierre de Negocio</h5>
+    <div class="row g-3 mb-4">
+
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">Precisión en Actualización de Estado del Inmueble</h6>
+            <h2 [ngClass]="{
+              'text-success': tasaExitoActualizacionEstado >= 100,
+              'text-warning': tasaExitoActualizacionEstado >= 90 && tasaExitoActualizacionEstado < 100,
+              'text-danger': tasaExitoActualizacionEstado < 90
+            }">{{ tasaExitoActualizacionEstado | number:'1.0-1' }}%</h2>
+            <small class="text-muted">Umbral: 100%</small>
+          </div>
         </div>
       </div>
+
     </div>
 
   </div>
 
-  <div class="text-end mt-3">
+  <div class="text-end mt-2">
     <button class="btn btn-outline-primary btn-sm" (click)="cargarMetricas()">
       Actualizar métricas
     </button>
