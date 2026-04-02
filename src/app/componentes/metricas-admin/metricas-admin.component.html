@@ -46,11 +46,11 @@
           <div class="card-body text-center">
             <h6 class="card-subtitle mb-2 text-muted">Tiempo Medio de Respuesta - Registro</h6>
             <h2 [ngClass]="{
-              'text-success': tiempoRespuestaRegistroUsuario < 1,
-              'text-warning': tiempoRespuestaRegistroUsuario >= 1 && tiempoRespuestaRegistroUsuario < 3,
-              'text-danger': tiempoRespuestaRegistroUsuario >= 3
+              'text-success': tiempoRespuestaRegistroUsuario < 2,
+              'text-warning': tiempoRespuestaRegistroUsuario >= 2 && tiempoRespuestaRegistroUsuario < 5,
+              'text-danger': tiempoRespuestaRegistroUsuario >= 6
             }">{{ tiempoRespuestaRegistroUsuario * 1000 | number:'1.0-0' }} ms</h2>
-            <small class="text-muted">Umbral: ≤ 3s</small>
+            <small class="text-muted">Umbral: ≤ 6s</small>
           </div>
         </div>
       </div>
@@ -66,11 +66,11 @@
           <div class="card-body text-center">
             <h6 class="card-subtitle mb-2 text-muted">Eficiencia del Registro de Propiedades</h6>
             <h2 [ngClass]="{
-              'text-success': tiempoRespuestaRegistroInmueble < 3,
-              'text-warning': tiempoRespuestaRegistroInmueble >= 3 && tiempoRespuestaRegistroInmueble < 5,
-              'text-danger': tiempoRespuestaRegistroInmueble >= 5
+              'text-success': tiempoRespuestaRegistroInmueble < 4,
+              'text-warning': tiempoRespuestaRegistroInmueble >= 4 && tiempoRespuestaRegistroInmueble < 9,
+              'text-danger': tiempoRespuestaRegistroInmueble >= 9
             }">{{ tiempoRespuestaRegistroInmueble * 1000 | number:'1.0-0' }} ms</h2>
-            <small class="text-muted">Umbral: ≤ 5s</small>
+            <small class="text-muted">Umbral: ≤ 9s</small>
           </div>
         </div>
       </div>

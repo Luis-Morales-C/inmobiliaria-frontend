@@ -25,33 +25,30 @@ export class MetricasService {
     return isNaN(parsed) ? 0 : parsed;
   }
 
+  // Tasa de autenticaciones exitosas
+  getTasaExitoLogin(): Observable<number> {
+    const q = `(1 - (sum(http_server_requests_seconds_count{uri="/api/auth/login", status="500"}) or vector(0)) / sum(http_server_requests_seconds_count{uri="/api/auth/login"})) * 100`;
+    return this.query(q).pipe(
+        map(res => this.getValue(res))
+    );
+  }
+
   // Tiempo medio de respuesta - Login
   getTiempoRespuestaLogin(): Observable<number> {
-    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/auth/login", method="POST"}[1h])) / sum(rate(http_server_requests_seconds_count{uri="/api/auth/login", method="POST"}[1h]))`;
+    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/auth/login", method="POST"}[7d])) / sum(rate(http_server_requests_seconds_count{uri="/api/auth/login", method="POST"}[7d]))`;
     return this.query(q).pipe(map(res => this.getValue(res)));
   }
 
   // Tiempo medio de respuesta - Registro de usuario
   getTiempoRespuestaRegistroUsuario(): Observable<number> {
-    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/auth/register", method="POST"}[1h])) / sum(rate(http_server_requests_seconds_count{uri="/api/auth/register", method="POST"}[1h]))`;
+    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/usuarios", method="POST"}[7d]))/sum(rate(http_server_requests_seconds_count{uri="/api/usuarios", method="POST"}[7d]))`;
     return this.query(q).pipe(map(res => this.getValue(res)));
   }
 
   // Eficiencia del registro de propiedades - /api/inmuebles POST
   getTiempoRespuestaRegistroInmueble(): Observable<number> {
-    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/inmuebles", method="POST"}[1h])) / sum(rate(http_server_requests_seconds_count{uri="/api/inmuebles", method="POST"}[1h]))`;
+    const q = `sum(rate(http_server_requests_seconds_sum{uri="/api/inmuebles", method="POST"}[7d])) / sum(rate(http_server_requests_seconds_count{uri="/api/inmuebles", method="POST"}[7d]))`;
     return this.query(q).pipe(map(res => this.getValue(res)));
-  }
-
-  // Tasa de autenticaciones exitosas
-  getTasaExitoLogin(): Observable<number> {
-    const q = `sum(http_server_requests_seconds_count{uri="/api/auth/login", status="200"}) / sum(http_server_requests_seconds_count{uri="/api/auth/login"}) * 100`;
-    return this.query(q).pipe(
-      map(res => {
-        const value = res?.data?.result?.[0]?.value?.[1];
-        return value ? parseFloat(value) : 0;
-      })
-    );
   }
 
 
