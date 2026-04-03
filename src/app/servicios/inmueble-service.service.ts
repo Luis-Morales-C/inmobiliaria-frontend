@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { CaptacionInmuebleDTO } from '../dto/captacion-inmueble-dto';
 import { InmuebleResponse } from '../dto/inmueble-response';
 import {UserResponse} from '../dto/user-response'; // Asegúrate de tener esta interfaz
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InmuebleServiceService {
-  private url = `${environment.backendUrl}/api/inmuebles`;
+  private url = 'http://localhost:8080/api/inmuebles';
 
   constructor(private http: HttpClient) {}
 
