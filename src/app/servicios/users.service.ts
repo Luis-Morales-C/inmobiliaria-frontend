@@ -9,13 +9,14 @@ import {AuthService} from './auth.service';
 import {TokenResponse} from '../dto/token-response';
 import {CaptacionInmuebleDTO} from '../dto/captacion-inmueble-dto';
 import {UsuarioResponseDto} from '../dto/usuario-response.dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   //private url = "https://inmobiliariasoft3back2-0.onrender.com/api/usuarios";
-  private url='http://localhost:8080/api/usuarios';
+  private url = `${environment.backendUrl}/api/usuarios`
   constructor(private http: HttpClient, private authservice: AuthService) {}
 
   public registrar(user: UserRegistrationRequest): Observable<UserResponse> {
