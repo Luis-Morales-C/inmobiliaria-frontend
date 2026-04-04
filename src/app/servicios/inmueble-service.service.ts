@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CaptacionInmuebleDTO } from '../dto/captacion-inmueble-dto';
 import { InmuebleResponse } from '../dto/inmueble-response';
-import {UserResponse} from '../dto/user-response'; // Asegúrate de tener esta interfaz
+import {UserResponse} from '../dto/user-response';
+import {environment} from '../../environments/environment'; // Asegúrate de tener esta interfaz
 
 @Injectable({
   providedIn: 'root'
 })
 export class InmuebleServiceService {
-  private url = 'http://localhost:8080/api/inmuebles';
+  private url = `${environment.backendUrl}/api/usuarios`;
+ // private url = 'http://localhost:8080/api/inmuebles';
 
   constructor(private http: HttpClient) {}
 
