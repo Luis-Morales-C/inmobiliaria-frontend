@@ -145,12 +145,13 @@
   .chat-window {
     right: 10px;
     width: calc(100vw - 20px);
-    bottom: 88px;
+    bottom: 200px; /* sube la ventana por encima de ambos botones */
   }
   .chat-fab {
-    right: 16px;
-    bottom: 20px;
+    right: 25px;
+    bottom: 85px; /* encima del botón de accesibilidad (20px + 55px + 10px margen) */
   }
+
 }
 /* ── Modo oscuro del chatbot ─────────────────────────────── */
 :host-context(body.dark-mode) .chat-window {
