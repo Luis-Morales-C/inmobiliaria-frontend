@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment'; // Asegúrate de ten
   providedIn: 'root'
 })
 export class InmuebleServiceService {
-  private url = `${environment.backendUrl}/api/usuarios`;
+  private url = `${environment.backendUrl}/api/inmuebles`;
  // private url = 'http://localhost:8080/api/inmuebles';
 
   constructor(private http: HttpClient) {}
