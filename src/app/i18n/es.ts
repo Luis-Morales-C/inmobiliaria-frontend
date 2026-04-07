@@ -20,9 +20,11 @@ export const ES = {
     hagamosNegocios: 'HAGAMOS NEGOCIOS',
     conocenos: 'CONÓCENOS',
     contactenos: 'CONTÁCTENOS',
+    inicio: 'INICIO',
     asesores: 'ASESORES',
     iniciarSesion: 'INICIAR SESIÓN',
     registrarse: 'REGISTRARSE',
+    metricas: 'MÉTRICAS',
   },
 
   // === INICIO DEFAULT / INICIO ===
@@ -66,6 +68,41 @@ export const ES = {
     latitud: 'Latitud',
     longitud: 'Longitud',
     contacto: 'Contacto',
+    descripcionHero: 'Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.',
+
+    // Secciones adicionales para el mapa y navbar
+    encuentraTuPropiedad: 'Encuentra tu propiedad ideal',
+    buscarEnMapa: 'Buscar en el Mapa',
+    buscarDireccion: 'Buscar dirección, barrio o ciudad...',
+    buscarBtn: 'Buscar',
+    miUbicacion: 'Mi ubicación',
+    filtros: 'Filtros',
+    habitacionesAbrev: 'Habitaciones',
+    banosAbrev: 'Baños',
+
+    // Opciones de búsqueda
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    casa: 'Casa',
+    apartamento: 'Apartamento',
+    local: 'Local',
+    lote: 'Lote',
+    finca: 'Finca',
+    nuevo: 'Nuevo',
+    usado: 'Usado',
+    enConstruccion: 'En construcción',
+    venta: 'Venta',
+    alquiler: 'Alquiler',
+    permuta: 'Permuta',
+    minimo: 'Mínimo',
+    maximo: 'Máximo',
+
+    // Mensajes de alerta
+    contenidoInvitados: 'Mostrando contenido para invitados',
+    contenidoDefault: 'Mostrando contenido por defecto',
+    noCoincidencia: 'No se encontró una coincidencia exacta para'
   },
 
   // === LOGIN ===
@@ -344,8 +381,7 @@ export const ES = {
       vigencia: '10. Vigencia y Actualización'
     },
 
-    // Contenido completo de cada sección
-    introduccion: 'INMOBILIARIA EDÉN S.A.S. (en adelante, “INMOBILIARIA EDÉN”), identificada con NIT [NIT de la empresa], con domicilio principal en la ciudad de [Ciudad, Colombia], en cumplimiento de lo dispuesto por la Constitución Política de Colombia (artículo 15), la Ley 1581 de 2012, el Decreto 1377 de 2013, el Decreto 1074 de 2015 y las demás normas que las modifiquen o adicionen, adopta la presente Política de Tratamiento de Datos Personales.',
+    introduccion: 'INMOBILIARIA EDÉN S.A.S. (en adelante, "INMOBILIARIA EDÉN"), identificada con NIT [NIT de la empresa], con domicilio principal en la ciudad de [Ciudad, Colombia], en cumplimiento de lo dispuesto por la Constitución Política de Colombia (artículo 15), la Ley 1581 de 2012, el Decreto 1377 de 2013, el Decreto 1074 de 2015 y las demás normas que las modifiquen o adicionen, adopta la presente Política de Tratamiento de Datos Personales.',
 
     alcance: 'Esta política aplica a todos los titulares de datos personales que sean tratados por INMOBILIARIA EDÉN, incluyendo clientes, empleados, proveedores y usuarios de plataformas digitales.',
 
@@ -377,4 +413,38 @@ export const ES = {
     inmobiliaria: 'Inmobiliaria',
     eden: 'EDÉN',
   },
+
+  // === BÚSQUEDA AVANZADA ===
+  busquedaAvanzada: {
+    busquedaAvanzada: 'BÚSQUEDA AVANZADA',
+    ciudad: 'Ciudad',
+    todas: 'Todas',
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    tipoInmueble: 'Tipo de inmueble',
+    todos: 'Todos',
+    casa: 'Casa',
+    apartamento: 'Apartamento',
+    local: 'Local',
+    lote: 'Lote',
+    finca: 'Finca',
+    estadoPropiedad: 'Estado de propiedad',
+    nuevo: 'Nuevo',
+    usado: 'Usado',
+    enConstruccion: 'En construcción',
+    tipoNegocio: 'Tipo de negocio',
+    venta: 'Venta',
+    alquiler: 'Alquiler',
+    permuta: 'Permuta',
+    habitaciones: 'Habitaciones',
+    cualquiera: 'Cualquiera',
+    banos: 'Baños',
+    precioDesde: 'Precio desde',
+    precioHasta: 'Precio hasta',
+    minimo: 'Mínimo',
+    maximo: 'Máximo',
+    buscar: 'BUSCAR',
+  }
 };

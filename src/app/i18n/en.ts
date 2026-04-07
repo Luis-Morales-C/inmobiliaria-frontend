@@ -17,12 +17,14 @@ export const EN = {
 
   // === NAVBAR ===
   nav: {
-    hagamosNegocios: 'LET\'S DO BUSINESS',
+    hagamosNegocios: "LET'S DO BUSINESS",
     conocenos: 'ABOUT US',
     contactenos: 'CONTACT US',
+    inicio: 'HOME',
     asesores: 'ADVISORS',
     iniciarSesion: 'SIGN IN',
     registrarse: 'SIGN UP',
+    metricas: 'METRICS',
   },
 
   // === INICIO DEFAULT / INICIO ===
@@ -66,6 +68,41 @@ export const EN = {
     latitud: 'Latitude',
     longitud: 'Longitude',
     contacto: 'Contact',
+    descripcionHero: 'Houses, apartments, commercial spaces, lots and farms for all your needs.',
+
+    // Secciones adicionales para el mapa y navbar
+    encuentraTuPropiedad: 'Find your ideal property',
+    buscarEnMapa: 'Search on Map',
+    buscarDireccion: 'Search address, neighborhood or city...',
+    buscarBtn: 'Search',
+    miUbicacion: 'My location',
+    filtros: 'Filters',
+    habitacionesAbrev: 'Bedrooms',
+    banosAbrev: 'Bathrooms',
+
+    // Opciones de búsqueda
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    casa: 'House',
+    apartamento: 'Apartment',
+    local: 'Commercial Space',
+    lote: 'Lot',
+    finca: 'Farm',
+    nuevo: 'New',
+    usado: 'Used',
+    enConstruccion: 'Under construction',
+    venta: 'Sale',
+    alquiler: 'Rental',
+    permuta: 'Exchange',
+    minimo: 'Min',
+    maximo: 'Max',
+
+    // Mensajes de alerta
+    contenidoInvitados: 'Showing content for guests',
+    contenidoDefault: 'Showing default content',
+    noCoincidencia: 'No exact match found for'
   },
 
   // === LOGIN ===
@@ -77,7 +114,7 @@ export const EN = {
     placeholderContrasena: 'Create a secure password',
     olvidoContrasena: 'Forgot your password?',
     boton: 'LOGIN',
-    noTieneCuenta: 'Don\'t have an account?',
+    noTieneCuenta: "Don't have an account?",
     registrate: 'Register here',
     volverInicio: 'Back to Home',
     errorEmail: 'You must enter your email address.',
@@ -135,7 +172,7 @@ export const EN = {
     descripcion: 'We offer the best real estate service with professionalism and dedication to help you find your ideal home.',
     enlacesRapidos: 'Quick Links',
     inicio: 'Home',
-    hagamosNegocios: 'Let\'s Do Business',
+    hagamosNegocios: "Let's Do Business",
     asesores: 'Advisors',
     politicaDatos: 'Personal Data Processing Policy',
     contacto: 'Contact',
@@ -232,7 +269,7 @@ export const EN = {
     volver: 'Back',
     activar: 'ACTIVATE ACCOUNT',
     reenviar: 'Resend code',
-    noRecibiste: 'Didn\'t receive the code?',
+    noRecibiste: "Didn't receive the code?",
   },
 
   // === RECUPERAR CONTRASEÑA ===
@@ -333,7 +370,6 @@ export const EN = {
     ultimaActualizacion: 'Last updated: October 10, 2025',
     lema: '"Your space, our commitment."',
 
-    // Títulos de las secciones en INGLÉS
     titulos: {
       introduccion: '1. Introduction',
       alcance: '2. Scope',
@@ -379,4 +415,38 @@ export const EN = {
     inmobiliaria: 'Real Estate',
     eden: 'EDÉN',
   },
+
+  // === BÚSQUEDA AVANZADA ===
+  busquedaAvanzada: {
+    busquedaAvanzada: 'ADVANCED SEARCH',
+    ciudad: 'City',
+    todas: 'All',
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    tipoInmueble: 'Property type',
+    todos: 'All',
+    casa: 'House',
+    apartamento: 'Apartment',
+    local: 'Commercial Space',
+    lote: 'Lot',
+    finca: 'Farm',
+    estadoPropiedad: 'Property status',
+    nuevo: 'New',
+    usado: 'Used',
+    enConstruccion: 'Under construction',
+    tipoNegocio: 'Business type',
+    venta: 'Sale',
+    alquiler: 'Rental',
+    permuta: 'Exchange',
+    habitaciones: 'Bedrooms',
+    cualquiera: 'Any',
+    banos: 'Bathrooms',
+    precioDesde: 'Price from',
+    precioHasta: 'Price to',
+    minimo: 'Min',
+    maximo: 'Max',
+    buscar: 'SEARCH',
+  }
 };
