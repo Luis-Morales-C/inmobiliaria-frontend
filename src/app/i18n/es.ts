@@ -120,7 +120,7 @@ export const ES = {
     errorEmail: 'debe de ingresar su correo electronico.',
     errorContrasena: 'debe de ingresar su contraseña.',
     cargando: 'cargando',
-    errorCaptcha: 'error en el captcha'
+    errorCaptcha: 'error en el captcha, por favor completelo'
   },
 
   // === REGISTRO ===
@@ -163,6 +163,7 @@ export const ES = {
     errorConfirmarReq: 'Debe confirmar su contraseña.',
     errorContrasenaNoCoincide: 'Las contraseñas no coinciden.',
     codigoActivacion: 'Se ha enviado un código de activación a tu correo electrónico. Serás redirigido automáticamente para activar tu cuenta.',
+    errorTelefonoSoloNumeros: 'El teléfono solo debe contener números.'
   },
 
   // === FOOTER ===
@@ -365,7 +366,7 @@ export const ES = {
     titulo: 'Política de Tratamiento de Datos Personales',
     subtitulo: 'INMOBILIARIA EDÉN S.A.S.',
     volver: 'Volver',
-    ultimaActualizacion: 'Última actualización: 10 de octubre de 2025',
+    ultimaActualizacion: 'Última actualización: 14 de abril de 2026',
     lema: '"Tu espacio, nuestro compromiso."',
 
     titulos: {
@@ -381,30 +382,32 @@ export const ES = {
       vigencia: '10. Vigencia y Actualización'
     },
 
-    introduccion: 'INMOBILIARIA EDÉN S.A.S. (en adelante, "INMOBILIARIA EDÉN"), identificada con NIT [NIT de la empresa], con domicilio principal en la ciudad de [Ciudad, Colombia], en cumplimiento de lo dispuesto por la Constitución Política de Colombia (artículo 15), la Ley 1581 de 2012, el Decreto 1377 de 2013, el Decreto 1074 de 2015 y las demás normas que las modifiquen o adicionen, adopta la presente Política de Tratamiento de Datos Personales.',
+    introduccion: 'INMOBILIARIA EDÉN S.A.S., desarrollada como proyecto universitario con domicilio en Armenia, Quindío, Colombia, en cumplimiento de lo dispuesto por la Constitución Política de Colombia (artículo 15), la Ley 1581 de 2012, el Decreto 1377 de 2013, el Decreto 1074 de 2015 y las demás normas que las modifiquen o adicionen, adopta la presente Política de Tratamiento de Datos Personales.',
 
-    alcance: 'Esta política aplica a todos los titulares de datos personales que sean tratados por INMOBILIARIA EDÉN, incluyendo clientes, empleados, proveedores y usuarios de plataformas digitales.',
+    alcance: 'Esta política aplica a todos los titulares de datos personales que sean tratados por INMOBILIARIA EDÉN S.A.S., incluyendo clientes, asesores, proveedores y usuarios registrados en sus plataformas digitales, en relación con los servicios de compra, venta y arrendamiento de bienes inmuebles.',
 
     definiciones: [
-      { termino: 'Dato personal:', descripcion: 'Información vinculada o que pueda asociarse a una persona natural.' },
-      { termino: 'Dato sensible:', descripcion: 'Información que afecta la intimidad o puede generar discriminación.' },
-      { termino: 'Responsable del tratamiento:', descripcion: 'INMOBILIARIA EDÉN.' },
-      { termino: 'Tratamiento:', descripcion: 'Cualquier operación sobre datos personales.' }
+      { termino: 'Dato personal:', descripcion: 'Información vinculada o que pueda asociarse a una persona natural determinada o determinable.' },
+      { termino: 'Dato sensible:', descripcion: 'Información que afecta la intimidad del titular o cuyo uso indebido puede generar discriminación.' },
+      { termino: 'Titular:', descripcion: 'Persona natural cuyos datos personales son objeto de tratamiento.' },
+      { termino: 'Responsable del tratamiento:', descripcion: 'INMOBILIARIA EDÉN S.A.S., quien decide sobre la base de datos y el tratamiento.' },
+      { termino: 'Encargado del tratamiento:', descripcion: 'Persona natural o jurídica que realiza el tratamiento por cuenta del responsable.' },
+      { termino: 'Tratamiento:', descripcion: 'Cualquier operación sobre datos personales, como recolección, almacenamiento, uso, circulación o supresión.' }
     ],
 
-    principios: 'El tratamiento de datos personales se regirá por los principios de legalidad, finalidad, libertad, veracidad, transparencia, seguridad y confidencialidad.',
+    principios: 'El tratamiento de datos personales se regirá por los principios de legalidad, finalidad, libertad, veracidad o calidad, transparencia, acceso y circulación restringida, seguridad y confidencialidad, conforme a lo establecido en el artículo 4 de la Ley 1581 de 2012.',
 
-    finalidades: 'Los datos personales recolectados se utilizarán para gestionar operaciones inmobiliarias, relaciones laborales, comerciales y contractuales, así como para cumplir con obligaciones legales y enviar información relevante sobre los servicios de la empresa.',
+    finalidades: 'Los datos personales recolectados serán utilizados para: (i) gestionar la relación contractual con clientes en operaciones inmobiliarias; (ii) administrar procesos de compra, venta y arrendamiento de inmuebles; (iii) enviar información sobre propiedades y servicios de la empresa; (iv) cumplir con obligaciones legales y contables; (v) atender solicitudes, quejas y reclamos; y (vi) mejorar la experiencia del usuario en las plataformas digitales.',
 
-    derechos: 'Los titulares podrán conocer, actualizar, rectificar, solicitar supresión de sus datos y revocar la autorización otorgada, conforme a la Ley 1581 de 2012.',
+    derechos: 'De acuerdo con la Ley 1581 de 2012, los titulares tienen derecho a: conocer, actualizar y rectificar sus datos personales; solicitar prueba de la autorización otorgada; ser informados sobre el uso dado a sus datos; presentar quejas ante la Superintendencia de Industria y Comercio; revocar la autorización y solicitar la supresión de sus datos cuando no se respeten los principios, derechos y garantías constitucionales y legales.',
 
-    procedimiento: 'Las solicitudes podrán enviarse al correo info@inmobiliariaeden.com o a la dirección física [Dirección de la empresa]. Consultas en 10 días hábiles, reclamos en 15.',
+    procedimiento: 'Las solicitudes podrán enviarse al correo inmobiliariaedenco@gmail.com. Las consultas serán atendidas en un plazo máximo de 10 días hábiles y los reclamos en 15 días hábiles, conforme a los artículos 14 y 15 de la Ley 1581 de 2012.',
 
-    seguridad: 'Se adoptan medidas técnicas y administrativas para proteger los datos personales contra pérdida, acceso no autorizado, alteración o uso indebido.',
+    seguridad: 'INMOBILIARIA EDÉN S.A.S. adopta las medidas técnicas y administrativas necesarias para garantizar la seguridad de los datos personales y evitar su adulteración, pérdida, consulta, uso o acceso no autorizado o fraudulento, de acuerdo con lo dispuesto en el artículo 17 de la Ley 1581 de 2012.',
 
-    transferencia: 'INMOBILIARIA EDÉN podrá transferir datos personales a terceros, garantizando el cumplimiento de la Ley 1581 de 2012.',
+    transferencia: 'INMOBILIARIA EDÉN S.A.S. podrá transferir o transmitir datos personales a terceros únicamente cuando exista autorización del titular, obligación legal, o relación contractual que lo justifique, garantizando en todo caso el cumplimiento de la Ley 1581 de 2012.',
 
-    vigencia: 'Esta política rige desde [fecha de aprobación] y podrá ser modificada cuando sea necesario. Toda actualización se publicará en los canales oficiales de la empresa.'
+    vigencia: 'Esta política rige a partir del 3 de marzo de 2026 y permanecerá vigente mientras INMOBILIARIA EDÉN S.A.S. realice tratamiento de datos personales. Podrá ser modificada cuando sea necesario; toda actualización sustancial será publicada en los canales oficiales de la empresa.'
   },
 
   // === COMÚN ===

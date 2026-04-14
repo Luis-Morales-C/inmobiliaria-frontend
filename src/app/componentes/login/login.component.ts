@@ -60,7 +60,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     protected redireccionamiento: RedireccionService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public idiomaService: IdiomaService
+    public idiomaService: IdiomaService,
+
   ) {
     this.t = idiomaService.t;
     this.loginForm = this.fb.group({
@@ -100,18 +101,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.captchaActivo = true;
     this.cdr.detectChanges();
   }
-
+  captchaError: string | null = null;
   resolved(token: string | null) {
     this.captchaToken = token;
+    this.captchaError = null;
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
       // 1. Validación del Captcha con traducción
       if (!this.captchaToken) {
-        this.showAlert('error', this.t.login.errorCaptcha || 'Por favor, completa el reCAPTCHA');
+        this.captchaError = this.t.login.errorCaptcha || 'Por favor, completa el reCAPTCHA';
         return;
       }
+      this.captchaError = null;
 
       this.loading = true;
       const { email, contrasena } = this.loginForm.value;
