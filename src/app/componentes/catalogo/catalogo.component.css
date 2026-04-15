@@ -91,10 +91,15 @@
 
 .property-badge {
   background-color: var(--primary) !important;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 12px;
+  color: white !important;
+  border-radius: 50px; /* Hace que se vea como una cápsula/píldora */
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 16px;   /* Espaciado lateral para que respire el texto */
+  text-transform: uppercase;
+  width: auto;         /* IMPORTANTE: Evita que ocupe todo el ancho */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra para que resalte sobre la foto */
+  border: 1px solid rgba(255,255,255,0.2); /* Opcional: un borde sutil */
 }
 
 .card-title {
