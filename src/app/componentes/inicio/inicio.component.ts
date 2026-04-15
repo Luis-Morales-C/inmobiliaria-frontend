@@ -121,6 +121,4 @@ export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   irAMiUbicacion(): void {
     this.mapaService.irAMiUbicacion();
   }
-
-
 }
