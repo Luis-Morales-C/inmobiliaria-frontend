@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #10bb82;
+  background-color: #4a90d9;
   color: white;
   border: none;
   border-radius: 50%;
@@ -17,7 +17,7 @@
 }
 
 .accessibility-btn:hover {
-  background-color: #0daa75;
+  background-color: #357abd;
 }
 
 .accessibility-btn img {
@@ -35,7 +35,7 @@
 .accessibility-menu {
   position: fixed;
   bottom: 85px;
-  right: 20px;
+  right: 85px;
   background: white;
   border: 2px solid #10bb82;
   border-radius: 12px;

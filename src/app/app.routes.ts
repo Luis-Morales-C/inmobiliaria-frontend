@@ -9,6 +9,8 @@ import {RecuperarContraseniaComponent} from './componentes/recuperar-contrasenia
 import {ActivarComponent} from './componentes/activar-cuenta/activar.component';
 import { InicioDefaultComponent } from './componentes/inicio-default/inicio-default.component';
 import {PerfilComponent} from './componentes/perfil/perfil.component';
+import { MetricasAdminComponent } from './componentes/metricas-admin/metricas-admin.component';
+
 import {
   PoliticaTratamientoDatosComponent
 } from './componentes/politica-tratamiento-datos/politica-tratamiento-datos.component';
@@ -30,7 +32,7 @@ export const routes: Routes = [
     path: 'inicio',
     component: InicioComponent,
     canActivate: [authGuard, rolesGuard],
-    data: { expectedRoles: ["CLIENTE", "ASESOR","AGENTE"] }
+    data: { expectedRoles: ["CLIENTE", "ASESOR","AGENTE","ADMIN"] }
   },
   {
     path: 'login',
@@ -89,6 +91,12 @@ export const routes: Routes = [
   {
     path: 'perfil',
     component: PerfilComponent
+  },
+  {
+    path: 'metricas-admin',
+    component: MetricasAdminComponent,
+    canActivate: [authGuard, rolesGuard],
+    data: { expectedRoles: ["ADMIN"] }
   },
   {
     path: '**',

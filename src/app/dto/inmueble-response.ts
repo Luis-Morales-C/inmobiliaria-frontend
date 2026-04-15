@@ -26,6 +26,8 @@ export interface InmuebleResponse {
   correoContacto: string;
   imagenes: string[];
   id: number;
+  departamento: string;
+  ciudad: string;
   propietario: PropietarioResponse; // ID del propietario
   documentosImportantes: string[];
 }

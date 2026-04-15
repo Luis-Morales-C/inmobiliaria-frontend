@@ -10,6 +10,7 @@ import { InmuebleServiceService } from '../../servicios/inmueble-service.service
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import { UbicacionService } from '../../servicios/ubicacion.service';
 
 @Component({
   selector: 'app-registro-inmueble',
@@ -32,6 +33,9 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
   imagenesError: boolean = false;
   pdfError: boolean = false;
   isLoading: boolean = false;
+  departamentos: string[] = [];
+  ciudadesFiltradas: string[] = [];
+  private ubicacionData: Record<string, string[]> = {};
 
   // Lógica de Idioma (Accesibilidad)
   t: typeof ES;
@@ -42,7 +46,8 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
     private mapaService: MapaService,
     protected redireccionamiento: RedireccionService,
     private inmuebleService: InmuebleServiceService,
-    public idiomaService: IdiomaService
+    public idiomaService: IdiomaService,
+    private ubicacionService: UbicacionService
   ) {
     this.t = idiomaService.t;
     this.crearFormularioTexto();
@@ -62,6 +67,19 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
       this.registroInmuebleForm.get('latitud')?.setValue(lat);
       this.registroInmuebleForm.get('longitud')?.setValue(lng);
     });
+
+    //departamentos y ciudades
+    this.ubicacionService.getDepartamentosCiudades().subscribe(data => {
+      this.ubicacionData = data;
+      this.departamentos = Object.keys(data).sort();
+    });
+
+  }
+
+  onDepartamentoChange(event: Event): void {
+    const depto = (event.target as HTMLSelectElement).value;
+    this.ciudadesFiltradas = this.ubicacionData[depto] ?? [];
+    this.registroInmuebleForm.get('ciudad')?.setValue('');
   }
 
   ngOnDestroy(): void {
@@ -146,6 +164,8 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
       correoContacto: ['', [Validators.required, Validators.email]],
       latitud: ['', Validators.required],
       longitud: ['', Validators.required],
+      departamento: ['', Validators.required],
+      ciudad:       ['', Validators.required],
     });
   }
 

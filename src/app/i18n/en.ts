@@ -17,12 +17,14 @@ export const EN = {
 
   // === NAVBAR ===
   nav: {
-    hagamosNegocios: 'LET\'S DO BUSINESS',
+    hagamosNegocios: "LET'S DO BUSINESS",
     conocenos: 'ABOUT US',
     contactenos: 'CONTACT US',
+    inicio: 'HOME',
     asesores: 'ADVISORS',
     iniciarSesion: 'SIGN IN',
     registrarse: 'SIGN UP',
+    metricas: 'METRICS',
   },
 
   // === INICIO DEFAULT / INICIO ===
@@ -66,6 +68,41 @@ export const EN = {
     latitud: 'Latitude',
     longitud: 'Longitude',
     contacto: 'Contact',
+    descripcionHero: 'Houses, apartments, commercial spaces, lots and farms for all your needs.',
+
+    // Secciones adicionales para el mapa y navbar
+    encuentraTuPropiedad: 'Find your ideal property',
+    buscarEnMapa: 'Search on Map',
+    buscarDireccion: 'Search address, neighborhood or city...',
+    buscarBtn: 'Search',
+    miUbicacion: 'My location',
+    filtros: 'Filters',
+    habitacionesAbrev: 'Bedrooms',
+    banosAbrev: 'Bathrooms',
+
+    // Opciones de búsqueda
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    casa: 'House',
+    apartamento: 'Apartment',
+    local: 'Commercial Space',
+    lote: 'Lot',
+    finca: 'Farm',
+    nuevo: 'New',
+    usado: 'Used',
+    enConstruccion: 'Under construction',
+    venta: 'Sale',
+    alquiler: 'Rental',
+    permuta: 'Exchange',
+    minimo: 'Min',
+    maximo: 'Max',
+
+    // Mensajes de alerta
+    contenidoInvitados: 'Showing content for guests',
+    contenidoDefault: 'Showing default content',
+    noCoincidencia: 'No exact match found for'
   },
 
   // === LOGIN ===
@@ -77,13 +114,13 @@ export const EN = {
     placeholderContrasena: 'Create a secure password',
     olvidoContrasena: 'Forgot your password?',
     boton: 'LOGIN',
-    noTieneCuenta: 'Don\'t have an account?',
+    noTieneCuenta: "Don't have an account?",
     registrate: 'Register here',
     volverInicio: 'Back to Home',
     errorEmail: 'You must enter your email address.',
     errorContrasena: 'You must enter your password.',
     cargando: 'loading',
-    errorCaptcha: 'captcha error'
+    errorCaptcha: 'captcha error, please complete'
   },
 
   // === REGISTRO ===
@@ -127,7 +164,8 @@ export const EN = {
     errorContrasenaNoCoincide: 'Passwords do not match.',
     codigoActivacion: 'An activation code has been sent to your email. You will be automatically redirected to activate your account.',
     exito: 'Successful',
-    error: 'Error'
+    error: 'Error',
+    errorTelefonoSoloNumeros: 'Phone number must contain only digits.',
   },
 
   // === FOOTER ===
@@ -135,7 +173,7 @@ export const EN = {
     descripcion: 'We offer the best real estate service with professionalism and dedication to help you find your ideal home.',
     enlacesRapidos: 'Quick Links',
     inicio: 'Home',
-    hagamosNegocios: 'Let\'s Do Business',
+    hagamosNegocios: "Let's Do Business",
     asesores: 'Advisors',
     politicaDatos: 'Personal Data Processing Policy',
     contacto: 'Contact',
@@ -232,7 +270,7 @@ export const EN = {
     volver: 'Back',
     activar: 'ACTIVATE ACCOUNT',
     reenviar: 'Resend code',
-    noRecibiste: 'Didn\'t receive the code?',
+    noRecibiste: "Didn't receive the code?",
   },
 
   // === RECUPERAR CONTRASEÑA ===
@@ -330,10 +368,9 @@ export const EN = {
     titulo: 'Personal Data Processing Policy',
     subtitulo: 'INMOBILIARIA EDÉN S.A.S.',
     volver: 'Back',
-    ultimaActualizacion: 'Last updated: October 10, 2025',
+    ultimaActualizacion: 'Last updated: April 14, 2026',
     lema: '"Your space, our commitment."',
 
-    // Títulos de las secciones en INGLÉS
     titulos: {
       introduccion: '1. Introduction',
       alcance: '2. Scope',
@@ -347,30 +384,32 @@ export const EN = {
       vigencia: '10. Validity and Update'
     },
 
-    introduccion: 'INMOBILIARIA EDÉN S.A.S. (hereinafter, "INMOBILIARIA EDÉN"), identified with NIT [Company NIT], with principal address in the city of [City, Colombia], in compliance with the provisions of the Political Constitution of Colombia (Article 15), Law 1581 of 2012, Decree 1377 of 2013, Decree 1074 of 2015, and other regulations that modify or add to them, adopts this Personal Data Processing Policy.',
+    introduccion: 'INMOBILIARIA EDÉN S.A.S., developed as a university project with principal address in Armenia, Quindío, Colombia, in compliance with the Political Constitution of Colombia (Article 15), Law 1581 of 2012, Decree 1377 of 2013, Decree 1074 of 2015, and other applicable regulations, adopts this Personal Data Processing Policy.',
 
-    alcance: 'This policy applies to all holders of personal data processed by INMOBILIARIA EDÉN, including clients, employees, suppliers, and users of digital platforms.',
+    alcance: 'This policy applies to all holders of personal data processed by INMOBILIARIA EDÉN S.A.S., including clients, advisors, suppliers, and users registered on its digital platforms, in relation to property purchase, sale, and rental services.',
 
     definiciones: [
-      { termino: 'Personal data:', descripcion: 'Information linked or that can be associated with a natural person.' },
-      { termino: 'Sensitive data:', descripcion: 'Information that affects privacy or may generate discrimination.' },
-      { termino: 'Processing officer:', descripcion: 'INMOBILIARIA EDÉN.' },
-      { termino: 'Processing:', descripcion: 'Any operation on personal data.' }
+      { termino: 'Personal data:', descripcion: 'Information linked or that can be associated with a determined or determinable natural person.' },
+      { termino: 'Sensitive data:', descripcion: 'Information that affects the privacy of the holder or whose misuse may generate discrimination.' },
+      { termino: 'Holder:', descripcion: 'Natural person whose personal data is subject to processing.' },
+      { termino: 'Processing officer:', descripcion: 'INMOBILIARIA EDÉN S.A.S., who decides on the database and its processing.' },
+      { termino: 'Data processor:', descripcion: 'Natural or legal person who carries out processing on behalf of the responsible party.' },
+      { termino: 'Processing:', descripcion: 'Any operation on personal data, such as collection, storage, use, circulation, or deletion.' }
     ],
 
-    principios: 'The processing of personal data shall be governed by the principles of legality, purpose, freedom, truthfulness, transparency, security, and confidentiality.',
+    principios: 'The processing of personal data shall be governed by the principles of legality, purpose, freedom, truthfulness, transparency, restricted access and circulation, security, and confidentiality, as established in Article 4 of Law 1581 of 2012.',
 
-    finalidades: 'The personal data collected will be used to manage real estate operations, labor, commercial and contractual relationships, as well as to comply with legal obligations and send relevant information about the company\'s services.',
+    finalidades: 'The personal data collected will be used to: (i) manage contractual relationships with clients in real estate operations; (ii) administer property purchase, sale, and rental processes; (iii) send information about properties and company services; (iv) comply with legal and accounting obligations; (v) handle requests, complaints, and claims; and (vi) improve the user experience on the company\'s digital platforms.',
 
-    derechos: 'Holders may access, update, rectify, request deletion of their data, and revoke the granted authorization, in accordance with Law 1581 of 2012.',
+    derechos: 'In accordance with Law 1581 of 2012, holders have the right to: know, update, and rectify their personal data; request proof of the authorization granted; be informed about the use of their data; file complaints with the Superintendency of Industry and Commerce; and revoke authorization and request deletion of their data when constitutional and legal principles are not respected.',
 
-    procedimiento: 'Requests may be sent to info@inmobiliariaeden.com or to the physical address [Company Address]. Inquiries within 10 business days, claims within 15.',
+    procedimiento: 'Requests may be sent to inmobiliariaedenco@gmail.com. Inquiries will be answered within a maximum of 10 business days and claims within 15 business days, in accordance with Articles 14 and 15 of Law 1581 of 2012.',
 
-    seguridad: 'Technical and administrative measures are adopted to protect personal data against loss, unauthorized access, alteration, or misuse.',
+    seguridad: 'INMOBILIARIA EDÉN S.A.S. adopts the technical and administrative measures necessary to guarantee the security of personal data and prevent its alteration, loss, unauthorized consultation, use, or fraudulent access, in accordance with Article 17 of Law 1581 of 2012.',
 
-    transferencia: 'INMOBILIARIA EDÉN may transfer personal data to third parties, ensuring compliance with Law 1581 of 2012.',
+    transferencia: 'INMOBILIARIA EDÉN S.A.S. may transfer or transmit personal data to third parties only when there is authorization from the holder, a legal obligation, or a contractual relationship that justifies it, always ensuring compliance with Law 1581 of 2012.',
 
-    vigencia: 'This policy is effective as of [approval date] and may be modified when necessary. Any update will be published on the company\'s official channels.'
+    vigencia: 'This policy is effective as of March 3, 2026, and will remain in force as long as INMOBILIARIA EDÉN S.A.S. processes personal data. It may be modified when necessary; any material update will be published on the company\'s official channels.'
   },
 
   // === COMÚN ===
@@ -379,4 +418,38 @@ export const EN = {
     inmobiliaria: 'Real Estate',
     eden: 'EDÉN',
   },
+
+  // === BÚSQUEDA AVANZADA ===
+  busquedaAvanzada: {
+    busquedaAvanzada: 'ADVANCED SEARCH',
+    ciudad: 'City',
+    todas: 'All',
+    bogota: 'Bogotá',
+    medellin: 'Medellín',
+    cali: 'Cali',
+    barranquilla: 'Barranquilla',
+    tipoInmueble: 'Property type',
+    todos: 'All',
+    casa: 'House',
+    apartamento: 'Apartment',
+    local: 'Commercial Space',
+    lote: 'Lot',
+    finca: 'Farm',
+    estadoPropiedad: 'Property status',
+    nuevo: 'New',
+    usado: 'Used',
+    enConstruccion: 'Under construction',
+    tipoNegocio: 'Business type',
+    venta: 'Sale',
+    alquiler: 'Rental',
+    permuta: 'Exchange',
+    habitaciones: 'Bedrooms',
+    cualquiera: 'Any',
+    banos: 'Bathrooms',
+    precioDesde: 'Price from',
+    precioHasta: 'Price to',
+    minimo: 'Min',
+    maximo: 'Max',
+    buscar: 'SEARCH',
+  }
 };

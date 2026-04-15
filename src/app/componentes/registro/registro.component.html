@@ -56,10 +56,24 @@
 
     <div class="mb-3">
       <label for="phone" class="form-label">{{ t.registro.telefono }}</label>
-      <input type="tel" class="form-control" formControlName="telefono" id="phone" [placeholder]="t.registro.placeholderTelefono">
+      <div class="telefono-wrapper">
+        <select class="prefijo-select" [(ngModel)]="prefijoTelefono" [ngModelOptions]="{standalone: true}">
+          <option *ngFor="let pais of paises" [value]="pais.codigo">
+            {{ pais.codigo }} — {{ pais.nombre }}
+          </option>
+        </select>
+        <input
+          type="tel"
+          class="form-control telefono-input"
+          formControlName="telefono"
+          id="phone"
+          placeholder="3001234567"
+          (keypress)="soloNumeros($event)">
+      </div>
 
       <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="text-danger">
         <div *ngIf="registroForm.get('telefono')?.errors?.['required']">{{ t.registro.errorTelefonoReq }}</div>
+        <div *ngIf="registroForm.get('telefono')?.errors?.['pattern']">{{ t.registro.errorTelefonoSoloNumeros }}</div>
         <div *ngIf="registroForm.get('telefono')?.errors?.['maxlength']">{{ t.registro.errorTelefonoMax }}</div>
       </div>
     </div>

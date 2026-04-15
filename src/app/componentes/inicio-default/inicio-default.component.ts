@@ -6,11 +6,12 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import { ChatbotComponent } from '../chatbot/chatbot.component';
 
 @Component({
   selector: 'app-inicio-default',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChatbotComponent],
   templateUrl: './inicio-default.component.html',
   styleUrls: ['./inicio-default.component.css']
 })

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { UsersService } from '../../servicios/users.service';
 import { ErrorResponse } from '../../dto/error-response';
 import { Router, RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass, RecaptchaModule],
+  imports: [ReactiveFormsModule, NgIf, RouterLink, NgClass, RecaptchaModule, FormsModule, NgForOf],
   providers: [
     {
       provide: RECAPTCHA_SETTINGS,
@@ -87,12 +87,29 @@ export class RegistroComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  prefijoTelefono = '+57';
+
+  paises = [
+    { codigo: '+57', nombre: '🇨🇴 Colombia' },
+    { codigo: '+1',  nombre: '🇺🇸 EE.UU / CA' },
+    { codigo: '+52', nombre: '🇲🇽 México' },
+    { codigo: '+34', nombre: '🇪🇸 España' },
+    { codigo: '+54', nombre: '🇦🇷 Argentina' },
+    { codigo: '+56', nombre: '🇨🇱 Chile' },
+    { codigo: '+51', nombre: '🇵🇪 Perú' },
+    { codigo: '+58', nombre: '🇻🇪 Venezuela' },
+  ];
+
   private crearFormulario() {
     this.registroForm = this.formBuilder.group({
         nombre: ['', [Validators.required, Validators.maxLength(50)]],
         apellido: ['', [Validators.required, Validators.maxLength(50)]],
         documentoIdentidad: ['', [Validators.required, Validators.maxLength(20)]],
-        telefono: ['', [Validators.required, Validators.maxLength(20)]],
+        telefono: ['', [
+          Validators.required,
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+$/)  // solo números
+        ]],
         email: ['', [Validators.required, Validators.email, Validators.maxLength(150)]],
         contrasena: ['', [
           Validators.required,
@@ -105,6 +122,19 @@ export class RegistroComponent implements OnInit, OnDestroy {
       {
         validators: this.passwordMatchValidator
       });
+    // Restaurar datos guardados
+    const guardado = sessionStorage.getItem('registroFormData');
+    if (guardado) {
+      this.registroForm.patchValue(JSON.parse(guardado));
+    }
+
+    // Guardar en cada cambio
+    this.registroForm.valueChanges.subscribe(values => {
+      // No guardar la contraseña por seguridad
+      const { contrasena, confirmcontrasena, ...resto } = values;
+      sessionStorage.setItem('registroFormData', JSON.stringify(resto));
+    });
+
   }
 
   onCaptchaResolved(token: string | null) {
@@ -125,6 +155,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
     const newUser: any = {
       ...this.registroForm.value,
+      telefono: this.prefijoTelefono + this.registroForm.value.telefono,
       recaptchaToken: this.captchaToken
     };
 
@@ -133,6 +164,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
     this.usersService.registrar(newUser).subscribe({
       next: (data) => {
         this.cargando = false;
+        sessionStorage.removeItem('registroFormData');
         this.result = 'Usuario registrado correctamente. Redirigiendo...';
         this.classResult = 'text-success text-center fw-bold';
 
@@ -187,5 +219,10 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
   get temaActual(): 'light' | 'dark' {
     return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
+
+  soloNumeros(event: KeyboardEvent): boolean {
+    const charCode = event.charCode;
+    return charCode >= 48 && charCode <= 57; // solo el input de número, el + va en el select
   }
 }

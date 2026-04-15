@@ -6,6 +6,7 @@ import { DOCUMENT } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { IdiomaService, Idioma } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
+import { PanelService } from '../../servicios/panel.service';
 
 @Component({
   selector: 'app-accesibilidad',
@@ -22,11 +23,13 @@ export class AccesibilidadComponent implements OnInit, OnDestroy {
   t: typeof ES;
 
   private sub!: Subscription;
+  private subPanel!: Subscription;
 
   constructor(
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
-    public idiomaService: IdiomaService
+    public idiomaService: IdiomaService,
+    private panelService: PanelService
   ) {
     this.t = idiomaService.t;
   }
@@ -35,6 +38,11 @@ export class AccesibilidadComponent implements OnInit, OnDestroy {
     this.sub = this.idiomaService.traducciones$.subscribe(t => {
       this.t = t;
     });
+
+    this.subPanel = this.panelService.panel$.subscribe(panel => {
+      this.menuVisible = panel === 'accesibilidad';
+    });
+
 
     this.idiomaSeleccionado = this.idiomaService.idioma;
 
@@ -54,6 +62,7 @@ export class AccesibilidadComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
+    this.subPanel?.unsubscribe();
   }
 
   CambiarContraste() {
@@ -76,6 +85,7 @@ export class AccesibilidadComponent implements OnInit, OnDestroy {
 
   MostrarMenu() {
     this.menuVisible = !this.menuVisible;
+    this.panelService.abrir('accesibilidad');
   }
 
   actualizarZoom() {

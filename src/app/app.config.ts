@@ -9,6 +9,7 @@ import {usuarioInterceptor} from './interceptor/usuario.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([usuarioInterceptor])),

@@ -52,13 +52,17 @@
       <a routerLink="/recuperar">{{ t.login.olvidoContrasena }}</a>
     </div>
 
-    <div class="mb-3 d-flex justify-content-center">
+    <div class="mb-3 d-flex flex-column align-items-center">
       @if (captchaActivo) {
         <re-captcha
           (resolved)="resolved($event)"
           [theme]="temaActual">
         </re-captcha>
       }
+      <div *ngIf="captchaError" class="captcha-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        {{ captchaError }}
+      </div>
     </div>
 
     <button type="submit" [disabled]="loading" class="btn btn-primary w-100">
