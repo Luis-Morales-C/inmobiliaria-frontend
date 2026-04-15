@@ -1,15 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {InmuebleResponse} from '../../dto/inmueble-response';
-import {InmuebleServiceService} from '../../servicios/inmueble-service.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { InmuebleResponse } from '../../dto/inmueble-response';
+import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
+import { UbicacionService } from '../../servicios/ubicacion.service'; //  agregar
+import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
 
 @Component({
   selector: 'app-catalogo',
   templateUrl: './catalogo.component.html',
+  styleUrls: ['./catalogo.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule]
+  imports: [CommonModule, FormsModule, RouterModule,DetalleInmuebleComponent]
 })
 export class CatalogoComponent implements OnInit {
 
@@ -17,6 +20,15 @@ export class CatalogoComponent implements OnInit {
   cargando = false;
   totalPaginas = 0;
   paginaActual = 0;
+
+  mostrarDetalle = false;
+  inmuebleSeleccionado: InmuebleResponse | null = null;
+
+
+  // Agregar estas tres propiedades
+  departamentos: string[] = [];
+  ciudadesFiltradas: string[] = [];
+  private ubicacionData: Record<string, string[]> = {};
 
   filtros = {
     ciudad: '',
@@ -27,16 +39,34 @@ export class CatalogoComponent implements OnInit {
     precioMax: null as number | null,
     habitacionesMin: null as number | null,
     banosMin: null as number | null,
+    parqueaderosMin: null as number | null,
     estado: '',
   };
 
   tiposInmueble = ['CASA', 'APARTAMENTO', 'LOCAL', 'LOTE', 'FINCA'];
-  tiposNegocio  = ['VENTA', 'ALQUILER', 'PERMUTA'];
+  tiposNegocio = ['VENTA', 'ALQUILER', 'PERMUTA'];
 
-  constructor(private inmuebleService: InmuebleServiceService) {}
+  constructor(
+    private inmuebleService: InmuebleServiceService,
+    private ubicacionService: UbicacionService //  inyectar
+  ) {
+  }
 
   ngOnInit(): void {
+    //  Cargar departamentos al iniciar
+    this.ubicacionService.getDepartamentosCiudades().subscribe(data => {
+      this.ubicacionData = data;
+      this.departamentos = Object.keys(data).sort();
+    });
+
     this.buscar();
+  }
+
+  //  Agregar este metodo
+  onDepartamentoChange(event: Event): void {
+    const depto = (event.target as HTMLSelectElement).value;
+    this.ciudadesFiltradas = this.ubicacionData[depto] ?? [];
+    this.filtros.ciudad = ''; // limpiar ciudad al cambiar departamento
   }
 
   buscar(pagina: number = 0): void {
@@ -55,16 +85,19 @@ export class CatalogoComponent implements OnInit {
   limpiarFiltros(): void {
     this.filtros = {
       ciudad: '', departamento: '', tipo: '', tipoNegocio: '',
-      precioMin: null, precioMax: null, habitacionesMin: null, banosMin: null,estado: '',
+      precioMin: null, precioMax: null, habitacionesMin: null, banosMin: null, estado: '', parqueaderosMin: null,
     };
+    this.ciudadesFiltradas = []; //  limpiar también las ciudades
     this.buscar();
   }
 
   get paginas(): number[] {
-    return Array.from({ length: this.totalPaginas }, (_, i) => i);
+    return Array.from({length: this.totalPaginas}, (_, i) => i);
   }
 
-  abrirDetalle(p: InmuebleResponse) {
 
+  abrirDetalle(p: InmuebleResponse): void {
+    this.inmuebleSeleccionado = p;
+    this.mostrarDetalle = true;
   }
 }

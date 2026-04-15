@@ -1,0 +1,166 @@
+<div class="modal-overlay" (click)="cerrarDetalle()">
+  <div class="modal-detalle-container" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header-detalle">
+      <div>
+        <span class="badge-tipo">{{ inmueble.tipoNegocio }}</span>
+        <span class="badge-estado ms-2">{{ inmueble.estado }}</span>
+      </div>
+      <button class="btn-cerrar" (click)="cerrarDetalle()">✕</button>
+    </div>
+
+    <div class="modal-body-detalle">
+      <!-- Columna izquierda: imágenes -->
+      <div class="columna-imagenes">
+
+        <!-- Imagen principal -->
+        <div class="imagen-principal">
+          <img [src]="inmueble.imagenes[imagenActual] || 'https://via.placeholder.com/600x400'"
+               alt="Imagen del inmueble">
+          <div class="imagen-nav" *ngIf="inmueble.imagenes.length > 1">
+            <button (click)="anteriorImagen()" [disabled]="imagenActual === 0">‹</button>
+            <span>{{ imagenActual + 1 }} / {{ inmueble.imagenes.length }}</span>
+            <button (click)="siguienteImagen()" [disabled]="imagenActual === inmueble.imagenes.length - 1">›</button>
+          </div>
+        </div>
+
+        <!-- Miniaturas -->
+        <div class="miniaturas" *ngIf="inmueble.imagenes.length > 1">
+          <img *ngFor="let img of inmueble.imagenes; let i = index"
+               [src]="img"
+               [class.activa]="i === imagenActual"
+               (click)="imagenActual = i"
+               alt="Miniatura {{ i + 1 }}">
+        </div>
+
+        <!-- Descripción -->
+        <div class="seccion-card">
+          <h6 class="seccion-titulo">Descripción</h6>
+          <p class="texto-descripcion">{{ inmueble.descripcion }}</p>
+        </div>
+
+        <!-- Documentos -->
+        <div class="seccion-card" *ngIf="inmueble.documentosImportantes && inmueble.documentosImportantes.length > 0">
+          <h6 class="seccion-titulo">Documentos</h6>
+          <ul class="lista-documentos">
+            <li *ngFor="let doc of inmueble.documentosImportantes; let i = index">
+              <a [href]="doc" target="_blank">
+                <i class="bi bi-file-earmark-pdf text-danger"></i>
+                Documento {{ i + 1 }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Columna derecha: información -->
+      <div class="columna-info">
+
+        <!-- Precio -->
+        <div class="precio-header">
+          <span class="precio-valor">{{ inmueble.precio | currency:'COP':'symbol':'1.0-0' }}</span>
+          <span class="precio-tipo">{{ inmueble.tipoNegocio === 'ALQUILER' ? '/ mes' : '' }}</span>
+        </div>
+
+        <p class="ubicacion-texto">
+          <i class="bi bi-geo-alt-fill"></i>
+          {{ inmueble.ciudad }}, {{ inmueble.departamento }}
+        </p>
+
+        <!-- Características principales -->
+        <div class="caracteristicas-grid">
+          <div class="caract-item" *ngIf="inmueble.habitaciones > 0">
+            <i class="bi bi-door-closed"></i>
+            <span class="caract-valor">{{ inmueble.habitaciones }}</span>
+            <span class="caract-label">Habitaciones</span>
+          </div>
+          <div class="caract-item" *ngIf="inmueble.banos > 0">
+            <i class="bi bi-droplet"></i>
+            <span class="caract-valor">{{ inmueble.banos }}</span>
+            <span class="caract-label">Baños</span>
+          </div>
+          <div class="caract-item">
+            <i class="bi bi-arrows-angle-expand"></i>
+            <span class="caract-valor">{{ inmueble.medidas }}</span>
+            <span class="caract-label">m²</span>
+          </div>
+          <div class="caract-item">
+            <i class="bi bi-car-front"></i>
+            <span class="caract-valor">{{ inmueble.cantidadParqueaderos }}</span>
+            <span class="caract-label">Parqueaderos</span>
+          </div>
+        </div>
+
+        <!-- Detalles del inmueble -->
+        <div class="seccion-card">
+          <h6 class="seccion-titulo">Detalles del inmueble</h6>
+          <div class="detalle-fila">
+            <span class="detalle-label">Tipo</span>
+            <span class="detalle-valor">{{ inmueble.tipo }}</span>
+          </div>
+          <div class="detalle-fila">
+            <span class="detalle-label">Estado</span>
+            <span class="detalle-valor">{{ inmueble.estado }}</span>
+          </div>
+          <div class="detalle-fila">
+            <span class="detalle-label">Negocio</span>
+            <span class="detalle-valor">{{ inmueble.tipoNegocio }}</span>
+          </div>
+          <div class="detalle-fila">
+            <span class="detalle-label">ID</span>
+            <span class="detalle-valor">#{{ inmueble.id }}</span>
+          </div>
+        </div>
+
+        <!-- Agente inmobiliario -->
+        <div class="seccion-card" *ngIf="inmueble.agenteAsociado as agente">
+          <h6 class="seccion-titulo">Agente inmobiliario</h6>
+          <div class="persona-card">
+            <div class="persona-avatar">
+              {{ agente.nombre.charAt(0) }}{{ agente.apellido.charAt(0) }}
+            </div>
+            <div class="persona-info">
+              <p class="persona-nombre">{{ agente.nombre }} {{ agente.apellido }}</p>
+              <p class="persona-dato"><i class="bi bi-telephone"></i> {{ agente.telefono }}</p>
+              <p class="persona-dato"><i class="bi bi-envelope"></i> {{ agente.email }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Asesor legal -->
+        <div class="seccion-card" *ngIf="inmueble.asesorLegal as asesor">
+          <h6 class="seccion-titulo">Asesor legal</h6>
+          <div class="persona-card">
+            <div class="persona-avatar asesor">
+              {{ asesor.nombre.charAt(0) }}{{ asesor.apellido.charAt(0) }}
+            </div>
+            <div class="persona-info">
+              <p class="persona-nombre">{{ asesor.nombre }} {{ asesor.apellido }}</p>
+              <p class="persona-dato"><i class="bi bi-telephone"></i> {{ asesor.telefono }}</p>
+              <p class="persona-dato"><i class="bi bi-envelope"></i> {{ asesor.email }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contacto directo -->
+        <div class="seccion-card">
+          <h6 class="seccion-titulo">Contacto directo</h6>
+          <div class="detalle-fila">
+            <span class="detalle-label">Nombre</span>
+            <span class="detalle-valor">{{ inmueble.nombreContacto }}</span>
+          </div>
+          <div class="detalle-fila">
+            <span class="detalle-label">Teléfono</span>
+            <span class="detalle-valor">{{ inmueble.telefonoContacto }}</span>
+          </div>
+          <div class="detalle-fila">
+            <span class="detalle-label">Correo</span>
+            <span class="detalle-valor">{{ inmueble.correoContacto }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,14 +5,26 @@
     <h4 class="mb-3"> Filtrar Propiedades</h4>
     <div class="row g-3">
 
-      <div class="col-md-3">
-        <label class="form-label">Ciudad</label>
-        <input class="form-control" [(ngModel)]="filtros.ciudad" placeholder="Ej: Medellín">
-      </div>
-
+      <!-- Departamento -->
       <div class="col-md-3">
         <label class="form-label">Departamento</label>
-        <input class="form-control" [(ngModel)]="filtros.departamento" placeholder="Ej: Antioquia">
+        <select class="form-select" [(ngModel)]="filtros.departamento"
+                (change)="onDepartamentoChange($event)">
+          <option value="">Todos</option>
+          <option *ngFor="let d of departamentos" [value]="d">{{ d }}</option>
+        </select>
+      </div>
+
+      <!-- Ciudad -->
+      <div class="col-md-3">
+        <label class="form-label">Ciudad</label>
+        <select class="form-select" [(ngModel)]="filtros.ciudad"
+                [disabled]="ciudadesFiltradas.length === 0">
+          <option value="">
+            {{ ciudadesFiltradas.length === 0 ? 'Selecciona un departamento' : 'Todas' }}
+          </option>
+          <option *ngFor="let c of ciudadesFiltradas" [value]="c">{{ c }}</option>
+        </select>
       </div>
 
       <div class="col-md-3">
@@ -71,6 +83,17 @@
         </select>
       </div>
 
+      <div class="col-md-3">
+        <label class="form-label">Parqueaderos </label>
+        <select class="form-select" [(ngModel)]="filtros.parqueaderosMin">
+          <option [ngValue]="null">Cualquiera</option>
+          <option [ngValue]="0">0</option>
+          <option [ngValue]="1">1</option>
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+        </select>
+      </div>
+
       <div class="col-12 d-flex gap-2 justify-content-end">
         <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">Limpiar</button>
         <button class="btn btn-primary px-4" (click)="buscar()">Buscar</button>
@@ -112,8 +135,9 @@
             <span><i class="bi bi-droplet"></i> {{ p.banos }} baños</span>
             <span><i class="bi bi-arrows-angle-expand"></i> {{ p.medidas }} m²</span>
           </div>
-          <button class="btn btn-outline-primary w-100 mt-auto"
-                  (click)="abrirDetalle(p)">Ver detalles</button>
+          <button class="btn btn-primary mt-auto" (click)="abrirDetalle(p)">
+            Ver detalles
+          </button>
         </div>
       </div>
     </div>
@@ -134,5 +158,10 @@
       </li>
     </ul>
   </nav>
-
 </div>
+<!-- MODAL FUERA DEL CONTAINER -->
+<app-detalle-inmueble
+  *ngIf="mostrarDetalle && inmuebleSeleccionado"
+  [inmueble]="inmuebleSeleccionado!"
+  (cerrar)="mostrarDetalle = false; inmuebleSeleccionado = null">
+</app-detalle-inmueble>
