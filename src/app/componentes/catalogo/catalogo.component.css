@@ -1,0 +1,196 @@
+:root {
+  --primary: #10bb82;
+  --primary-dark: #0daa75;
+  --primary-light: #c7fae9;
+  --primary-xlight: #eafaf5;
+}
+
+/* ── Filtros ── */
+.search-box {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.search-box h4 {
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.form-control,
+.form-select {
+  border-radius: 30px;
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.88rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16, 187, 130, 0.15);
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 30px;
+  padding: 9px 24px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+  border-radius: 30px;
+  padding: 9px 20px;
+  font-size: 0.9rem;
+}
+
+/* ── Tarjetas de propiedad ── */
+.property-card {
+  border-radius: 15px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.property-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(16, 187, 130, 0.18);
+}
+
+.property-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.property-price {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.property-badge {
+  background-color: var(--primary) !important;
+  color: white !important;
+  border-radius: 50px; /* Hace que se vea como una cápsula/píldora */
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 16px;   /* Espaciado lateral para que respire el texto */
+  text-transform: uppercase;
+  width: auto;         /* IMPORTANTE: Evita que ocupe todo el ancho */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra para que resalte sobre la foto */
+  border: 1px solid rgba(255,255,255,0.2); /* Opcional: un borde sutil */
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* ── Paginación ── */
+.pagination .page-link {
+  border-radius: 50% !important;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3px;
+  border: 1px solid #e0e0e0;
+  color: var(--primary);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.pagination .page-link:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+/* ── Estado vacío / loading ── */
+.spinner-border {
+  color: var(--primary) !important;
+}
+
+/* ═══════════════════════════
+   MODO OSCURO
+═══════════════════════════ */
+:host-context(body.dark-mode) .search-box {
+  background: #1a2640;
+  border: 1px solid #1e3a5f;
+}
+
+:host-context(body.dark-mode) .search-box h4 {
+  color: #e0e0e0;
+}
+
+:host-context(body.dark-mode) .form-label {
+  color: #aaa;
+}
+
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select {
+  background: #0f1f35;
+  border-color: #1e3a5f;
+  color: #e0e0e0;
+}
+
+:host-context(body.dark-mode) .property-card {
+  background: #1a2640;
+  border: 1px solid #1e3a5f;
+}
+
+:host-context(body.dark-mode) .card-title {
+  color: #e0e0e0;
+}
+
+:host-context(body.dark-mode) .text-muted {
+  color: #8899aa !important;
+}
+
+:host-context(body.dark-mode) .card-body {
+  background: #1a2640;
+}
+
+:host-context(body.dark-mode) .pagination .page-link {
+  background: #1a2640;
+  border-color: #1e3a5f;
+  color: var(--primary);
+}
+
+:host-context(body.dark-mode) .pagination .page-item.active .page-link {
+  background: var(--primary);
+  color: #fff;
+}
+
+:host-context(body.dark-mode) .btn-outline-secondary {
+  color: #ccc;
+  border-color: #3a4a60;
+}

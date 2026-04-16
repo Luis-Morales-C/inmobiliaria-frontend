@@ -9,13 +9,15 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import { DetalleInmuebleComponent } from '../detalle-inmueble/detalle-inmueble.component';
 
 @Component({
   selector: 'app-perfil',
   imports: [
     FormsModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DetalleInmuebleComponent
   ],
   standalone: true,
   templateUrl: './perfil.component.html',
@@ -45,8 +47,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
   propiedades: InmuebleResponse[] = [];
   mostrarModalDetalle = false;
   detalleInmueble: InmuebleResponse | null = null;
-  currentImageIndex: number = 0;
-  currentDocIndex: number = 0;
+
 
   // Confirmación de eliminación (HEAD)
   mostrarConfirmacionEliminar: boolean = false;
@@ -212,22 +213,6 @@ export class PerfilComponent implements OnInit, OnDestroy {
     });
   }
 
-  abrirModalDetalles(inmueble: InmuebleResponse): void {
-    this.detalleInmueble = inmueble;
-    this.currentImageIndex = 0;
-    this.currentDocIndex = 0;
-    this.mostrarModalDetalle = true;
-    console.log(this.detalleInmueble.documentosImportantes.length)
-  }
-
-
-  cerrarModalDetalles(): void {
-    this.mostrarModalDetalle = false;
-    this.detalleInmueble = null;
-    this.currentImageIndex = 0;
-    this.currentDocIndex = 0;
-  }
-
 
   // Extrae el nombre de archivo desde una URL (ej: Cloudinary) y lo decodifica
   getFileNameFromUrl(url: string | undefined | null): string {
@@ -250,20 +235,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Abrir documento en el navegador (Cloudinary)
-  abrirDocumento(url: string): void {
-    if (!url) return;
-    window.open(url, '_blank');
-  }
 
-  get detalleDocumentos(): string[] {
-    return this.detalleInmueble?.documentosImportantes || [];
-  }
-
-  get detalleDocumentosIndices(): number[] {
-    const docs = this.detalleDocumentos;
-    return docs.length > 0 ? docs.map((_, i) => i) : [];
-  }
 
   showAlert(type: 'success' | 'error', message: string): void {
     const alertDiv = document.createElement('div');
@@ -308,6 +280,20 @@ export class PerfilComponent implements OnInit, OnDestroy {
       this.redireccionamiento.redirigirAHomeIngresado();
       console.log("Redirigiendo a home ingresado"+this.authService.getUserEmail() );
     }
+  }
+
+  abrirModalDetalles(inmueble: InmuebleResponse): void {
+    this.detalleInmueble = inmueble;
+    this.mostrarModalDetalle = true;
+  }
+
+  cerrarModalDetalles(): void {
+    this.mostrarModalDetalle = false;
+    this.detalleInmueble = null;
+  }
+  soloNumeros(event: KeyboardEvent): boolean {
+    const charCode = event.charCode;
+    return charCode >= 48 && charCode <= 57;
   }
 
 }

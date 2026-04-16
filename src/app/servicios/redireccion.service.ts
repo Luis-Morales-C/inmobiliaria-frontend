@@ -57,5 +57,8 @@ export class RedireccionService {
   redirigirAMetricas() {
     this.router.navigate(['/metricas-admin']);
   }
+  redirigirACatalogo() {
+    this.router.navigate(['/catalogo']);
+  }
 
 }

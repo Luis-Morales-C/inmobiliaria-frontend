@@ -216,3 +216,47 @@ body.dark-mode .alert-info {
   border-color: #10bb82;
   color: #e0e0e0;
 }
+/* ===================================================
+   === TELÉFONO CON PREFIJO ===
+   =================================================== */
+.telefono-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.prefijo-select {
+  width: 140px;
+  height: 48px;
+  flex-shrink: 0;
+  margin-bottom: 20px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  /* Sin appearance: none para que el navegador muestre el dropdown nativo */
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  appearance: menulist;
+}
+
+.prefijo-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(16, 187, 130, 0.25);
+  outline: none;
+}
+
+.telefono-input {
+  flex: 1;
+  min-width: 0;
+}
+
+body.dark-mode .prefijo-select {
+  background-color: #1a1a2e;
+  border-color: #0f3460;
+  color: #e0e0e0;
+}

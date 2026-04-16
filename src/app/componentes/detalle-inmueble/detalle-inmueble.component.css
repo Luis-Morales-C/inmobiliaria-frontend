@@ -1,0 +1,570 @@
+/* --- Ajuste Columna Izquierda --- */
+.columna-imagenes {
+  width: 42%;
+  overflow-y: auto;
+  background: #f7faf9;
+  border-right: 1px solid #f0f0f0;
+  padding: 20px; /* Agregamos espacio alrededor de todo el contenido izquierdo */
+}
+
+/* --- Ajuste Imagen Principal --- */
+.imagen-principal {
+  position: relative;
+  margin-bottom: 15px; /* Espacio antes de las miniaturas */
+}
+
+.imagen-principal img {
+  width: 100%;
+  height: 280px;      /* Aumentamos un poco la altura */
+  object-fit: cover;
+  display: block;
+  border-radius: 15px; /* Redondeamos la imagen para que no pegue al borde */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para despegarla del fondo */
+}
+
+/* --- Ajuste Navegación (para que flote sobre la imagen redondeada) --- */
+.imagen-nav {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 15px;
+  background: rgba(255, 255, 255, 0.85); /* Fondo blanco traslúcido */
+  backdrop-filter: blur(4px);            /* Efecto moderno de desenfoque */
+  border-radius: 30px;
+  font-size: 0.82rem;
+  color: #333;
+  width: fit-content;
+}
+
+/* --- Miniaturas (Quitamos el padding lateral porque ya lo tiene el padre) --- */
+.miniaturas {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0 20px 0;
+  overflow-x: auto;
+}
+
+/* ── Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 16px;
+  animation: fadeOverlay 0.2s ease;
+}
+
+@keyframes fadeOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Contenedor modal ── */
+.modal-detalle-container {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.modal-header-detalle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.badge-tipo {
+  background: #10bb82;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.badge-estado {
+  background: #eaf3de;
+  color: #3b6d11;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.btn-cerrar {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #888;
+  font-size: 15px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-cerrar:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* ── Body ── */
+.modal-body-detalle {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Columna izquierda ── */
+.columna-imagenes {
+  width: 42%;
+  overflow-y: auto;
+  background: #f7faf9;
+  border-right: 1px solid #f0f0f0;
+  padding-bottom: 16px;
+}
+
+.imagen-principal {
+  position: relative;
+}
+
+.imagen-principal img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.imagen-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0;
+  background: rgba(0, 0, 0, 0.04);
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.imagen-nav button {
+  background: #10bb82;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.imagen-nav button:hover:not(:disabled) {
+  background: #0daa75;
+  transform: scale(1.1);
+}
+
+.imagen-nav button:disabled {
+  background: #ccc;
+  cursor: default;
+}
+
+.miniaturas {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  overflow-x: auto;
+}
+
+.miniaturas img {
+  width: 62px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.miniaturas img.activa,
+.miniaturas img:hover {
+  border-color: #10bb82;
+  transform: scale(1.06);
+}
+
+/* ── Columna derecha ── */
+.columna-info {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ── Precio ── */
+.precio-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.precio-valor {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #10bb82;
+}
+
+.precio-tipo {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.ubicacion-texto {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Grid de características ── */
+.caracteristicas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.caract-item {
+  background: #eafaf5;
+  border-radius: 12px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.caract-item i {
+  font-size: 1.1rem;
+  color: #10bb82;
+}
+
+.caract-valor {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #10bb82;
+  line-height: 1;
+}
+
+.caract-label {
+  font-size: 0.72rem;
+  color: #888;
+}
+
+/* ── Secciones / cards de info ── */
+.seccion-card {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.seccion-titulo {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #10bb82;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+/* ── Filas de detalle ── */
+.detalle-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.85rem;
+}
+
+.detalle-fila:last-child {
+  border: none;
+}
+
+.detalle-label {
+  color: #999;
+}
+
+.detalle-valor {
+  font-weight: 500;
+  color: #333;
+}
+
+/* ── Descripción ── */
+.texto-descripcion {
+  font-size: 0.87rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Documentos ── */
+.lista-documentos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lista-documentos li a {
+  font-size: 0.85rem;
+  color: #10bb82;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.lista-documentos li a:hover {
+  color: #0daa75;
+  text-decoration: underline;
+}
+
+/* ── Persona (agente / asesor) ── */
+.persona-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.persona-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #10bb82;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.persona-avatar.asesor {
+  background: #378add;
+}
+
+.persona-info {
+  flex: 1;
+}
+
+.persona-nombre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.persona-dato {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+@media (max-width: 768px) {
+  .modal-detalle-container {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .modal-body-detalle {
+    flex-direction: column;
+  }
+
+  .columna-imagenes {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .imagen-principal img {
+    height: 200px;
+  }
+
+  .caracteristicas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .columna-info {
+    padding: 16px;
+  }
+}
+.btn-contactar {
+  background: #10bb82;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-contactar:hover {
+  background: #0daa75;
+  transform: scale(1.04);
+}
+
+/* Modo oscuro */
+:host-context(body.dark-mode) .btn-contactar {
+  background: #0daa75;
+}
+
+.mapa-detalle-container {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ════════════════════════════
+   MODO OSCURO
+════════════════════════════ */
+:host-context(body.dark-mode) .modal-detalle-container {
+  background: #16213e;
+  border: 1px solid #1e3a5f;
+}
+
+:host-context(body.dark-mode) .modal-header-detalle {
+  border-bottom-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .badge-estado {
+  background: #1a3a20;
+  color: #6fcf97;
+}
+
+:host-context(body.dark-mode) .btn-cerrar {
+  border-color: #2a4060;
+  color: #aaa;
+}
+
+:host-context(body.dark-mode) .btn-cerrar:hover {
+  background: #1e3a5f;
+  color: #eee;
+}
+
+:host-context(body.dark-mode) .columna-imagenes {
+  background: #0f1f35;
+  border-right-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .imagen-nav {
+  background: rgba(255,255,255,0.04);
+  color: #aaa;
+}
+
+:host-context(body.dark-mode) .columna-info {
+  background: #16213e;
+}
+
+:host-context(body.dark-mode) .precio-valor {
+  color: #2de0a5;
+}
+
+:host-context(body.dark-mode) .ubicacion-texto {
+  color: #8899aa;
+}
+
+:host-context(body.dark-mode) .caract-item {
+  background: #0f2a3a;
+}
+
+:host-context(body.dark-mode) .caract-label {
+  color: #7a9ab5;
+}
+
+:host-context(body.dark-mode) .seccion-card {
+  background: #1a2e4a;
+  border-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .detalle-fila {
+  border-bottom-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .detalle-label {
+  color: #6a8aaa;
+}
+
+:host-context(body.dark-mode) .detalle-valor {
+  color: #dde8f5;
+}
+
+:host-context(body.dark-mode) .persona-nombre {
+  color: #dde8f5;
+}
+
+:host-context(body.dark-mode) .persona-dato {
+  color: #7a9ab5;
+}
+
+:host-context(body.dark-mode) .texto-descripcion {
+  color: #99aabf;
+}
+
+:host-context(body.dark-mode) .seccion-titulo {
+  color: #2de0a5;
+}
+
+:host-context(body.dark-mode) .miniaturas img.activa,
+:host-context(body.dark-mode) .miniaturas img:hover {
+  border-color: #2de0a5;
+}
+
+
