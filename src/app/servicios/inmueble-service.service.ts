@@ -26,7 +26,6 @@ export class InmuebleServiceService {
 
   }
 
-
   public obtenerListaInmueblesUsuario(email: string): Observable<InmuebleResponse[]> {
     return this.http.get<InmuebleResponse[]>(`${this.url}/${email}`);
   }
@@ -42,4 +41,16 @@ export class InmuebleServiceService {
   public eliminarInmueble(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+
+  buscarCatalogo(filtros: any, pagina: number = 0): Observable<any> {
+    const params = { ...filtros, pagina, tamano: 9 };
+    // Elimina valores vacíos/null para no enviar params sucios
+    Object.keys(params).forEach(k => {
+      if (params[k] === null || params[k] === '' || params[k] === undefined) {
+        delete params[k];
+      }
+    });
+    return this.http.get<any>(`${this.url}/catalogo`, { params });
+  }
+
 }

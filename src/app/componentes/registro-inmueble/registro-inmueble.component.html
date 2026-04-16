@@ -192,39 +192,40 @@
       </div>
     </div>
 
+    <!-- Departamento -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Departamento *</label>
+      <select class="form-select" formControlName="departamento" (change)="onDepartamentoChange($event)">
+        <option value="">Selecciona un departamento</option>
+        <option *ngFor="let depto of departamentos" [value]="depto">{{ depto }}</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="registroInmuebleForm.get('departamento')?.touched && registroInmuebleForm.get('departamento')?.invalid">
+        Selecciona un departamento
+      </small>
+    </div>
+
+    <!-- Ciudad -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Ciudad / Municipio *</label>
+      <select class="form-select" formControlName="ciudad"
+              [attr.disabled]="ciudadesFiltradas.length === 0 ? true : null"
+              (change)="onCiudadChange($event)">
+        <option value="">
+          {{ ciudadesFiltradas.length === 0 ? 'Primero selecciona un departamento' : 'Selecciona una ciudad' }}
+        </option>
+        <option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad">{{ ciudad }}</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="registroInmuebleForm.get('ciudad')?.touched && registroInmuebleForm.get('ciudad')?.invalid">
+        Selecciona una ciudad
+      </small>
+    </div>
 
     <!-- Ubicación -->
     <div class="form-section">
       <h3 class="section-title">Ubicación</h3>
-      <!-- Departamento -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Departamento *</label>
-        <select class="form-select" formControlName="departamento" (change)="onDepartamentoChange($event)">
-          <option value="">Selecciona un departamento</option>
-          <option *ngFor="let depto of departamentos" [value]="depto">{{ depto }}</option>
-        </select>
-        <small class="text-danger"
-               *ngIf="registroInmuebleForm.get('departamento')?.touched && registroInmuebleForm.get('departamento')?.invalid">
-          Selecciona un departamento
-        </small>
-      </div>
-
-
-      <!-- Ciudad -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Ciudad / Municipio *</label>
-        <select class="form-select" formControlName="ciudad"
-                [attr.disabled]="ciudadesFiltradas.length === 0 ? true : null">
-          <option value="">
-            {{ ciudadesFiltradas.length === 0 ? 'Primero selecciona un departamento' : 'Selecciona una ciudad' }}
-          </option>
-          <option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad">{{ ciudad }}</option>
-        </select>
-        <small class="text-danger"
-               *ngIf="registroInmuebleForm.get('ciudad')?.touched && registroInmuebleForm.get('ciudad')?.invalid">
-          Selecciona una ciudad
-        </small>
-      </div>
+      <label class="form-label">Ubicación:</label>
       <div id="mapa"></div>
     </div>
 

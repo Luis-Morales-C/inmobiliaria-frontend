@@ -310,7 +310,4 @@ export class PerfilComponent implements OnInit, OnDestroy {
     }
   }
 
-  iniciarChat(correoContacto: string) {
-    
-  }
 }

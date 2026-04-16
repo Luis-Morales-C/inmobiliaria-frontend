@@ -154,7 +154,7 @@ const TREE: Record<string, ChatNode> = {
     options: [
       { label: 'Casa o apartamento',     action: 'node',     value: 'browseTypes'  },
       { label: 'Local, lote o finca',    action: 'node',     value: 'browseTypes'  },
-      { label: 'Ir al catálogo completo', action: 'redirect', value: '/inicio'      },
+      { label: 'Ir al catálogo completo', action: 'redirect', value: '/catalogo'      },
       { label: '← Volver al inicio',     action: 'node',     value: 'start'        },
     ],
   },
@@ -165,7 +165,7 @@ const TREE: Record<string, ChatNode> = {
       '¡Perfecto! Para ver todos los inmuebles disponibles y filtrarlos por tipo, ' +
       'precio, habitaciones y más, te recomendamos ir al catálogo completo.',
     options: [
-      { label: 'Ir al catálogo',    action: 'redirect', value: '/inicio'    },
+      { label: 'Ir al catálogo',    action: 'redirect', value: '/catalogo'    },
       { label: '← Volver al inicio', action: 'node',   value: 'start'      },
     ],
   },

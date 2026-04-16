@@ -21,6 +21,7 @@ import {RecuperarContrasenaComponent} from './componentes/recuperar-contrasena/r
 import {CambiarContrasenaComponent} from './componentes/cambiar-contrasena/cambiar-contrasena.component';
 import {ConocenosComponent} from './componentes/conocenos/conocenos.component';
 import {ContactenosComponent} from './componentes/contactenos/contactenos.component';
+import {CatalogoComponent} from './componentes/catalogo/catalogo.component';
 
 
 export const routes: Routes = [
@@ -62,6 +63,10 @@ export const routes: Routes = [
   {
     path: 'contactenos',
     component: ContactenosComponent
+  },
+  {
+    path: 'catalogo',
+    component: CatalogoComponent
   },
   // Rutas protegidas para usuarios logueados
   {
