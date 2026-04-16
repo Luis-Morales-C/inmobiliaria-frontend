@@ -1,155 +1,133 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { WebSocketService } from '../../servicios/webSocketService';
-import { AuthService } from '../../servicios/auth.service';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, NgClass, DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Contacto } from '../../dto/contacto';
+import { AuthService } from '../../servicios/auth.service';
+import {ContactoService} from '../../servicios/ContactoService';
+import {WebSocketService} from '../../servicios/webSocketService';
+
+interface MensajeDTO {
+  emisor: string;
+  receptor: string;
+  contenido: string;
+  fechaMensaje?: string;
+}
 
 @Component({
   selector: 'app-chat',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'],
-  imports: [
-    FormsModule,
-    NgClass,
-    CommonModule,
-    DatePipe
-  ]
+  styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-  // Estados de la UI
-  isOpen = false;
-  activeContact: any = null;
-  loadingContacts = false;
+  @ViewChild('mensajesContainer') mensajesContainer!: ElementRef;
 
-  // Datos
-  currentUserEmail = '';
-  contactos: any[] = []; // Se llena desde el backend
-  mensajes: any[] = [];
+  panelAbierto = false;
+  contactoSeleccionado: Contacto | null = null;
+  contactos: Contacto[] = [];
+  mensajes: MensajeDTO[] = [];
   nuevoMensaje = '';
+  userEmail: string = '';
+  private debeScrollear = false;
 
   constructor(
-    private webSocketService: WebSocketService,
+    private contactoService: ContactoService,
+    private wsService: WebSocketService,
     private authService: AuthService,
     private http: HttpClient
   ) {}
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      const email = this.authService.getUserEmail();
-      const token = this.authService.getToken();
+  ngOnInit() {
+    this.userEmail = this.authService.getUserEmail() || '';
 
-      if (email && token) {
-        this.currentUserEmail = email;
-        this.cargarContactos(); // Petición inicial
-
-        this.webSocketService.connect(token, (mensajeRecibido) => {
-          this.manejarMensajeEntrante(mensajeRecibido);
-        });
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.webSocketService.disconnect();
-  }
-
-  // --- PETICIONES API ---
-
-  cargarContactos() {
-    this.loadingContacts = true;
-    // URL ajustada a tu backend
-    const url = `http://localhost:8080/api/users/${this.currentUserEmail}/contacts`;
-
-    this.http.get<any[]>(url).subscribe({
-      next: (res) => {
-        this.contactos = res;
-        this.loadingContacts = false;
-      },
-      error: (err) => {
-        console.error('Error cargando contactos', err);
-        this.loadingContacts = false;
-        // Solo mostrar alerta si el error no es un 404 (que podría significar lista vacía)
-        if (err.status !== 404) {
-          this.authService.showAlert('error', 'Error al sincronizar contactos');
+    const token = this.authService.getToken();
+    if (token && this.userEmail) {
+      this.wsService.connect(token, this.userEmail, (msg: MensajeDTO) => {
+        // Solo agrega si el mensaje es de la conversación activa
+        if (
+          this.contactoSeleccionado &&
+          (msg.emisor === this.contactoSeleccionado.email ||
+            msg.receptor === this.contactoSeleccionado.email)
+        ) {
+          this.mensajes.push(msg);
+          this.debeScrollear = true;
         }
-      }
+      });
+    }
+
+    this.contactoService.getContactos().subscribe({
+      next: (data) => this.contactos = data,
+      error: (err) => console.error('Error cargando contactos', err)
     });
   }
 
-  // --- MÉTODOS DE LA UI ---
-
-  toggleChatPanel() {
-    if (!this.authService.isAuthenticated()) {
-      this.authService.showAlert('error', 'Debes iniciar sesión para usar el chat');
-      return;
+  ngAfterViewChecked() {
+    if (this.debeScrollear) {
+      this.scrollAlFinal();
+      this.debeScrollear = false;
     }
-    this.isOpen = !this.isOpen;
-    if (!this.isOpen) this.activeContact = null;
   }
 
-  abrirChat(contacto: any) {
-    this.activeContact = contacto;
-    contacto.unread = 0;
+  ngOnDestroy() {
+    this.wsService.disconnect();
+  }
 
-    const urlHistorial = `http://localhost:8080/api/messages/${this.currentUserEmail}/${contacto.email}`;
-    this.http.get<any[]>(urlHistorial).subscribe({
+  togglePanel() {
+    this.panelAbierto = !this.panelAbierto;
+    if (!this.panelAbierto) {
+      this.contactoSeleccionado = null;
+      this.mensajes = [];
+    }
+  }
+
+  abrirChat(contacto: Contacto) {
+    this.contactoSeleccionado = contacto;
+    this.mensajes = [];
+
+    this.http.get<MensajeDTO[]>(
+      `http://localhost:8080/api/chat/${contacto.email}`
+    ).subscribe({
       next: (historial) => {
         this.mensajes = historial;
-        this.scrollToBottom();
+        this.debeScrollear = true;
       },
-      error: (err) => {
-        console.error('Error cargando historial', err);
-        this.mensajes = [];
-      }
+      error: (err) => console.error('Error cargando historial', err)
     });
   }
 
   volverAContactos() {
-    this.activeContact = null;
+    this.contactoSeleccionado = null;
+    this.mensajes = [];
   }
-
-  // --- LÓGICA DE MENSAJERÍA ---
 
   enviarMensaje() {
-    if (!this.nuevoMensaje.trim() || !this.activeContact) return;
+    if (!this.nuevoMensaje.trim() || !this.contactoSeleccionado) return;
 
-    const mensajeDTO = {
-      receptor: this.activeContact.email,
-      contenido: this.nuevoMensaje
+    const dto: MensajeDTO = {
+      emisor: this.userEmail,
+      receptor: this.contactoSeleccionado.email,
+      contenido: this.nuevoMensaje.trim()
     };
 
-    this.webSocketService.sendMessage(mensajeDTO);
+    this.wsService.sendMessage(dto);
 
-    this.mensajes.push({
-      emisor: this.currentUserEmail,
-      receptor: this.activeContact.email,
-      contenido: this.nuevoMensaje,
-      fechaMensaje: new Date()
-    });
-
+    // Agrega el mensaje propio inmediatamente en la UI
+    this.mensajes.push({ ...dto, fechaMensaje: new Date().toISOString() });
     this.nuevoMensaje = '';
-    this.scrollToBottom();
+    this.debeScrollear = true;
   }
 
-  private manejarMensajeEntrante(mensajeRecibido: any) {
-    if (this.activeContact && mensajeRecibido.emisor === this.activeContact.email) {
-      this.mensajes.push(mensajeRecibido);
-      this.scrollToBottom();
-    } else {
-      const contacto = this.contactos.find(c => c.email === mensajeRecibido.emisor);
-      if (contacto) {
-        contacto.unread++;
-      }
-    }
+  esMio(msg: MensajeDTO): boolean {
+    return msg.emisor === this.userEmail;
   }
 
-  private scrollToBottom() {
-    setTimeout(() => {
-      const chatBody = document.getElementById('chat-body');
-      if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
-    }, 100);
+  private scrollAlFinal() {
+    try {
+      const el = this.mensajesContainer.nativeElement;
+      el.scrollTop = el.scrollHeight;
+    } catch {}
   }
 }

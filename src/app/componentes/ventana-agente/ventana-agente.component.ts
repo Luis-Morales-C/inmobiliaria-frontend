@@ -277,4 +277,7 @@ export class VentanaAgenteComponent implements OnInit, OnDestroy {
     }
   }
 
+  iniciarChat(correoContacto: string) {
+    
+  }
 }

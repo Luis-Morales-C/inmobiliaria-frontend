@@ -7,6 +7,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ChatComponent } from './componentes/chat/chat.component';
 import { AuthService } from './servicios/auth.service';
 import { CommonModule } from '@angular/common';
+import {ChatbotComponent} from './componentes/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   // Quité FormsModule de aquí porque el AppComponent no tiene formularios
-  imports: [HeaderComponent, FooterComponent, RouterOutlet, AccesibilidadComponent, ChatComponent, CommonModule]
+  imports: [HeaderComponent, FooterComponent, RouterOutlet, AccesibilidadComponent, ChatComponent, CommonModule, ChatbotComponent]
 })
 export class AppComponent implements OnInit { // 🚀 Asegúrate de implementar OnInit
   title = 'Inmobiliaria Edén';

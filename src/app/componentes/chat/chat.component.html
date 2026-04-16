@@ -1,72 +1,72 @@
 <div class="chat-wrapper">
-  <button class="btn btn-primary chat-trigger-btn" (click)="toggleChatPanel()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-      <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-    </svg>
-    Chat
+
+  <!-- Botón flotante -->
+  <button class="chat-toggle-btn" (click)="togglePanel()">
+    <i class="bi" [ngClass]="panelAbierto ? 'bi-x-lg' : 'bi-chat-dots-fill'"></i>
+    <span>Contactos</span>
   </button>
 
-  <div class="chat-panel" *ngIf="isOpen">
+  <!-- Panel principal -->
+  <div class="chat-panel" [class.abierto]="panelAbierto">
 
-    <div class="contact-list-view" *ngIf="!activeContact">
-      <div class="chat-header">
-        <h5 class="m-0">Mis Mensajes</h5>
+    <!-- Vista: lista de contactos -->
+    @if (!contactoSeleccionado) {
+      <div class="panel-header">
+        <span>Mis Contactos</span>
       </div>
-
-      <div class="contact-list">
-        <div *ngIf="loadingContacts" class="text-center p-4">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <p class="mt-2 mb-0"><small>Buscando contactos...</small></p>
-        </div>
-
-        <div *ngIf="!loadingContacts && contactos.length === 0" class="no-contacts-container text-center p-4">
-          <div class="mb-2">📭</div>
-          <p class="text-muted m-0">No tienes ningún contacto agregado</p>
-        </div>
-
-        <div *ngIf="!loadingContacts && contactos.length > 0">
-          <div class="contact-item" *ngFor="let c of contactos" (click)="abrirChat(c)">
-            <div class="contact-avatar">{{ c.nombre ? c.nombre.charAt(0) : 'U' }}</div>
-            <div class="contact-info">
-              <span class="contact-name">{{ c.nombre }}</span>
-              <span class="badge bg-danger chat-badge" *ngIf="c.unread > 0">{{ c.unread }}</span>
+      <div class="contactos-lista">
+        @for (contacto of contactos; track contacto.id) {
+          <div class="contacto-item" (click)="abrirChat(contacto)">
+            <div class="avatar">{{ contacto.nombre[0] }}{{ contacto.apellido[0] }}</div>
+            <div class="contacto-info">
+              <span class="contacto-nombre">{{ contacto.nombre }} {{ contacto.apellido }}</span>
+              <span class="contacto-email">{{ contacto.email }}</span>
             </div>
+            <i class="bi bi-chevron-right"></i>
           </div>
-        </div>
+        }
+        @if (contactos.length === 0) {
+          <p class="sin-contactos">No tienes contactos aún.</p>
+        }
       </div>
-    </div>
+    }
 
-    <div class="active-chat-view" *ngIf="activeContact">
-      <div class="chat-header d-flex justify-content-between align-items-center">
-        <button class="btn btn-sm btn-link text-white p-0" (click)="volverAContactos()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-          </svg>
+    <!-- Vista: chat con contacto -->
+    @if (contactoSeleccionado) {
+      <div class="panel-header chat-header">
+        <button class="btn-volver" (click)="volverAContactos()">
+          <i class="bi bi-arrow-left"></i>
         </button>
-        <h6 class="m-0 text-truncate ms-2">{{ activeContact.nombre }}</h6>
-        <div style="width: 20px;"></div>
+        <div class="avatar small">
+          {{ contactoSeleccionado.nombre[0] }}{{ contactoSeleccionado.apellido[0] }}
+        </div>
+        <span>{{ contactoSeleccionado.nombre }} {{ contactoSeleccionado.apellido }}</span>
       </div>
 
-      <div class="chat-body" id="chat-body">
-        <div *ngFor="let msg of mensajes"
-             [ngClass]="{'msg-sent': msg.emisor === currentUserEmail, 'msg-received': msg.emisor !== currentUserEmail}">
-          <div class="msg-bubble">
-            {{ msg.contenido }}
+      <div class="mensajes-container" #mensajesContainer>
+        @for (msg of mensajes; track $index) {
+          <div class="mensaje" [ngClass]="esMio(msg) ? 'mio' : 'suyo'">
+            <div class="burbuja">{{ msg.contenido }}</div>
           </div>
-          <small class="msg-time">{{ msg.fechaMensaje | date:'shortTime' }}</small>
-        </div>
+        }
+        @if (mensajes.length === 0) {
+          <p class="sin-mensajes">Inicia la conversación 👋</p>
+        }
       </div>
 
-      <div class="chat-footer">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Mensaje..."
-                 [(ngModel)]="nuevoMensaje" (keyup.enter)="enviarMensaje()">
-          <button class="btn btn-primary" (click)="enviarMensaje()">
-            ➤
-          </button>
-        </div>
+      <div class="input-area">
+        <input
+          type="text"
+          [(ngModel)]="nuevoMensaje"
+          placeholder="Escribe un mensaje..."
+          (keyup.enter)="enviarMensaje()"
+          class="input-mensaje"
+        />
+        <button class="btn-enviar" (click)="enviarMensaje()">
+          <i class="bi bi-send-fill"></i>
+        </button>
       </div>
-    </div>
+    }
 
   </div>
 </div>

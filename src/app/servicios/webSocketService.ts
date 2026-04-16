@@ -1,74 +1,58 @@
 import { Injectable } from '@angular/core';
 import { Client, Message } from '@stomp/stompjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class WebSocketService {
   private stompClient: Client;
 
   constructor() {
     this.stompClient = new Client({
-      // 1. IMPORTANTE: Con WebSockets nativos usamos ws:// o wss:// en lugar de http://
-      brokerURL: 'ws://localhost:8080/ws', // Ajusta el puerto si tu Spring Boot usa otro
-
-      // Muestra logs en la consola para ayudarte a ver si se conecta bien (puedes quitarlo en producción)
-      debug: (str) => {
-        console.log('STOMP: ' + str);
-      },
-
+      brokerURL: 'ws://localhost:8080/ws',
+      debug: (str) => console.log('STOMP: ' + str),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     });
   }
 
-  // Tu ChatComponent ya llama a este método exactamente así
-  connect(token: string, onMessageReceived: (msg: any) => void) {
-
-    // Pasamos el JWT por los headers para que Spring Boot lo valide
+  connect(token: string, userEmail: string, onMessageReceived: (msg: any) => void) {
     this.stompClient.connectHeaders = {
       Authorization: `Bearer ${token}`
     };
 
-    this.stompClient.onConnect = (frame) => {
-      console.log('✅ ¡Conectado al servidor WebSocket!', frame);
+    this.stompClient.onConnect = () => {
+      console.log('✅ Conectado al WebSocket');
 
-      // 2. IMPORTANTE: Ajusta '/topic/mensajes' a la ruta que tengas configurada en tu Spring Boot
-      this.stompClient.subscribe('/topic/mensajes', (message: Message) => {
-        if (message.body) {
-          const mensajeParseado = JSON.parse(message.body);
-          onMessageReceived(mensajeParseado); // Enviamos el mensaje al componente
+      // ✅ Ruta corregida — coincide con convertAndSendToUser del backend
+      this.stompClient.subscribe(
+        `/user/${userEmail}/queue/messages`,
+        (message: Message) => {
+          if (message.body) {
+            onMessageReceived(JSON.parse(message.body));
+          }
         }
-      });
+      );
     };
 
     this.stompClient.onStompError = (frame) => {
-      console.error('❌ Error de STOMP:', frame.headers['message']);
-      console.error('Detalles adicionales:', frame.body);
+      console.error('❌ Error STOMP:', frame.headers['message']);
     };
 
-    // Iniciamos la conexión
     this.stompClient.activate();
   }
 
-  // Tu ChatComponent llama a este método para enviar mensajes
   sendMessage(mensajeDTO: any) {
-    if (this.stompClient && this.stompClient.connected) {
+    if (this.stompClient?.connected) {
       this.stompClient.publish({
-        // 3. IMPORTANTE: Ajusta '/app/chat' al @MessageMapping que tengas en tu Spring Boot
         destination: '/app/chat',
         body: JSON.stringify(mensajeDTO)
       });
     } else {
-      console.error('⚠️ No se pudo enviar el mensaje, no hay conexión al servidor.');
+      console.error('⚠️ Sin conexión WebSocket');
     }
   }
 
   disconnect() {
-    if (this.stompClient) {
-      this.stompClient.deactivate();
-      console.log('🔌 Desconectado del servidor WebSocket');
-    }
+    this.stompClient?.deactivate();
   }
 }

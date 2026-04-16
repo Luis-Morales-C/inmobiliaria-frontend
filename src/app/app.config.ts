@@ -9,14 +9,11 @@ import {usuarioInterceptor} from './interceptor/usuario.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    // Solo una vez, con tus interceptores
     provideHttpClient(withInterceptors([usuarioInterceptor])),
     provideAnimationsAsync(),
-    providePrimeNG({
-      theme: {
-        preset: Aura
-      }
-    })]
+    providePrimeNG({ theme: { preset: Aura } })
+  ]
 };

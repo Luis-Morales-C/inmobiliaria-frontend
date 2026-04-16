@@ -13,6 +13,9 @@ import { environment } from '../../../environments/environment';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import {ContactoService} from '../../servicios/ContactoService';
+
 
 @Component({
   selector: 'app-login',
@@ -61,7 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     public idiomaService: IdiomaService,
-
+    public contactoService: ContactoService
   ) {
     this.t = idiomaService.t;
     this.loginForm = this.fb.group({
@@ -119,18 +122,34 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loading = true;
       const { email, contrasena } = this.loginForm.value;
 
-      this.authService.login(email, contrasena, this.captchaToken).subscribe({
-        next: () => {
-          this.loading = false;
-          // No llamamos a showAlert aquí porque el AuthService ya lo hace en el .pipe(tap)
-          this.router.navigate(['/inicio']);
-        },
-        error: () => {
-          this.loading = false;
-          this.captchaToken = null;
-          this.recargarCaptcha(); // Reset visual del captcha tras error
-        }
-      });
+      // 2. Encadenamos las peticiones con RxJS
+      this.authService.login(email, contrasena, this.captchaToken)
+        .pipe(
+          // switchMap espera a que el login termine exitosamente, y luego ejecuta lo de adentro
+          switchMap(() => {
+            // Aquí llamamos a tu otro servicio (Asegúrate de inyectarlo en el constructor)
+            return this.contactoService.getContactos();
+          })
+        )
+        .subscribe({
+          // El 'next' ahora recibe la respuesta del SEGUNDO servicio (los contactos)
+          next: (contactosObtenidos) => {
+            this.loading = false;
+
+            // Opcional: Aquí puedes guardar los contactos en tu servicio para usarlos luego
+            // this.contactoService.setContactosActuales(contactosObtenidos);
+            console.log('Contactos importados exitosamente:', contactosObtenidos);
+
+            // Navegamos al inicio
+            this.router.navigate(['/inicio']);
+          },
+          error: (err) => {
+            console.error('Error en el login o importando contactos:', err);
+            this.loading = false;
+            this.captchaToken = null;
+            this.recargarCaptcha(); // Reset visual del captcha tras error
+          }
+        });
     } else {
       this.loginForm.markAllAsTouched();
     }
