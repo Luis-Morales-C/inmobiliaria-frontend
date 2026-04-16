@@ -134,6 +134,13 @@
   color: #888;
 }
 
+.label-agente {
+  color: #FF0000;         /* Rojo puro */
+  font-size: 12px;        /* Cambia el tamaño a tu gusto */
+  font-weight: bold;      /* Opcional: para que resalte más */
+  text-transform: uppercase;
+}
+
 .contacto-item .bi-chevron-right {
   color: #aaa;
   font-size: 0.85rem;

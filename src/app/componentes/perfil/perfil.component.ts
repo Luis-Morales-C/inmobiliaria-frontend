@@ -9,13 +9,15 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
 
 @Component({
   selector: 'app-perfil',
   imports: [
     FormsModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DetalleInmuebleComponent
   ],
   standalone: true,
   templateUrl: './perfil.component.html',

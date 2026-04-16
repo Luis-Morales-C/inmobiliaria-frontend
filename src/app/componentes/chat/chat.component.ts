@@ -46,7 +46,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     const token = this.authService.getToken();
     if (token && this.userEmail) {
       this.wsService.connect(token, this.userEmail, (msg: MensajeDTO) => {
-        // Solo agrega si el mensaje es de la conversación activa
         if (
           this.contactoSeleccionado &&
           (msg.emisor === this.contactoSeleccionado.email ||
@@ -58,10 +57,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
     }
 
-    this.contactoService.getContactos().subscribe({
-      next: (data) => this.contactos = data,
-      error: (err) => console.error('Error cargando contactos', err)
-    });
+    // ✅ Usa el estado en memoria — no hace petición HTTP
+    this.contactoService.contactos$.subscribe(
+      contactos => this.contactos = contactos
+    );
   }
 
   ngAfterViewChecked() {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InmuebleResponse } from '../../dto/inmueble-response';
 import { AgenteResponse } from '../../dto/AgenteResponse';
 import { MapaService } from '../../mapa.service';
+import {ContactoService} from '../../servicios/ContactoService';
 
 @Component({
   selector: 'app-detalle-inmueble',
@@ -17,7 +18,7 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
 
   imagenActual = 0;
 
-  constructor(private mapaService: MapaService) {}
+  constructor(private mapaService: MapaService,private contactoService: ContactoService) {}
 
   ngAfterViewInit(): void {
     // Pequeño delay para asegurar que el DOM esté listo
@@ -50,6 +51,9 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
   }
 
   contactarAgente(agente: AgenteResponse): void {
-    // lógica de chat posterior
+    this.contactoService.agregarContacto(agente.email).subscribe({
+      next: () => console.log(`✅ ${agente.nombre} agregado a contactos`),
+      error: (err) => console.error('Error agregando contacto', err)
+    });
   }
 }

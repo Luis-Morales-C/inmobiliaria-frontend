@@ -22,7 +22,7 @@ export class AppComponent {
   isMobile = false;
 
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver,public authService: AuthService) {
 
   }
 

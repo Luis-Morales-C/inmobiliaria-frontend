@@ -3,4 +3,5 @@ export interface Contacto {
   nombre: string;
   apellido: string;
   email: string;
+  rol: string;
 }
