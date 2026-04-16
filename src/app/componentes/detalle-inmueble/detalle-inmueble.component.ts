@@ -1,6 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InmuebleResponse } from '../../dto/inmueble-response';
+import { AgenteResponse } from '../../dto/AgenteResponse';
+import { MapaService } from '../../mapa.service';
 
 @Component({
   selector: 'app-detalle-inmueble',
@@ -9,11 +11,31 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
   standalone: true,
   imports: [CommonModule]
 })
-export class DetalleInmuebleComponent {
+export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
   @Input() inmueble!: InmuebleResponse;
   @Output() cerrar = new EventEmitter<void>();
 
   imagenActual = 0;
+
+  constructor(private mapaService: MapaService) {}
+
+  ngAfterViewInit(): void {
+    // Pequeño delay para asegurar que el DOM esté listo
+    setTimeout(() => {
+      if (this.inmueble?.latitud && this.inmueble?.longitud) {
+        this.mapaService.mostrarInmuebleEnMapa(
+          'mapa-detalle',
+          this.inmueble.latitud,
+          this.inmueble.longitud,
+          `${this.inmueble.tipo} · ${this.inmueble.ciudad}`
+        );
+      }
+    }, 200);
+  }
+
+  ngOnDestroy(): void {
+    this.mapaService.destruirMapaDetalle();
+  }
 
   anteriorImagen(): void {
     if (this.imagenActual > 0) this.imagenActual--;
@@ -25,5 +47,9 @@ export class DetalleInmuebleComponent {
 
   cerrarDetalle(): void {
     this.cerrar.emit();
+  }
+
+  contactarAgente(agente: AgenteResponse): void {
+    // lógica de chat posterior
   }
 }

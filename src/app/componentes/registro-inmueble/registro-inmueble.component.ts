@@ -76,12 +76,6 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
 
   }
 
-  onDepartamentoChange(event: Event): void {
-    const depto = (event.target as HTMLSelectElement).value;
-    this.ciudadesFiltradas = this.ubicacionData[depto] ?? [];
-    this.registroInmuebleForm.get('ciudad')?.setValue('');
-  }
-
   ngOnDestroy(): void {
     // Limpieza total para evitar fugas de memoria
     this.idiomasSub?.unsubscribe();
@@ -258,6 +252,23 @@ export class RegistroInmuebleComponent implements OnInit, OnDestroy {
     const files = event.dataTransfer?.files;
     if (files) {
       this.procesarPDFs(files);
+    }
+  }
+  onDepartamentoChange(event: Event): void {
+    const depto = (event.target as HTMLSelectElement).value;
+    this.ciudadesFiltradas = this.ubicacionData[depto] ?? [];
+    this.registroInmuebleForm.get('ciudad')?.setValue('');
+  }
+
+  onCiudadChange(event: Event): void {
+    const ciudad = (event.target as HTMLSelectElement).value;
+    const depto = this.registroInmuebleForm.get('departamento')?.value;
+
+    if (ciudad && depto) {
+      this.mapaService.volarACiudad(ciudad, depto);
+      // Limpiar coordenadas previas para forzar que el usuario reubique el pin
+      this.registroInmuebleForm.get('latitud')?.setValue('');
+      this.registroInmuebleForm.get('longitud')?.setValue('');
     }
   }
 }

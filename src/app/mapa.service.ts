@@ -9,6 +9,7 @@ import {CaptacionInmuebleDTO} from './dto/captacion-inmueble-dto';
 export class MapaService {
   mapa: any;
   marcador: any;
+  mapaDetalle: any;
   posicionActual: LngLatLike;
   constructor() {
     //this.marcadores = [];
@@ -30,8 +31,8 @@ export class MapaService {
         container: 'mapa',
         style: 'mapbox://styles/mapbox/standard',
         center: this.posicionActual,
-        pitch: 45,
-        zoom: 17
+        pitch: 0,
+        zoom: 15
       });
 
       console.log('Mapa creado exitosamente');
@@ -118,6 +119,7 @@ export class MapaService {
     );
   }
 
+
  /* public pintarMarcadores(reportes: CaptacionInmuebleDTO[]) {
     reportes.forEach(reporte => {
       new mapboxgl.Marker({color: 'red'})
@@ -128,4 +130,76 @@ export class MapaService {
   }
 
   */
+  public mostrarInmuebleEnMapa(containerId: string, lat: number, lng: number, titulo: string): void {
+    try {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      // Destruir mapa previo si existe en ese contenedor
+      if (this.mapaDetalle) {
+        this.mapaDetalle.remove();
+      }
+
+      this.mapaDetalle = new mapboxgl.Map({
+        accessToken: 'pk.eyJ1Ijoibmljb2xhc3BlbmEiLCJhIjoiY21mNW5xeHcyMDNxNTJzcHhqNmNkanptbSJ9.LwkC_ifCLcl9yKbXMZf31w',
+        container: containerId,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [lng, lat],
+        pitch: 0,       // 2D — sin inclinación
+        bearing: 0,     // sin rotación
+        zoom: 15
+      });
+
+      this.mapaDetalle.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
+
+      this.mapaDetalle.on('load', () => {
+        new mapboxgl.Marker({ color: '#10bb82' })
+          .setLngLat([lng, lat])
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25 }).setHTML(
+              `<strong style="color:#10bb82">${titulo}</strong>`
+            )
+          )
+          .addTo(this.mapaDetalle);
+      });
+
+    } catch (error) {
+      console.error('Error al mostrar mapa del inmueble:', error);
+    }
+  }
+
+  public destruirMapaDetalle(): void {
+    if (this.mapaDetalle) {
+      this.mapaDetalle.remove();
+      this.mapaDetalle = null;
+    }
+  }
+
+  public volarACiudad(ciudad: string, departamento: string): void {
+    if (!this.mapa) return;
+
+    const query = encodeURIComponent(`${ciudad}, ${departamento}, Colombia`);
+    const token = 'pk.eyJ1Ijoibmljb2xhc3BlbmEiLCJhIjoiY21mNW5xeHcyMDNxNTJzcHhqNmNkanptbSJ9.LwkC_ifCLcl9yKbXMZf31w';
+
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${token}&country=CO&limit=1`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.features && data.features.length > 0) {
+          const [lng, lat] = data.features[0].center;
+
+          this.mapa.flyTo({
+            center: [lng, lat],
+            zoom: 13,
+            essential: true
+          });
+
+          // Limpiar marcador anterior si existe
+          if (this.marcador) {
+            this.marcador.remove();
+            this.marcador = null;
+          }
+        }
+      })
+      .catch(err => console.error('Error geocodificando ciudad:', err));
+  }
 }

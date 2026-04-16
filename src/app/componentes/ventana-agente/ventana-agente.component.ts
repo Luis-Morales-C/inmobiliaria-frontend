@@ -11,6 +11,7 @@ import {RedireccionService} from '../../servicios/redireccion.service';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
 
 @Component({
   selector: 'app-inmuebles-proceso',
@@ -20,7 +21,8 @@ import { Subscription } from 'rxjs';
   imports: [
     CommonModule,       // ✅ Esto es lo que faltaba
     CurrencyPipe,
-    FormsModule
+    FormsModule,
+    DetalleInmuebleComponent
     // UserMenuComponent removed because it's not used in template
   ]
 })

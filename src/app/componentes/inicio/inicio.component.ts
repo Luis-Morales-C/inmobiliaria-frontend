@@ -12,13 +12,15 @@ import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
 import {ChatbotComponent} from '../chatbot/chatbot.component';
+import { DetalleInmuebleComponent } from '../detalle-inmueble/detalle-inmueble.component';
+
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, UserMenuComponent,ChatbotComponent]
+  imports: [CommonModule, RouterModule, FormsModule, UserMenuComponent,ChatbotComponent, DetalleInmuebleComponent]
 })
 export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   isLogged = false;
@@ -30,6 +32,7 @@ export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   propiedadesDestacadas: InmuebleResponse[] = [];// Inicializamos como cadena vacía
   t: typeof ES;
   private sub!: Subscription;
+
 
   constructor(
     private authService: AuthService,

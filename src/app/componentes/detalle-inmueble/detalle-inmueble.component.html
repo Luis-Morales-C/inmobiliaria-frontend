@@ -125,6 +125,9 @@
               <p class="persona-dato"><i class="bi bi-telephone"></i> {{ agente.telefono }}</p>
               <p class="persona-dato"><i class="bi bi-envelope"></i> {{ agente.email }}</p>
             </div>
+            <button class="btn-contactar" (click)="contactarAgente(agente)">
+              <i class="bi bi-chat-dots"></i> Contactar
+            </button>
           </div>
         </div>
 
@@ -142,6 +145,12 @@
             </div>
           </div>
         </div>
+        <!-- Mapa de ubicación -->
+        <div class="seccion-card" *ngIf="inmueble.latitud && inmueble.longitud">
+          <h6 class="seccion-titulo">Ubicación</h6>
+          <div id="mapa-detalle" class="mapa-detalle-container"></div>
+        </div>
+
       </div>
     </div>
   </div>

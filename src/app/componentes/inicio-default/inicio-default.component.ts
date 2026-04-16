@@ -7,11 +7,12 @@ import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
 import { ChatbotComponent } from '../chatbot/chatbot.component';
+import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
 
 @Component({
   selector: 'app-inicio-default',
   standalone: true,
-  imports: [CommonModule, ChatbotComponent],
+  imports: [CommonModule, ChatbotComponent, DetalleInmuebleComponent],
   templateUrl: './inicio-default.component.html',
   styleUrls: ['./inicio-default.component.css']
 })

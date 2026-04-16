@@ -1,3 +1,54 @@
+/* --- Ajuste Columna Izquierda --- */
+.columna-imagenes {
+  width: 42%;
+  overflow-y: auto;
+  background: #f7faf9;
+  border-right: 1px solid #f0f0f0;
+  padding: 20px; /* Agregamos espacio alrededor de todo el contenido izquierdo */
+}
+
+/* --- Ajuste Imagen Principal --- */
+.imagen-principal {
+  position: relative;
+  margin-bottom: 15px; /* Espacio antes de las miniaturas */
+}
+
+.imagen-principal img {
+  width: 100%;
+  height: 280px;      /* Aumentamos un poco la altura */
+  object-fit: cover;
+  display: block;
+  border-radius: 15px; /* Redondeamos la imagen para que no pegue al borde */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para despegarla del fondo */
+}
+
+/* --- Ajuste Navegación (para que flote sobre la imagen redondeada) --- */
+.imagen-nav {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 15px;
+  background: rgba(255, 255, 255, 0.85); /* Fondo blanco traslúcido */
+  backdrop-filter: blur(4px);            /* Efecto moderno de desenfoque */
+  border-radius: 30px;
+  font-size: 0.82rem;
+  color: #333;
+  width: fit-content;
+}
+
+/* --- Miniaturas (Quitamos el padding lateral porque ya lo tiene el padre) --- */
+.miniaturas {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0 20px 0;
+  overflow-x: auto;
+}
+
 /* ── Overlay ── */
 .modal-overlay {
   position: fixed;
@@ -387,6 +438,39 @@
     padding: 16px;
   }
 }
+.btn-contactar {
+  background: #10bb82;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-contactar:hover {
+  background: #0daa75;
+  transform: scale(1.04);
+}
+
+/* Modo oscuro */
+:host-context(body.dark-mode) .btn-contactar {
+  background: #0daa75;
+}
+
+.mapa-detalle-container {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
 /* ════════════════════════════
    MODO OSCURO
@@ -482,3 +566,5 @@
 :host-context(body.dark-mode) .miniaturas img:hover {
   border-color: #2de0a5;
 }
+
+

@@ -109,7 +109,7 @@
         <div class="col-md-4 mb-3">
           <label class="form-label">Nº Habitaciones</label>
           <select class="form-select" formControlName="habitaciones">
-            <option *ngFor="let h of [1,2,3,4,5]" [value]="h">{{ h === 5 ? '5+' : h }}</option>
+            <option *ngFor="let h of [0,1,2,3,4,5]" [value]="h">{{ h === 5 ? '5+' : h }}</option>
           </select>
           <div *ngIf="registroInmuebleForm.get('habitaciones')?.touched && registroInmuebleForm.get('habitaciones')?.invalid">
             <small class="text-danger" *ngIf="registroInmuebleForm.get('habitaciones')?.errors?.['required']">
@@ -124,7 +124,7 @@
         <div class="col-md-4 mb-3">
           <label class="form-label">Nº Baños</label>
           <select class="form-select" formControlName="banos">
-            <option *ngFor="let b of [1,2,3,4,5]" [value]="b">{{ b === 5 ? '5+' : b }}</option>
+            <option *ngFor="let b of [0,1,2,3,4,5]" [value]="b">{{ b === 5 ? '5+' : b }}</option>
           </select>
           <div *ngIf="registroInmuebleForm.get('banos')?.touched && registroInmuebleForm.get('banos')?.invalid">
             <small class="text-danger" *ngIf="registroInmuebleForm.get('banos')?.errors?.['required']">
@@ -209,7 +209,8 @@
     <div class="col-md-6 mb-3">
       <label class="form-label">Ciudad / Municipio *</label>
       <select class="form-select" formControlName="ciudad"
-              [attr.disabled]="ciudadesFiltradas.length === 0 ? true : null">
+              [attr.disabled]="ciudadesFiltradas.length === 0 ? true : null"
+              (change)="onCiudadChange($event)">
         <option value="">
           {{ ciudadesFiltradas.length === 0 ? 'Primero selecciona un departamento' : 'Selecciona una ciudad' }}
         </option>

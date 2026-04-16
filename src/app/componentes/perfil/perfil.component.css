@@ -5,15 +5,13 @@
 }
 
 /* =========================
-   GENERAL
+   WRAPPER DE PÁGINA
 ========================= */
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.container {
-  margin-top: 30px;
+.perfil-page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 40px;
 }
 
 /* =========================
@@ -21,22 +19,26 @@ body {
 ========================= */
 
 .btn-volver {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #333;
+  color: #444;
   background-color: #fff;
-  border: 2px solid #ccc;
+  border: 2px solid #ddd;
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .btn-volver:hover {
   border-color: var(--primary);
   color: var(--primary);
+  box-shadow: 0 4px 12px rgba(16,187,130,0.15);
 }
 
 /* =========================
@@ -46,15 +48,27 @@ body {
 .perfil {
   background: #fff;
   border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  padding: 36px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
 }
+
+/* =========================
+   HEADER
+========================= */
 
 .perfil-header {
   display: flex;
   align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
+  gap: 28px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 2px solid #f0fdf8;
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .avatar {
@@ -62,10 +76,39 @@ body {
   height: 110px;
   border-radius: 50%;
   border: 4px solid var(--primary);
+  box-shadow: 0 4px 16px rgba(16,187,130,0.2);
+}
+
+.avatar-rol-badge {
+  position: absolute;
+  bottom: 2px;
+  right: -6px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  letter-spacing: 0.03em;
 }
 
 .perfil-info h1 {
   font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+  font-size: 1.8rem;
+}
+
+.perfil-email-sub {
+  color: #999;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.perfil-email-sub i {
+  margin-right: 5px;
   color: var(--primary);
 }
 
@@ -76,32 +119,118 @@ body {
 .nombre-apellido-editar {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .campo-editar {
-  border-radius: 30px;
-  border: 1px solid #ddd;
-  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #d6f5ea;
+  padding: 8px 14px;
+  font-size: 0.93rem;
+  background: #f8fffe;
+  color: #2d2d2d;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+}
+
+.campo-editar:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16,187,130,0.12);
 }
 
 /* =========================
-   GRID INFORMACIÓN
+   DETALLES TITULO ROW
+========================= */
+
+.detalles-titulo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detalles-titulo-row h2 {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* =========================
+   INFO GRID
 ========================= */
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap: 20px;
-  margin-top: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 0;
 }
 
-.info-grid strong {
-  color: #555;
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f8fffe;
+  border: 1.5px solid #d6f5ea;
+  border-radius: 14px;
+  padding: 16px 18px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.info-grid p {
-  margin: 5px 0 0 0;
-  font-weight: 500;
+.info-card:hover {
+  box-shadow: 0 4px 16px rgba(16,187,130,0.13);
+  transform: translateY(-2px);
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.info-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-card strong {
+  display: block;
+  color: #999;
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.info-card p {
+  margin: 0;
+  font-weight: 600;
+  color: #2d2d2d;
+  font-size: 0.93rem;
+  word-break: break-all;
+}
+
+/* Campo bloqueado */
+.campo-bloqueado {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #bbb;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  font-style: italic;
 }
 
 /* =========================
@@ -109,26 +238,38 @@ body {
 ========================= */
 
 .btn-verde {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background-color: var(--primary);
   border: none;
   color: white;
   border-radius: 30px;
-  padding: 8px 18px;
+  padding: 9px 20px;
   font-weight: 600;
-  transition: 0.3s;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .btn-verde:hover {
   background-color: #0daa75;
+  box-shadow: 0 4px 12px rgba(16,187,130,0.3);
 }
 
 .btn-rojo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background-color: #dc3545;
   border: none;
   color: white;
   border-radius: 30px;
-  padding: 8px 18px;
+  padding: 9px 20px;
   font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .btn-rojo:hover {
@@ -146,12 +287,27 @@ body {
 
 .perfil-propiedades {
   margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid #f0fdf8;
 }
 
 .perfil-propiedades h2 {
   color: var(--primary);
   font-weight: 700;
   margin-bottom: 20px;
+}
+
+.no-propiedades {
+  text-align: center;
+  font-size: 2rem;
+  color: #bbb;
+  padding: 40px 0;
+}
+
+.no-propiedades p {
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #bbb;
 }
 
 /* =========================
@@ -164,6 +320,7 @@ body {
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  border: none !important;
 }
 
 .property-card:hover {
@@ -187,6 +344,7 @@ body {
   padding: 5px 15px;
   border-radius: 30px;
   font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .card-body {
@@ -194,115 +352,82 @@ body {
 }
 
 .property-price {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   color: var(--primary);
   font-weight: 700;
 }
 
 .card-title {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--primary);
+  color: #333;
 }
 
-.property-card i {
+.property-card .card-body i {
   margin-right: 5px;
   color: var(--primary);
 }
 
+.btn-outline-primary {
+  border-radius: 30px;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+  transition: all 0.25s ease;
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16,187,130,0.35);
+}
+
 /* =========================
-   MODAL
+   OVERLAY Y CONFIRMACIÓN
 ========================= */
 
-.modal-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.55);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 9999;
+  backdrop-filter: blur(3px);
 }
 
-.modal-container {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 15px;
-  width: 80%;
-  max-width: 900px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  animation: fadeIn 0.3s ease;
+.ventana-confirmacion {
+  background: white;
+  padding: 30px 36px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  animation: fadeIn 0.25s ease;
 }
 
-.modal-detalle {
-  width: 90%;
-  max-width: 1200px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 30px;
-  border-radius: 20px;
+.ventana-confirmacion p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0;
 }
 
-/* Scroll bonito */
-
-.modal-detalle::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-detalle::-webkit-scrollbar-thumb {
-  background-color: var(--primary);
-  border-radius: 10px;
+.botones-confirmacion {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity:0;
-    transform:translateY(-10px);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* =========================
-   PDF LABEL
-========================= */
-
-.pdf-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 260px;
-  padding: 8px 14px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--primary-light), #e6fff6);
-  color: #0f5132;
-  border: 1px solid var(--primary);
-  box-shadow: 0 4px 12px rgba(16, 187, 130, 0.15);
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-.pdf-label i {
-  color: var(--primary);
-}
-
-.pdf-label:hover {
-  background: var(--primary);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.pdf-label:hover i {
-  color: white;
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================
@@ -310,10 +435,18 @@ body {
 ========================= */
 
 @media (max-width: 768px) {
+  .perfil-page-wrapper {
+    padding: 16px 12px 32px;
+  }
+
+  .perfil {
+    padding: 20px 16px;
+  }
 
   .perfil-header {
     flex-direction: column;
     text-align: center;
+    gap: 16px;
   }
 
   .avatar {
@@ -321,360 +454,133 @@ body {
     height: 90px;
   }
 
-  .modal-detalle {
-    width: 95%;
-    height: 95vh;
-    padding: 18px;
-  }
-
-  .modal-detalle .row {
+  .detalles-titulo-row {
     flex-direction: column;
-  }
-
-  .modal-detalle .col-md-6 {
-    width: 100%;
+    align-items: flex-start;
   }
 
   .property-card img {
     height: 160px;
   }
-}
 
-/* ===============================
-   CARRUSEL DOCUMENTOS PDF
-================================ */
-
-/* Quitamos icono default de bootstrap */
-#carouselDocumentos .carousel-control-prev-icon,
-#carouselDocumentos .carousel-control-next-icon {
-  background-image: none;
-  width: 36px;
-  height: 36px;
-  background-color: var(--primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* Flecha izquierda */
-#carouselDocumentos .carousel-control-prev-icon::after {
-  content: "‹";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Flecha derecha */
-#carouselDocumentos .carousel-control-next-icon::after {
-  content: "›";
-  font-size: 22px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Hover elegante */
-#carouselDocumentos .carousel-control-prev-icon:hover,
-#carouselDocumentos .carousel-control-next-icon:hover {
-  background-color: #0daa75;
-  transform: scale(1.15);
-}
-
-/* Posición botones */
-#carouselDocumentos .carousel-control-prev,
-#carouselDocumentos .carousel-control-next {
-  width: 8%;
-}
-
-.overlay{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.6);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
-
-.ventana-confirmacion{
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  text-align:center;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
-}
-
-.botones-confirmacion{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:15px;
-}
-
-
-/* =====================================
-   IMÁGENES DEL CARRUSEL DEL MODAL
-===================================== */
-
-.carousel-img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-}
-
-@media (max-width: 768px) {
-  .carousel-img {
-    height: 220px;
+  .nombre-apellido-editar {
+    flex-direction: column;
   }
 }
 
+/* =========================
+   MODO OSCURO
+========================= */
 
-/* =====================================
-   AJUSTES DE TABLAS DENTRO DEL MODAL
-===================================== */
-
-.modal-container table {
-  font-size: 0.85rem;
+:host-context(body.dark-mode) .perfil-page-wrapper {
+  background-color: #0f172a;
 }
 
-.modal-container h5 {
-  color: var(--primary);
-  font-weight: 700;
+:host-context(body.dark-mode) .perfil {
+  background-color: #16213e !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4) !important;
 }
 
-@media (max-width: 768px) {
-
-  .modal-container table {
-    font-size: 0.75rem;
-  }
-
-  .modal-container th,
-  .modal-container td {
-    padding: 6px;
-  }
-
+:host-context(body.dark-mode) .perfil-header {
+  border-bottom-color: #1e3a5f !important;
 }
 
-
-/* =====================================
-   MEJORAS VISUALES DEL MODAL DETALLE
-===================================== */
-
-.modal-detalle h6 {
-  font-weight: 700;
+:host-context(body.dark-mode) .perfil-propiedades {
+  border-top-color: #1e3a5f !important;
 }
 
-.modal-detalle p {
-  margin-bottom: 8px;
-}
-
-.modal-detalle .row {
-  align-items: flex-start;
-}
-
-.modal-detalle .col-md-6 {
-  padding: 10px;
-}
-
-
-/* =====================================
-   CARRUSEL DE IMÁGENES DEL INMUEBLE
-===================================== */
-
-#carouselDetalle img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-@media (max-width: 768px) {
-
-  #carouselDetalle img {
-    height: 220px;
-  }
-
-}
-
-
-/* =====================================
-   BOTONES DEL CARRUSEL
-===================================== */
-
-#carouselDetalle .carousel-control-prev-icon,
-#carouselDetalle .carousel-control-next-icon {
-  background-color: var(--primary);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-}
-
-#carouselDetalle .carousel-control-prev-icon:hover,
-#carouselDetalle .carousel-control-next-icon:hover {
-  background-color: #0daa75;
-}
-
-
-/* =====================================
-   INDICADORES DEL CARRUSEL
-===================================== */
-
-.carousel-indicators button {
-  background-color: var(--primary);
-  opacity: 0.4;
-}
-
-.carousel-indicators .active {
-  opacity: 1;
-}
-
-
-/* =====================================
-   MEJORA VISUAL DE SECCIONES DEL MODAL
-===================================== */
-
-.modal-detalle h6 {
-  border-bottom: 2px solid #f1f1f1;
-  padding-bottom: 6px;
-  margin-bottom: 12px;
-}
-
-
-/* =====================================
-   ANIMACIÓN DEL MODAL
-===================================== */
-
-.modal-overlay {
-  backdrop-filter: blur(3px);
-}
-
-
-/* === MODO OSCURO PARA PERFIL DE USUARIO === */
-
-/* Fondo general de los contenedores blancos */
-:host-context(body.dark-mode) .perfil-header,
-:host-context(body.dark-mode) .perfil-detalles,
-:host-context(body.dark-mode) .card,
-:host-context(body.dark-mode) .btn-volver,
-:host-context(body.dark-mode) .ventana-confirmacion {
-  background-color: #16213e !important; /* Azul oscuro del login */
-  color: #e0e0e0 !important;
-  border-color: #0f3460 !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* Títulos en color verde esmeralda */
 :host-context(body.dark-mode) h1,
 :host-context(body.dark-mode) h2,
-:host-context(body.dark-mode) h3,
-:host-context(body.dark-mode) .perfil-detalles h2,
-:host-context(body.dark-mode) .perfil-propiedades h2 {
+:host-context(body.dark-mode) h3 {
   color: #10bb82 !important;
 }
 
-/* Recuadros de información personal (grid) */
-:host-context(body.dark-mode) .info-grid div {
-  background-color: #1a1a2e !important; /* Un tono más oscuro para contraste interno */
-  color: #e0e0e0 !important;
-  border: 1px solid #0f3460;
+:host-context(body.dark-mode) .perfil-email-sub {
+  color: #7a9bb5 !important;
 }
 
-/* Textos secundarios y fuertes */
-:host-context(body.dark-mode) .info-grid strong,
-:host-context(body.dark-mode) .card-body p,
-:host-context(body.dark-mode) .btn-volver {
+/* Info cards en oscuro */
+:host-context(body.dark-mode) .info-card {
+  background-color: #1a2a45 !important;
+  border-color: #1e3a5f !important;
+}
+
+:host-context(body.dark-mode) .info-card:hover {
+  box-shadow: 0 4px 16px rgba(16,187,130,0.15) !important;
+}
+
+:host-context(body.dark-mode) .info-card strong {
+  color: #7a9bb5 !important;
+}
+
+:host-context(body.dark-mode) .info-card p {
   color: #e0e0e0 !important;
 }
 
-/* Campos de edición (inputs) */
+:host-context(body.dark-mode) .info-icon {
+  background-color: #0f3460 !important;
+  color: #10bb82 !important;
+}
+
+/* Campo editar en oscuro */
 :host-context(body.dark-mode) .campo-editar {
-  background-color: #1a1a2e !important;
-  border: 1px solid #0f3460 !important;
-  color: #ffffff !important;
+  background-color: #1a2a45 !important;
+  border-color: #1e3a5f !important;
+  color: #e0e0e0 !important;
 }
 
 :host-context(body.dark-mode) .campo-editar:focus {
   border-color: #10bb82 !important;
-  box-shadow: 0 0 6px rgba(16, 187, 130, 0.3) !important;
+  box-shadow: 0 0 0 3px rgba(16,187,130,0.18) !important;
 }
 
-/* Cuerpo de las tarjetas de propiedades */
-:host-context(body.dark-mode) .card-body {
+:host-context(body.dark-mode) .campo-editar::placeholder {
+  color: #5a7a99 !important;
+}
+
+/* Botón volver en oscuro */
+:host-context(body.dark-mode) .btn-volver {
   background-color: #16213e !important;
+  border-color: #1e3a5f !important;
+  color: #e0e0e0 !important;
 }
 
-/* Ajuste para el botón volver */
 :host-context(body.dark-mode) .btn-volver:hover {
-  background-color: #0f3460 !important;
+  border-color: #10bb82 !important;
+  color: #10bb82 !important;
 }
 
-/* Mensaje de "No tienes propiedades" */
-:host-context(body.dark-mode) .no-propiedades p,
-:host-context(body.dark-mode) .no-propiedades i {
-  color: #6c757d !important;
-}
-
-/* Ventana de confirmación en modo oscuro (Fusión Feature) */
-:host-context(body.dark-mode) .ventana-confirmacion {
-  background-color: #16213e !important;
-  color: white !important;
-  border: 2px solid #10bb82 !important;
-}
-
-/* ===== FONDO GENERAL MODO OSCURO ===== */
-
-:host-context(body.dark-mode) {
-  background-color: #0f172a;
-}
-
-:host-context(body.dark-mode) body {
-  background-color: #0f172a !important;
-}
-
-
-/* CONTENEDOR PRINCIPAL */
-
-:host-context(body.dark-mode) .perfil {
-  background-color: #16213e !important;
-}
-
-
-/* TARJETAS */
-
+/* Tarjetas en oscuro */
 :host-context(body.dark-mode) .property-card {
   background-color: #16213e !important;
 }
 
-
-/* MODALES */
-
-:host-context(body.dark-mode) .modal-container {
+:host-context(body.dark-mode) .card-body {
   background-color: #16213e !important;
 }
 
+:host-context(body.dark-mode) .card-title {
+  color: #e0e0e0 !important;
+}
 
-/* VENTANA CONFIRMACIÓN */
+:host-context(body.dark-mode) .card-body span,
+:host-context(body.dark-mode) .card-body p {
+  color: #b0c4d8 !important;
+}
 
+/* Ventana confirmación en oscuro */
 :host-context(body.dark-mode) .ventana-confirmacion {
   background-color: #16213e !important;
+  color: #e0e0e0 !important;
+  border: 2px solid #10bb82 !important;
 }
 
-.btn-outline-primary{
-  border-radius: 30px;
-  border: 2px solid var(--primary);
-  color: var(--primary);
-  font-weight: 600;
-  transition: all 0.25s ease;
+:host-context(body.dark-mode) .ventana-confirmacion p {
+  color: #e0e0e0 !important;
 }
 
-.btn-outline-primary:hover{
-  background-color: var(--primary);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(16,187,130,0.35);
+/* No propiedades en oscuro */
+:host-context(body.dark-mode) .no-propiedades,
+:host-context(body.dark-mode) .no-propiedades p {
+  color: #5a7a99 !important;
 }
