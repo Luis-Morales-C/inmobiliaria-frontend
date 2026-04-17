@@ -4,6 +4,7 @@ import { Client, Message } from '@stomp/stompjs';
 @Injectable({ providedIn: 'root' })
 export class WebSocketService {
   private stompClient: Client;
+  private conectado = false;
 
   constructor() {
     this.stompClient = new Client({
@@ -15,15 +16,25 @@ export class WebSocketService {
     });
   }
 
+  isConnected(): boolean {
+    return this.conectado && this.stompClient.connected;
+  }
+
   connect(token: string, userEmail: string, onMessageReceived: (msg: any) => void) {
+    // ✅ Evita doble conexión al recargar
+    if (this.isConnected()) {
+      console.log('⚡ WebSocket ya conectado, reutilizando sesión');
+      return;
+    }
+
     this.stompClient.connectHeaders = {
       Authorization: `Bearer ${token}`
     };
 
     this.stompClient.onConnect = () => {
       console.log('✅ Conectado al WebSocket');
+      this.conectado = true;
 
-      // ✅ Ruta corregida — coincide con convertAndSendToUser del backend
       this.stompClient.subscribe(
         `/user/${userEmail}/queue/messages`,
         (message: Message) => {
@@ -34,7 +45,13 @@ export class WebSocketService {
       );
     };
 
+    this.stompClient.onDisconnect = () => {
+      this.conectado = false;
+      console.log('🔌 WebSocket desconectado');
+    };
+
     this.stompClient.onStompError = (frame) => {
+      this.conectado = false;
       console.error('❌ Error STOMP:', frame.headers['message']);
     };
 
@@ -42,7 +59,7 @@ export class WebSocketService {
   }
 
   sendMessage(mensajeDTO: any) {
-    if (this.stompClient?.connected) {
+    if (this.isConnected()) {
       this.stompClient.publish({
         destination: '/app/chat',
         body: JSON.stringify(mensajeDTO)
@@ -54,5 +71,6 @@ export class WebSocketService {
 
   disconnect() {
     this.stompClient?.deactivate();
+    this.conectado = false;
   }
 }

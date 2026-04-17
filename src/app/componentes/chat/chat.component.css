@@ -266,3 +266,15 @@ body.dark-mode .input-mensaje {
 body.dark-mode .input-area {
   border-top-color: #0f3460;
 }
+
+.burbuja {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fecha {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  align-self: flex-end;
+}

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Contacto } from '../dto/contacto';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ContactoService {
@@ -10,16 +11,37 @@ export class ContactoService {
   private contactosSubject = new BehaviorSubject<Contacto[]>([]);
   contactos$ = this.contactosSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {
+    // ✅ Si hay sesión activa al recargar, carga los contactos automáticamente
+    if (this.authService.isAuthenticated()) {
+      this.cargarContactos();
+    }
 
-  // Llamado en el login — carga del backend y guarda en memoria
+    // ✅ Reacciona a cambios de autenticación
+    this.authService.isAuthenticated$.subscribe(autenticado => {
+      if (autenticado) {
+        this.cargarContactos();
+      } else {
+        // Limpia los contactos al cerrar sesión
+        this.contactosSubject.next([]);
+      }
+    });
+  }
+
+  private cargarContactos(): void {
+    this.http.get<Contacto[]>(this.url).subscribe({
+      next: contactos => this.contactosSubject.next(contactos),
+      error: err => console.error('Error cargando contactos:', err)
+    });
+  }
+
+  // Llamado en el login para encadenar con switchMap
   getContactos(): Observable<Contacto[]> {
     return this.http.get<Contacto[]>(this.url).pipe(
       tap(contactos => this.contactosSubject.next(contactos))
     );
   }
 
-  // Usado por el ChatComponent para leer sin hacer petición HTTP
   getContactosActuales(): Contacto[] {
     return this.contactosSubject.getValue();
   }
@@ -28,8 +50,7 @@ export class ContactoService {
     return this.http.post<Contacto>(`${this.url}/${email}`, {}).pipe(
       tap(nuevo => {
         const actuales = this.contactosSubject.getValue();
-        const yaExiste = actuales.some(c => c.email === nuevo.email);
-        if (!yaExiste) {
+        if (!actuales.some(c => c.email === nuevo.email)) {
           this.contactosSubject.next([...actuales, nuevo]);
         }
       })

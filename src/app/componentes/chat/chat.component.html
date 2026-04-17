@@ -47,7 +47,12 @@
       <div class="mensajes-container" #mensajesContainer>
         @for (msg of mensajes; track $index) {
           <div class="mensaje" [ngClass]="esMio(msg) ? 'mio' : 'suyo'">
-            <div class="burbuja">{{ msg.contenido }}</div>
+            <div class="burbuja">
+              <span class="contenido">{{ msg.contenido }}</span>
+              <span class="fecha">
+          {{ msg.fechaMensaje | date:'d MMM, h:mm a' : '' : 'es-CO' }}
+        </span>
+            </div>
           </div>
         }
         @if (mensajes.length === 0) {

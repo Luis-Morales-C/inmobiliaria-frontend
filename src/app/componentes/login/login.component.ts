@@ -112,7 +112,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // 1. Validación del Captcha con traducción
       if (!this.captchaToken) {
         this.captchaError = this.t.login.errorCaptcha || 'Por favor, completa el reCAPTCHA';
         return;
@@ -122,34 +121,23 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loading = true;
       const { email, contrasena } = this.loginForm.value;
 
-      // 2. Encadenamos las peticiones con RxJS
       this.authService.login(email, contrasena, this.captchaToken)
         .pipe(
-          // switchMap espera a que el login termine exitosamente, y luego ejecuta lo de adentro
-          switchMap(() => {
-            // Aquí llamamos a tu otro servicio (Asegúrate de inyectarlo en el constructor)
-            return this.contactoService.getContactos();
-          })
+          switchMap(() => this.contactoService.getContactos())
         )
         .subscribe({
-          // El 'next' ahora recibe la respuesta del SEGUNDO servicio (los contactos)
-          next: (contactosObtenidos) => {
+          next: () => {
             this.loading = false;
-
-            // Opcional: Aquí puedes guardar los contactos en tu servicio para usarlos luego
-            // this.contactoService.setContactosActuales(contactosObtenidos);
-            console.log('Contactos importados exitosamente:', contactosObtenidos);
-
-            // Navegamos al inicio
             this.router.navigate(['/inicio']);
           },
           error: (err) => {
-            console.error('Error en el login o importando contactos:', err);
+            console.error('Error:', err);
             this.loading = false;
             this.captchaToken = null;
-            this.recargarCaptcha(); // Reset visual del captcha tras error
+            this.recargarCaptcha();
           }
         });
+
     } else {
       this.loginForm.markAllAsTouched();
     }
