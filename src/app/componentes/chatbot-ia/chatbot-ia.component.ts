@@ -17,11 +17,7 @@ export interface OpcionRapida {
   mensaje: string;
 }
 
-// ─── CAMBIA ESTA CONSTANTE SEGÚN EL ENTORNO ───────────────────────────────────
-// Desarrollo  → usa la URL directa a n8n (evita problemas de proxy)
-// Producción  → cambia a '/webhook/chat' (con proxy o nginx)
 const WEBHOOK_URL = 'http://localhost:5678/webhook-test/chat';
-// ─────────────────────────────────────────────────────────────────────────────
 
 @Component({
   selector: 'app-chatbot-ia',
@@ -40,7 +36,7 @@ export class ChatbotIaComponent implements OnInit, OnDestroy {
   private sub!: Subscription;
 
   opcionesIniciales: OpcionRapida[] = [
-    { label: '🏠 Ver propiedades',  mensaje: 'Quiero ver propiedades disponibles' },
+    { label: '🏠 Ver propiedades',   mensaje: 'Quiero ver propiedades disponibles' },
     { label: '📋 Publicar inmueble', mensaje: '¿Cómo publico mi inmueble?' },
     { label: '📝 Registrarme',       mensaje: '¿Cómo me registro?' },
     { label: '👤 Hablar con asesor', mensaje: 'Quiero hablar con un asesor' },
@@ -94,29 +90,41 @@ export class ChatbotIaComponent implements OnInit, OnDestroy {
     this.scrollToBottom();
 
     try {
-      // ── 1. Llamada al webhook ──────────────────────────────────────────────
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, sessionId: this.getSessionId() }),
       });
 
-      // ── 2. Verificar que la respuesta HTTP sea exitosa ─────────────────────
       if (!res.ok) {
         const errorBody = await res.text();
         console.error(`[Chatbot] HTTP ${res.status}:`, errorBody);
         throw new Error(`HTTP ${res.status}`);
       }
 
-      // ── 3. Parsear el body ─────────────────────────────────────────────────
       const raw = await res.json();
       console.log('[Chatbot] RAW response:', raw);
 
-      // n8n puede devolver la respuesta de varias formas:
+      // n8n puede devolver:
       //   A) { output: "{\"mensaje\":\"...\",\"accion\":\"...\"}" }  ← string escapado
       //   B) { output: { mensaje: "...", accion: "..." } }          ← objeto directo
       //   C) { mensaje: "...", accion: "..." }                      ← sin wrapper
-      let data: { mensaje: string; accion?: string; filtros?: any; url?: string };
+      let data: {
+        mensaje: string;
+        accion?: string;
+        filtros?: {
+          ciudad?: string;
+          departamento?: string;
+          tipo?: string;
+          tipoNegocio?: string;
+          precioMin?: number;
+          precioMax?: number;
+          habitacionesMin?: number;
+          banosMin?: number;
+        };
+        filtrosAplicados?: any;
+        url?: string;
+      };
 
       if (raw.output !== undefined) {
         data = typeof raw.output === 'string' ? JSON.parse(raw.output) : raw.output;
@@ -129,14 +137,15 @@ export class ChatbotIaComponent implements OnInit, OnDestroy {
 
       console.log('[Chatbot] DATA parseada:', data);
 
-      // ── 4. Construir el mensaje del bot ────────────────────────────────────
       const botMsg: ChatMessage = {
         from: 'bot',
         text: data.mensaje ?? 'No se pudo obtener una respuesta.',
       };
 
-      if (data.accion === 'VER_CATALOGO' && data.filtros) {
-        this.chatbotEstado.aplicarFiltros(data.filtros);
+      if (data.accion === 'VER_CATALOGO') {
+        // Soporta tanto "filtros" (n8n) como "filtrosAplicados" (backend directo)
+        const filtros = data.filtros ?? data.filtrosAplicados ?? {};
+        this.chatbotEstado.aplicarFiltros(filtros);
         botMsg.opciones = [{
           label: '🔍 Ver resultados en el catálogo',
           mensaje: '__ir_catalogo__',
