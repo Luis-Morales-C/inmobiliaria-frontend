@@ -1,0 +1,98 @@
+<!-- chat-flotante.component.html -->
+<ng-container *ngIf="authService.isAuthenticated()">
+
+  <!-- Botón flotante -->
+  <button class="btn-flotante" (click)="chatService.togglePanel()">
+    <i class="bi bi-chat-dots-fill"></i>
+    <span class="badge-count" *ngIf="totalNoLeidos > 0">
+      {{ totalNoLeidos > 99 ? '99+' : totalNoLeidos }}
+    </span>
+  </button>
+
+  <!-- Panel -->
+  <div class="chat-panel" *ngIf="panelAbierto">
+
+    <!-- LISTA DE CONVERSACIONES -->
+    <ng-container *ngIf="!conversacionActiva">
+
+      <div class="panel-header">
+        <span>Mensajes</span>
+        <button (click)="chatService.cerrarPanel()">✕</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="vacio" *ngIf="(conversaciones$ | async)?.length === 0">
+          <p>No tienes conversaciones aún.</p>
+        </div>
+
+        <div class="conv-item"
+             *ngFor="let conv of conversaciones$ | async"
+             (click)="chatService.seleccionarConversacion(conv.id)"
+             [class.no-leido]="conv.noLeidosPorMi > 0">
+          <div class="avatar">
+            {{ conv.otroUsuarioNombre.charAt(0) }}{{ conv.otroUsuarioApellido.charAt(0) }}
+          </div>
+          <div class="conv-info">
+            <div class="conv-top">
+              <span class="conv-nombre">{{ conv.otroUsuarioNombre }} {{ conv.otroUsuarioApellido }}</span>
+              <span class="conv-hora" *ngIf="conv.ultimoMensajeEn">{{ conv.ultimoMensajeEn | date:'HH:mm' }}</span>
+            </div>
+            <div class="conv-bottom">
+              <span class="conv-preview">{{ conv.ultimoMensaje || 'Sin mensajes' }}</span>
+              <span class="badge-count small" *ngIf="conv.noLeidosPorMi > 0">{{ conv.noLeidosPorMi }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- CONVERSACIÓN ACTIVA -->
+    <ng-container *ngIf="conversacionActiva">
+
+      <div class="panel-header">
+        <div class="header-izq">
+          <button (click)="chatService.volverALista()">‹</button>
+          <div class="avatar small">
+            {{ conversacionActiva.otroUsuarioNombre.charAt(0) }}{{ conversacionActiva.otroUsuarioApellido.charAt(0) }}
+          </div>
+          <span>{{ conversacionActiva.otroUsuarioNombre }} {{ conversacionActiva.otroUsuarioApellido }}</span>
+        </div>
+        <button (click)="chatService.cerrarPanel()">✕</button>
+      </div>
+
+      <div class="mensajes" #scrollContainer>
+        <div class="vacio" *ngIf="conversacionActiva.mensajes.length === 0">
+          <p>Inicia la conversación</p>
+        </div>
+
+        <!-- ─── CRÍTICO: usar esMio() para determinar el lado ─── -->
+        <div *ngFor="let msg of conversacionActiva.mensajes"
+             class="msg"
+             [class.msg-mio]="esMio(msg)"
+             [class.msg-otro]="!esMio(msg)">
+          <div class="burbuja">
+            <p>{{ msg.contenido }}</p>
+            <span class="hora">{{ msg.enviadoEn | date:'HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <textarea
+          placeholder="Escribe un mensaje..."
+          [(ngModel)]="textoMensaje"
+          (keydown)="onEnter($event)"
+          rows="1"
+          maxlength="1000">
+        </textarea>
+        <button (click)="enviarMensaje()" [disabled]="!textoMensaje.trim()">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</ng-container>
