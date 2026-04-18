@@ -6,6 +6,8 @@ import {AccesibilidadComponent} from './componentes/accesibilidad/accesibilidad.
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {ChatbotComponent} from './componentes/chatbot/chatbot.component';
 import {ChatFlotanteComponent} from './componentes/chat-flotante/chat-flotante.component';
+import {AuthService} from './servicios/auth.service';
+import {ChatService} from './servicios/chat.service';
 
 
 @Component({
@@ -21,11 +23,20 @@ export class AppComponent {
   isMobile = false;
 
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver,private authService: AuthService, private chatService: ChatService) {
 
   }
 
   ngOnInit() {
+
+    console.log('AppComponent iniciado');
+    console.log('Autenticado:', this.authService.isAuthenticated());
+
+    if (this.authService.isAuthenticated()) {
+      this.chatService.conectarWebSocket();
+    }
+
+
     this.breakpointObserver
       .observe([Breakpoints.Handset])
       .subscribe(result => {

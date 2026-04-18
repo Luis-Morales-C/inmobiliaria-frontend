@@ -4,7 +4,9 @@
   <!-- Botón flotante -->
   <button class="btn-flotante" (click)="chatService.togglePanel()">
     <i class="bi bi-chat-dots-fill"></i>
-    <span class="badge-count" *ngIf="totalNoLeidos > 0">{{ totalNoLeidos > 99 ? '99+' : totalNoLeidos }}</span>
+    <span class="badge-count" *ngIf="totalNoLeidos > 0">
+      {{ totalNoLeidos > 99 ? '99+' : totalNoLeidos }}
+    </span>
   </button>
 
   <!-- Panel -->
@@ -27,7 +29,9 @@
              *ngFor="let conv of conversaciones$ | async"
              (click)="chatService.seleccionarConversacion(conv.id)"
              [class.no-leido]="conv.noLeidosPorMi > 0">
-          <div class="avatar">{{ conv.otroUsuarioNombre.charAt(0) }}{{ conv.otroUsuarioApellido.charAt(0) }}</div>
+          <div class="avatar">
+            {{ conv.otroUsuarioNombre.charAt(0) }}{{ conv.otroUsuarioApellido.charAt(0) }}
+          </div>
           <div class="conv-info">
             <div class="conv-top">
               <span class="conv-nombre">{{ conv.otroUsuarioNombre }} {{ conv.otroUsuarioApellido }}</span>
@@ -49,7 +53,9 @@
       <div class="panel-header">
         <div class="header-izq">
           <button (click)="chatService.volverALista()">‹</button>
-          <div class="avatar small">{{ conversacionActiva.otroUsuarioNombre.charAt(0) }}{{ conversacionActiva.otroUsuarioApellido.charAt(0) }}</div>
+          <div class="avatar small">
+            {{ conversacionActiva.otroUsuarioNombre.charAt(0) }}{{ conversacionActiva.otroUsuarioApellido.charAt(0) }}
+          </div>
           <span>{{ conversacionActiva.otroUsuarioNombre }} {{ conversacionActiva.otroUsuarioApellido }}</span>
         </div>
         <button (click)="chatService.cerrarPanel()">✕</button>
@@ -60,10 +66,11 @@
           <p>Inicia la conversación</p>
         </div>
 
+        <!-- ─── CRÍTICO: usar esMio() para determinar el lado ─── -->
         <div *ngFor="let msg of conversacionActiva.mensajes"
              class="msg"
-             [class.msg-mio]="msg.emisorId === miId"
-             [class.msg-otro]="msg.emisorId !== miId">
+             [class.msg-mio]="esMio(msg)"
+             [class.msg-otro]="!esMio(msg)">
           <div class="burbuja">
             <p>{{ msg.contenido }}</p>
             <span class="hora">{{ msg.enviadoEn | date:'HH:mm' }}</span>

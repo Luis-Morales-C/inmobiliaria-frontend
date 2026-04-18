@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
+import {ChatService} from '../../servicios/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -61,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     public idiomaService: IdiomaService,
-
+    public chatService: ChatService
   ) {
     this.t = idiomaService.t;
     this.loginForm = this.fb.group({
@@ -122,7 +123,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authService.login(email, contrasena, this.captchaToken).subscribe({
         next: () => {
           this.loading = false;
-          // No llamamos a showAlert aquí porque el AuthService ya lo hace en el .pipe(tap)
+          this.chatService.conectarWebSocket();
           this.router.navigate(['/inicio']);
         },
         error: () => {

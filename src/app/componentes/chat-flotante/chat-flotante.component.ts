@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../../servicios/chat.service';
 import { AuthService } from '../../servicios/auth.service';
-import { ConversacionDetalleDto } from '../../dto/chat/chat.models';
+import { ConversacionDetalleDto, MensajeDto } from '../../dto/chat/chat.models';
 
 @Component({
   selector: 'app-chat-flotante',
@@ -33,6 +33,8 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
 
   private subs = new Subscription();
   private debeScroll = false;
+  private pollingConversacion: any = null;
+  private pollingLista: any = null;
 
   constructor(
     public chatService: ChatService,
@@ -40,15 +42,70 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
   ) {}
 
   ngOnInit(): void {
-    this.miId = Number(this.authService.obtenerIdUsuario() ?? 0);
+    this.subs.add(this.chatService.panelAbierto$.subscribe(v => {
+      this.panelAbierto = v;
+      if (v) {
+        this.iniciarPollingLista();
+      } else {
+        this.detenerPollingLista();
+        this.detenerPollingConversacion();
+      }
+    }));
 
-    this.subs.add(this.chatService.panelAbierto$.subscribe(v => this.panelAbierto = v));
     this.subs.add(this.chatService.conversacionActiva$.subscribe(conv => {
+      if (conv) {
+        const idStr = this.authService.obtenerIdUsuario();
+        this.miId = idStr ? parseInt(idStr, 10) : 0;
+        this.iniciarPollingConversacion(conv.id);
+      } else {
+        this.detenerPollingConversacion();
+      }
       this.conversacionActiva = conv;
       this.debeScroll = true;
     }));
+
+    this.subs.add(this.chatService.mensajeNuevo$.subscribe((msg: MensajeDto) => {
+      const activa = this.conversacionActiva;
+      if (activa && msg.conversacionId === activa.id) {
+        const yaExiste = activa.mensajes.some(m => m.id === msg.id && m.id !== -1);
+        if (!yaExiste) {
+          this.conversacionActiva = { ...activa, mensajes: [...activa.mensajes, msg] };
+        }
+      }
+      this.debeScroll = true;
+    }));
+
     this.subs.add(this.chatService.totalNoLeidos$.subscribe(n => this.totalNoLeidos = n));
-    this.subs.add(this.chatService.mensajeNuevo$.subscribe(() => this.debeScroll = true));
+  }
+
+  private iniciarPollingConversacion(conversacionId: number): void {
+    this.detenerPollingConversacion();
+    this.pollingConversacion = setInterval(() => {
+      if (this.conversacionActiva) {
+        this.chatService.refrescarConversacionActiva(conversacionId);
+      }
+    }, 2000);
+  }
+
+  private detenerPollingConversacion(): void {
+    if (this.pollingConversacion) {
+      clearInterval(this.pollingConversacion);
+      this.pollingConversacion = null;
+    }
+  }
+
+  private iniciarPollingLista(): void {
+    this.detenerPollingLista();
+    this.pollingLista = setInterval(() => {
+      this.chatService.refrescarLista();
+    }, 5000);
+  }
+
+  private detenerPollingLista(): void {
+    if (this.pollingLista) {
+      clearInterval(this.pollingLista);
+      this.pollingLista = null;
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -59,6 +116,10 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
       } catch {}
       this.debeScroll = false;
     }
+  }
+
+  esMio(msg: MensajeDto): boolean {
+    return Number(msg.emisorId) === this.miId;
   }
 
   onEnter(event: Event): void {
@@ -85,5 +146,7 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+    this.detenerPollingConversacion();
+    this.detenerPollingLista();
   }
 }

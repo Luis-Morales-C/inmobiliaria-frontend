@@ -52,11 +52,14 @@ export class ChatService implements OnDestroy {
 
   // ─── Conexión WebSocket (llamar al hacer login) ───────────────────────
   conectarWebSocket(): void {
+    console.log('=== conectarWebSocket llamado ===');
+    console.log('Token:', this.authService.getToken() ? 'existe' : 'NO existe');
+    console.log('Ya conectado:', this.conectado);
     const token = this.authService.getToken();
     if (!token || this.conectado) return;
 
     this.stompClient = new Client({
-      webSocketFactory: () => new WebSocket('ws://localhost:8080/ws-chat/websocket'),
+      webSocketFactory: () => new WebSocket('ws://localhost:8080/ws-chat'), // ← así
       connectHeaders: { Authorization: `Bearer ${token}` },
       reconnectDelay: 5000,
       onConnect: () => {
@@ -256,5 +259,46 @@ export class ChatService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.desconectarWebSocket();
+  }
+
+  // Agregar estos dos métodos en chat.service.ts
+
+  refrescarConversacionActiva(conversacionId: number): void {
+    const token = this.authService.getToken();
+    if (!token) return;
+
+    this.http
+      .get<ConversacionDetalleDto>(
+        `${this.API}/conversaciones/${conversacionId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .subscribe({
+        next: (detalle) => {
+          const actual = this._conversacionActiva.getValue();
+          // Solo actualizar si hay mensajes nuevos
+          if (actual && detalle.mensajes.length !== actual.mensajes.length) {
+            this._conversacionActiva.next(detalle);
+          }
+        },
+        error: () => {}
+      });
+  }
+
+  refrescarLista(): void {
+    const token = this.authService.getToken();
+    if (!token) return;
+
+    this.http
+      .get<ConversacionDto[]>(`${this.API}/conversaciones`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .subscribe({
+        next: (lista) => {
+          this._conversaciones.next(lista);
+          const total = lista.reduce((acc, c) => acc + c.noLeidosPorMi, 0);
+          this._totalNoLeidos.next(total);
+        },
+        error: () => {}
+      });
   }
 }
