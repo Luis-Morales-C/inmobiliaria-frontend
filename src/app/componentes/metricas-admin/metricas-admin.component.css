@@ -1,0 +1,134 @@
+/* metricas-admin.component.css */
+
+/* ── Tabla de usuarios ─────────────────────────────────────────── */
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.tabla-usuarios thead tr {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.tabla-usuarios th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+
+.tabla-usuarios tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+
+.tabla-usuarios tbody tr:hover {
+  background: #f7fdf9;
+}
+
+.tabla-usuarios td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  color: #333;
+}
+
+.id-col {
+  color: #aaa;
+  font-size: 0.8rem;
+  width: 50px;
+}
+
+.email-col {
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.accion-col {
+  min-width: 220px;
+}
+
+/* ── Select de rol ─────────────────────────────────────────────── */
+.select-rol {
+  min-width: 130px;
+  font-size: 0.82rem;
+  border-color: #dee2e6;
+  border-radius: 8px;
+}
+
+.select-rol:focus {
+  border-color: #10bb82;
+  box-shadow: 0 0 0 2px rgba(16,187,130,0.15);
+}
+
+/* ── Botón cambiar rol ─────────────────────────────────────────── */
+.btn-cambiar-rol {
+  background: #10bb82;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+  min-width: 72px;
+}
+
+.btn-cambiar-rol:hover:not(:disabled) {
+  background: #0daa75;
+}
+
+.btn-cambiar-rol:disabled {
+  background: #ccc;
+  cursor: default;
+}
+
+/* ── Badges de rol ─────────────────────────────────────────────── */
+.badge-rol {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-admin     { background: #fdecea; color: #c0392b; }
+.badge-agente    { background: #eaf3ff; color: #2471a3; }
+.badge-cliente   { background: #eafaf5; color: #10bb82; }
+.badge-gerente   { background: #f4ecf7; color: #7d3c98; }
+.badge-asesor    { background: #fef9e7; color: #d4ac0d; }
+.badge-pendiente { background: #fdfefe; color: #aaa; border: 1px solid #ddd; }
+.badge-desvinc   { background: #f9ebea; color: #922b21; }
+.badge-default   { background: #f0f0f0; color: #666; }
+
+/* ── Modo oscuro ───────────────────────────────────────────────── */
+:host-context(body.dark-mode) .tabla-usuarios thead tr {
+  background: #1a2e4a;
+  border-bottom-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .tabla-usuarios th {
+  color: #7a9ab5;
+}
+
+:host-context(body.dark-mode) .tabla-usuarios tbody tr {
+  border-bottom-color: #1e3a5f;
+}
+
+:host-context(body.dark-mode) .tabla-usuarios tbody tr:hover {
+  background: #1a2e4a;
+}
+
+:host-context(body.dark-mode) .tabla-usuarios td {
+  color: #dde8f5;
+}
+
+:host-context(body.dark-mode) .select-rol {
+  background: #1a2e4a;
+  border-color: #2a4060;
+  color: #dde8f5;
+}

@@ -33,8 +33,6 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
 
   private subs = new Subscription();
   private debeScroll = false;
-  private pollingConversacion: any = null;
-  private pollingLista: any = null;
 
   constructor(
     public chatService: ChatService,
@@ -44,21 +42,12 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
   ngOnInit(): void {
     this.subs.add(this.chatService.panelAbierto$.subscribe(v => {
       this.panelAbierto = v;
-      if (v) {
-        this.iniciarPollingLista();
-      } else {
-        this.detenerPollingLista();
-        this.detenerPollingConversacion();
-      }
     }));
 
     this.subs.add(this.chatService.conversacionActiva$.subscribe(conv => {
       if (conv) {
         const idStr = this.authService.obtenerIdUsuario();
         this.miId = idStr ? parseInt(idStr, 10) : 0;
-        this.iniciarPollingConversacion(conv.id);
-      } else {
-        this.detenerPollingConversacion();
       }
       this.conversacionActiva = conv;
       this.debeScroll = true;
@@ -76,36 +65,6 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
     }));
 
     this.subs.add(this.chatService.totalNoLeidos$.subscribe(n => this.totalNoLeidos = n));
-  }
-
-  private iniciarPollingConversacion(conversacionId: number): void {
-    this.detenerPollingConversacion();
-    this.pollingConversacion = setInterval(() => {
-      if (this.conversacionActiva) {
-        this.chatService.refrescarConversacionActiva(conversacionId);
-      }
-    }, 2000);
-  }
-
-  private detenerPollingConversacion(): void {
-    if (this.pollingConversacion) {
-      clearInterval(this.pollingConversacion);
-      this.pollingConversacion = null;
-    }
-  }
-
-  private iniciarPollingLista(): void {
-    this.detenerPollingLista();
-    this.pollingLista = setInterval(() => {
-      this.chatService.refrescarLista();
-    }, 5000);
-  }
-
-  private detenerPollingLista(): void {
-    if (this.pollingLista) {
-      clearInterval(this.pollingLista);
-      this.pollingLista = null;
-    }
   }
 
   ngAfterViewChecked(): void {
@@ -146,7 +105,5 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
-    this.detenerPollingConversacion();
-    this.detenerPollingLista();
   }
 }

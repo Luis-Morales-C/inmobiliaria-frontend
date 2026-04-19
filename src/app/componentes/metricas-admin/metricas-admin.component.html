@@ -1,3 +1,12 @@
+<!-- Navbar superior con menú de usuario -->
+<div class="d-flex justify-content-between align-items-center px-4 py-2 border-bottom mb-2">
+  <span class="fw-bold text-success">
+    <i class="bi bi-building"></i> Edén Inmobiliaria — Panel Admin
+  </span>
+  <app-user-menu [userName]="userName" (logout)="logout()"></app-user-menu>
+</div>
+
+
 <div class="container mt-4">
   <h2 class="mb-1">Panel de Métricas - Administrador</h2>
   <p class="text-muted mb-4">Monitoreo en tiempo real del sistema</p>
@@ -113,9 +122,100 @@
 
   </div>
 
-  <div class="text-end mt-2">
+  <div class="text-end mt-2 mb-5">
     <button class="btn btn-outline-primary btn-sm" (click)="cargarMetricas()">
       Actualizar métricas
     </button>
   </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SECCIÓN: GESTIÓN DE USUARIOS
+  ══════════════════════════════════════════════════════════ -->
+  <hr class="my-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h4 class="mb-0">Gestión de Usuarios</h4>
+      <p class="text-muted mb-0 small">Administra los roles y datos de todos los usuarios del sistema</p>
+    </div>
+    <button class="btn btn-outline-secondary btn-sm" (click)="cargarUsuarios()">
+      <i class="bi bi-arrow-clockwise"></i> Actualizar
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar por nombre, email o documento..."
+      [(ngModel)]="busqueda"
+      (input)="filtrarUsuarios()">
+  </div>
+
+  <!-- Cargando usuarios -->
+  <div *ngIf="cargandoUsuarios" class="text-center py-4">
+    <div class="spinner-border spinner-border-sm text-primary"></div>
+    <span class="ms-2 text-muted">Cargando usuarios...</span>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="table-responsive" *ngIf="!cargandoUsuarios">
+    <table class="tabla-usuarios">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Documento</th>
+        <th>Teléfono</th>
+        <th>Rol Actual</th>
+        <th>Cambiar Rol</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let usuario of usuariosFiltrados">
+        <td class="id-col">{{ usuario.id }}</td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.apellido }}</td>
+        <td class="email-col">{{ usuario.email }}</td>
+        <td>{{ usuario.documentoIdentidad }}</td>
+        <td>{{ usuario.telefono }}</td>
+        <td>
+            <span class="badge-rol" [ngClass]="getBadgeClass(usuario.rol)">
+              {{ usuario.rol }}
+            </span>
+        </td>
+        <td class="accion-col">
+          <div class="d-flex gap-2 align-items-center">
+            <select class="form-select form-select-sm select-rol"
+                    [(ngModel)]="rolesSeleccionados[usuario.id]">
+              <option *ngFor="let rol of roles" [value]="rol">{{ rol }}</option>
+            </select>
+            <button class="btn-cambiar-rol"
+                    (click)="cambiarRol(usuario)"
+                    [disabled]="cambiandoRol[usuario.id]">
+                <span *ngIf="cambiandoRol[usuario.id]"
+                      class="spinner-border spinner-border-sm"></span>
+              <span *ngIf="!cambiandoRol[usuario.id]">Cambiar</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="usuariosFiltrados.length === 0">
+        <td colspan="8" class="text-center text-muted py-4">
+          No se encontraron usuarios
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensaje de éxito/error -->
+  <div *ngIf="mensajeRol" class="alert mt-3"
+       [class.alert-success]="mensajeRolExito"
+       [class.alert-danger]="!mensajeRolExito">
+    {{ mensajeRol }}
+  </div>
+
 </div>

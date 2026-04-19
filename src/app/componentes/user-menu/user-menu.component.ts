@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { RedireccionService } from '../../servicios/redireccion.service';
 
 @Component({
@@ -6,13 +6,24 @@ import { RedireccionService } from '../../servicios/redireccion.service';
   templateUrl: './user-menu.component.html',
   styleUrls: ['./user-menu.component.css']
 })
-export class UserMenuComponent {
+export class UserMenuComponent implements OnInit {
   @Input() userName: string = '';
   @Output() logout = new EventEmitter<void>();
+
+  // Nueva variable para controlar la vista
+  isAdmin: boolean = false;
 
   private readonly ROLES_KEY = 'roles';
 
   constructor(protected redireccionamiento: RedireccionService) {}
+
+  ngOnInit(): void {
+    // Leemos los roles al cargar el componente
+    const roles: string[] = JSON.parse(localStorage.getItem(this.ROLES_KEY) || '[]');
+    // Verificamos si el arreglo incluye el rol de ADMIN.
+    // (Nota: Asegúrate de que se guarde exactamente como 'ADMIN' o cámbialo a 'ROLE_ADMIN' si tu backend lo envía así)
+    this.isAdmin = roles.includes('ADMIN');
+  }
 
   onLogout() {
     this.logout.emit();
@@ -25,5 +36,4 @@ export class UserMenuComponent {
 
     this.redireccionamiento.redirigirSegunRol(primerRol);
   }
-
 }

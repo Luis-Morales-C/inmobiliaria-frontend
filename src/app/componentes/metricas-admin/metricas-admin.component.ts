@@ -1,16 +1,36 @@
+// metricas-admin.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { MetricasService } from '../../servicios/metricas.service';
+import { AuthService } from '../../servicios/auth.service';
+import { ChatService } from '../../servicios/chat.service';
+import { UserMenuComponent } from '../user-menu/user-menu.component';
+
+export interface UsuarioAdminDto {
+  id: number;
+  email: string;
+  rol: string;
+  nombre: string;
+  apellido: string;
+  documentoIdentidad: string;
+  telefono: string;
+}
 
 @Component({
   selector: 'app-metricas-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, UserMenuComponent],
   templateUrl: './metricas-admin.component.html',
   styleUrls: ['./metricas-admin.component.css']
 })
 export class MetricasAdminComponent implements OnInit {
 
+  // ─── Navbar ──────────────────────────────────────────────────────────
+  userName: string = '';
+
+  // ─── Métricas ────────────────────────────────────────────────────────
   tiempoRespuestaLogin: number = 0;
   tasaExitoLogin: number = 0;
   tiempoRespuestaRegistroUsuario: number = 0;
@@ -19,12 +39,52 @@ export class MetricasAdminComponent implements OnInit {
   tasaExitoActualizacionEstado: number = 0;
   cargando: boolean = true;
 
-  constructor(private metricasService: MetricasService) {}
+  // ─── Usuarios ────────────────────────────────────────────────────────
+  usuarios: UsuarioAdminDto[] = [];
+  usuariosFiltrados: UsuarioAdminDto[] = [];
+  cargandoUsuarios: boolean = false;
+  busqueda: string = '';
+  rolesSeleccionados: { [id: number]: string } = {};
+  cambiandoRol: { [id: number]: boolean } = {};
+  mensajeRol: string = '';
+  mensajeRolExito: boolean = true;
+
+  roles: string[] = [
+    'ADMIN',
+    'AGENTE',
+    'CLIENTE',
+    'GERENTE',
+    'ASESOR_LEGAL',
+    'PENDIENTE',
+    'DESVINCULADO'
+  ];
+
+  private readonly API = 'http://localhost:8080/api/usuarios';
+
+  constructor(
+    private metricasService: MetricasService,
+    private authService: AuthService,
+    private chatService: ChatService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
+    // Cargar nombre del usuario logueado
+    const nombre = this.authService.obtenerNombreUsuario() ?? '';
+    const apellido = this.authService.obtenerApellidoUsuario() ?? '';
+    this.userName = `${nombre} ${apellido}`.trim();
+
     this.cargarMetricas();
+    this.cargarUsuarios();
   }
 
+  // ─── Logout ──────────────────────────────────────────────────────────
+  logout(): void {
+    this.chatService.desconectarWebSocket();
+    this.authService.logout();
+  }
+
+  // ─── Métricas ────────────────────────────────────────────────────────
   cargarMetricas(): void {
     this.cargando = true;
     this.metricasService.getTodasLasMetricas().subscribe({
@@ -42,5 +102,83 @@ export class MetricasAdminComponent implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+  // ─── Usuarios ────────────────────────────────────────────────────────
+  cargarUsuarios(): void {
+    this.cargandoUsuarios = true;
+    const token = this.authService.getToken();
+
+    this.http.get<UsuarioAdminDto[]>(`${this.API}/todos`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: (lista) => {
+        this.usuarios = lista;
+        this.usuariosFiltrados = lista;
+        lista.forEach(u => this.rolesSeleccionados[u.id] = u.rol);
+        this.cargandoUsuarios = false;
+      },
+      error: (err) => {
+        console.error('Error cargando usuarios', err);
+        this.cargandoUsuarios = false;
+      }
+    });
+  }
+
+  filtrarUsuarios(): void {
+    const texto = this.busqueda.toLowerCase().trim();
+    if (!texto) {
+      this.usuariosFiltrados = this.usuarios;
+      return;
+    }
+    this.usuariosFiltrados = this.usuarios.filter(u =>
+      u.nombre.toLowerCase().includes(texto) ||
+      u.apellido.toLowerCase().includes(texto) ||
+      u.email.toLowerCase().includes(texto) ||
+      u.documentoIdentidad?.toLowerCase().includes(texto)
+    );
+  }
+
+  cambiarRol(usuario: UsuarioAdminDto): void {
+    const nuevoRol = this.rolesSeleccionados[usuario.id];
+    if (!nuevoRol || nuevoRol === usuario.rol) return;
+
+    this.cambiandoRol[usuario.id] = true;
+    const token = this.authService.getToken();
+
+    this.http.put(`${this.API}/cambiar-rol`,
+      { usuarioId: usuario.id, nuevoRol },
+      { headers: { Authorization: `Bearer ${token}` }, responseType: 'text' }
+    ).subscribe({
+      next: () => {
+        usuario.rol = nuevoRol;
+        this.cambiandoRol[usuario.id] = false;
+        this.mostrarMensaje(`Rol de ${usuario.nombre} cambiado a ${nuevoRol}`, true);
+      },
+      error: (err) => {
+        console.error('Error cambiando rol', err);
+        this.cambiandoRol[usuario.id] = false;
+        this.mostrarMensaje('Error al cambiar el rol. Intenta de nuevo.', false);
+      }
+    });
+  }
+
+  private mostrarMensaje(msg: string, exito: boolean): void {
+    this.mensajeRol = msg;
+    this.mensajeRolExito = exito;
+    setTimeout(() => this.mensajeRol = '', 3000);
+  }
+
+  getBadgeClass(rol: string): string {
+    const mapa: { [key: string]: string } = {
+      'ADMIN': 'badge-admin',
+      'AGENTE': 'badge-agente',
+      'CLIENTE': 'badge-cliente',
+      'GERENTE': 'badge-gerente',
+      'ASESOR_LEGAL': 'badge-asesor',
+      'PENDIENTE': 'badge-pendiente',
+      'DESVINCULADO': 'badge-desvinc'
+    };
+    return mapa[rol] ?? 'badge-default';
   }
 }

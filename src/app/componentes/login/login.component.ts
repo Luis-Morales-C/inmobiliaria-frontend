@@ -124,7 +124,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: () => {
           this.loading = false;
           this.chatService.conectarWebSocket();
-          this.router.navigate(['/inicio']);
+
+          const rol = this.authService.getPrimerRol();
+          if (rol === 'ADMIN') {
+            this.router.navigate(['/metricas-admin']);
+          } else {
+            this.router.navigate(['/inicio']);
+          }
         },
         error: () => {
           this.loading = false;
