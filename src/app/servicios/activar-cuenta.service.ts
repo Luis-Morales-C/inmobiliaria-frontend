@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 // Definición de interfaces para las respuestas
 export interface ActivationResponse {
@@ -18,7 +19,7 @@ export interface ResendCodeResponse {
 })
 export class ActivarCuentaService {
   //private baseUrl = 'https://inmobiliariasoft3back2-0.onrender.com/api/auth';
-  private baseUrl='${environment.backendUrl}/api/auth';
+  private baseUrl= `${environment.backendUrl}/api/auth`;
   constructor(private http: HttpClient) { }
 
   /**
