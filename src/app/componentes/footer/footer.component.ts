@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {RedireccionService} from '../../servicios/redireccion.service';
+import { RedireccionService } from '../../servicios/redireccion.service';
 import { AuthService } from '../../servicios/auth.service';
 import { IdiomaService } from '../../servicios/idioma.service';
 import { ES } from '../../i18n/es';
 import { Subscription } from 'rxjs';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -19,7 +19,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   constructor(
     protected redireccionamiento: RedireccionService,
     private authservice: AuthService,
-    public idiomaService: IdiomaService
+    public idiomaService: IdiomaService,
+    private router: Router
   ) {
     this.t = idiomaService.t;
   }
@@ -34,16 +35,15 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-
-
   redirigirARegistroInmueble() {
-    if(this.authservice.getToken()==null)
-    {
+    if(this.authservice.getToken() == null) {
       this.redireccionamiento.redirigirALogin();
-    }
-    else
-    {
+    } else {
       this.redireccionamiento.redirigirARegistroInmueble();
     }
+  }
+
+  redirigirAManual() {
+    this.router.navigate(['/manual-usuario']);
   }
 }

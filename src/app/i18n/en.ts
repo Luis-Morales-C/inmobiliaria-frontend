@@ -180,6 +180,7 @@ export const EN = {
     siguenos: 'Follow Us',
     derechos: '© 2026 EDÉN Real Estate. All rights reserved.',
     sede: 'Main office: Colombia-Quindío-Armenia Cra 14 #20-6',
+    manualUsuario: 'User manual'
   },
 
   // === CONÓCENOS ===

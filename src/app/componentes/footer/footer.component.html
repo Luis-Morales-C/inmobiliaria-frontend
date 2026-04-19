@@ -10,18 +10,23 @@
         <h5 class="mb-4">{{ t.footer.enlacesRapidos }}</h5>
         <ul class="list-unstyled">
           <li class="mb-2">
-            <a (click)="redireccionamiento.redirigirAHome()" class="text-white text-decoration-none link-clickable">
+            <a (click)="redireccionamiento.redirigirAHome()" class="text-white text-decoration-none link-clickable" style="cursor: pointer;">
               {{ t.footer.inicio }}
             </a>
           </li>
           <li class="mb-2">
-            <a (click)="redirigirARegistroInmueble()" class="text-white text-decoration-none link-clickable">
+            <a (click)="redirigirARegistroInmueble()" class="text-white text-decoration-none link-clickable" style="cursor: pointer;">
               {{ t.footer.hagamosNegocios }}
             </a>
           </li>
           <li class="mb-2">
-            <a (click)="redireccionamiento.redirigirAPoliticaDatos()" class="text-white text-decoration-none link-clickable">
+            <a (click)="redireccionamiento.redirigirAPoliticaDatos()" class="text-white text-decoration-none link-clickable" style="cursor: pointer;">
               {{ t.footer.politicaDatos }}
+            </a>
+          </li>
+          <li class="mb-2">
+            <a (click)="redirigirAManual()" class="text-white text-decoration-none link-clickable" style="cursor: pointer;">
+              {{ t.footer.manualUsuario }}
             </a>
           </li>
         </ul>

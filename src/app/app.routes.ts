@@ -22,6 +22,7 @@ import {CambiarContrasenaComponent} from './componentes/cambiar-contrasena/cambi
 import {ConocenosComponent} from './componentes/conocenos/conocenos.component';
 import {ContactenosComponent} from './componentes/contactenos/contactenos.component';
 import {CatalogoComponent} from './componentes/catalogo/catalogo.component';
+import {ManualUsuarioComponent} from './componentes/manual-usuario/manual-usuario.component';
 
 
 export const routes: Routes = [
@@ -96,6 +97,10 @@ export const routes: Routes = [
   {
     path: 'perfil',
     component: PerfilComponent
+  },
+  {
+    path: 'manual-usuario',
+    component: ManualUsuarioComponent
   },
   {
     path: 'metricas-admin',

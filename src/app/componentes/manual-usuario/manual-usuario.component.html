@@ -1,0 +1,499 @@
+<!-- manual-usuario.component.html -->
+<div class="manual-container">
+
+  <!-- Hero -->
+  <div class="manual-hero">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <i class="bi bi-building-fill"></i>
+      </div>
+      <h1 class="hero-titulo">Manual de Usuario</h1>
+      <p class="hero-subtitulo">Inmobiliaria Edén — Primera edición, marzo 2026</p>
+      <div class="hero-autores">
+        <span>Luis Carlos Morales Colmenares</span>
+        <span class="sep">·</span>
+        <span>Diego Nicolás Peña Rincón</span>
+        <span class="sep">·</span>
+        <span>Juan Manuel Flor Zúñiga</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Índice de roles -->
+  <div class="roles-section">
+    <h2 class="section-titulo">Tipos de usuario</h2>
+    <div class="roles-grid">
+      <div class="rol-card">
+        <div class="rol-icon"><i class="bi bi-person-fill"></i></div>
+        <h4>Cliente</h4>
+        <p>Persona natural que consume los servicios de la página. Puede ser propietario o no.</p>
+      </div>
+      <div class="rol-card">
+        <div class="rol-icon agente"><i class="bi bi-briefcase-fill"></i></div>
+        <h4>Agente Inmobiliario</h4>
+        <p>Intermediario entre las dos partes que están realizando un negocio en la plataforma.</p>
+      </div>
+      <div class="rol-card">
+        <div class="rol-icon asesor"><i class="bi bi-shield-fill-check"></i></div>
+        <h4>Asesor Legal</h4>
+        <p>Abogado inmobiliario que asesora a los usuarios sobre el estado legal de sus inmuebles.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secciones del manual -->
+  <div class="manual-body">
+
+    <!-- 1. Explorar propiedades -->
+    <div class="manual-seccion" id="explorar">
+      <div class="seccion-header">
+        <div class="seccion-num">01</div>
+        <div>
+          <h2 class="seccion-titulo-main">Explorar propiedades</h2>
+          <p class="seccion-desc">Cómo encontrar los inmuebles publicados en la plataforma</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Ir a la pantalla principal</h5>
+            <p>Desde la página de inicio, desplázate hacia abajo hasta encontrar la sección <strong>"Propiedades Destacadas"</strong>. Allí encontrarás todos los inmuebles publicados.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Ver detalles del inmueble</h5>
+            <p>Presiona el botón <strong>"Ver Detalles"</strong> en cualquier tarjeta de inmueble para ver toda la información relevante: imágenes, precio, características, agente y asesor legal.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h5>Buscar con filtros avanzados</h5>
+            <p>Usa la sección de <strong>Búsqueda Avanzada</strong> para filtrar por ciudad, tipo de inmueble, estado, tipo de negocio, habitaciones, baños y rango de precio.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <h5>Buscar en el mapa</h5>
+            <p>La plataforma incluye un mapa interactivo donde puedes visualizar la ubicación de los inmuebles disponibles y filtrarlos por tipo de negocio.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>La página se verá diferente si estás logueado, pero el método para llegar a los inmuebles ofertados es el mismo.</p>
+      </div>
+    </div>
+
+    <!-- 2. Registro -->
+    <div class="manual-seccion" id="registro">
+      <div class="seccion-header">
+        <div class="seccion-num">02</div>
+        <div>
+          <h2 class="seccion-titulo-main">Registro de usuario</h2>
+          <p class="seccion-desc">Cómo crear una cuenta en la plataforma</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Acceder al formulario</h5>
+            <p>Presiona el botón <strong>"Registrarse"</strong> en la parte superior derecha de la página principal, o desde el formulario de login.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Completar el formulario</h5>
+            <p>Ingresa todos los datos requeridos siguiendo estos requisitos:</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="requisitos-grid">
+        <div class="requisito">
+          <i class="bi bi-person-badge-fill"></i>
+          <div>
+            <strong>Nombre y Apellido</strong>
+            <span>Solo se aceptan letras</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-credit-card-fill"></i>
+          <div>
+            <strong>Documento de identidad</strong>
+            <span>Solo se aceptan números</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-telephone-fill"></i>
+          <div>
+            <strong>Teléfono</strong>
+            <span>Solo se aceptan números</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-envelope-fill"></i>
+          <div>
+            <strong>Correo electrónico</strong>
+            <span>Solo dominios válidos (gmail, outlook, etc.)</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-lock-fill"></i>
+          <div>
+            <strong>Contraseña</strong>
+            <span>Mínimo 8 caracteres, una mayúscula, un número y un símbolo especial</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-shield-check"></i>
+          <div>
+            <strong>Confirmar contraseña</strong>
+            <span>Debe coincidir con la contraseña ingresada</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-robot"></i>
+          <div>
+            <strong>reCAPTCHA</strong>
+            <span>Verificación de seguridad obligatoria</span>
+          </div>
+        </div>
+        <div class="requisito">
+          <i class="bi bi-file-earmark-text-fill"></i>
+          <div>
+            <strong>Política de tratamiento de datos</strong>
+            <span>Debe aceptarse para completar el registro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Activación -->
+    <div class="manual-seccion" id="activacion">
+      <div class="seccion-header">
+        <div class="seccion-num">03</div>
+        <div>
+          <h2 class="seccion-titulo-main">Activación de cuenta</h2>
+          <p class="seccion-desc">Verificación del correo electrónico</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Revisar el correo</h5>
+            <p>Al completar el registro, recibirás un <strong>código de 6 dígitos</strong> en tu correo electrónico. Revisa también la carpeta de spam.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Ingresar el código</h5>
+            <p>Serás redirigido automáticamente a la ventana de activación. Ingresa el código recibido en los campos correspondientes.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h5>Activar la cuenta</h5>
+            <p>Presiona <strong>"Activar Cuenta"</strong>. Si el código no llegó, puedes solicitar uno nuevo con "Reenviar código".</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta-box">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <p><strong>Importante:</strong> El código de activación tiene una validez de <strong>10 minutos</strong>. Si expira, deberás solicitar uno nuevo.</p>
+      </div>
+    </div>
+
+    <!-- 4. Login -->
+    <div class="manual-seccion" id="login">
+      <div class="seccion-header">
+        <div class="seccion-num">04</div>
+        <div>
+          <h2 class="seccion-titulo-main">Iniciar sesión</h2>
+          <p class="seccion-desc">Cómo acceder a tu cuenta</p>
+        </div>
+      </div>
+
+      <div class="acceso-grid">
+        <div class="acceso-item">
+          <i class="bi bi-house-door-fill"></i>
+          <span>Botón <strong>"Iniciar Sesión"</strong> en la página principal</span>
+        </div>
+        <div class="acceso-item">
+          <i class="bi bi-briefcase-fill"></i>
+          <span>Sección <strong>"Hagamos Negocios"</strong> (sin estar logueado)</span>
+        </div>
+        <div class="acceso-item">
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Enlace desde el formulario de <strong>registro</strong></span>
+        </div>
+        <div class="acceso-item">
+          <i class="bi bi-key-fill"></i>
+          <span>Desde la ventana de <strong>recuperar contraseña</strong></span>
+        </div>
+      </div>
+
+      <div class="pasos-container mt-3">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Completar el formulario</h5>
+            <p>Ingresa tu <strong>correo electrónico</strong> y <strong>contraseña</strong> registrados, y completa el reCAPTCHA.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Recuperar contraseña</h5>
+            <p>Si olvidaste tu contraseña, presiona <strong>"¿Olvidó su contraseña?"</strong>. Ingresa tu correo, completa el captcha y recibirás un código para restablecerla. El código vence en 10 minutos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Captación -->
+    <div class="manual-seccion" id="captacion">
+      <div class="seccion-header">
+        <div class="seccion-num">05</div>
+        <div>
+          <h2 class="seccion-titulo-main">Captación de propiedades</h2>
+          <p class="seccion-desc">Cómo publicar tu inmueble en la plataforma</p>
+        </div>
+      </div>
+
+      <div class="info-box mb-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>Debes estar registrado y logueado. Accede desde <strong>"Hagamos Negocios"</strong> en la barra superior o desde los enlaces rápidos del pie de página.</p>
+      </div>
+
+      <div class="formulario-grid">
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-tag-fill"></i></div>
+          <div>
+            <strong>Tipo de negocio</strong>
+            <span>Venta / Alquiler / Permutación</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-building"></i></div>
+          <div>
+            <strong>Tipo de inmueble</strong>
+            <span>Casa / Apartamento / Local / Lote / Finca / Oficina</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-currency-dollar"></i></div>
+          <div>
+            <strong>Precio</strong>
+            <span>Valor de venta o arriendo del inmueble</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-stars"></i></div>
+          <div>
+            <strong>Estado del inmueble</strong>
+            <span>Nuevo / Usado</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-door-open-fill"></i></div>
+          <div>
+            <strong>Espacios</strong>
+            <span>N° habitaciones, baños y parqueaderos</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-rulers"></i></div>
+          <div>
+            <strong>Área construida</strong>
+            <span>Medidas en metros cuadrados</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div>
+            <strong>Ubicación</strong>
+            <span>Seleccionar en el mapa interactivo</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-card-text"></i></div>
+          <div>
+            <strong>Descripción</strong>
+            <span>Máximo 255 caracteres</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-images"></i></div>
+          <div>
+            <strong>Imágenes</strong>
+            <span>Mínimo 1, máximo 10 (JPEG / PNG)</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+          <div>
+            <strong>Documentos</strong>
+            <span>Mínimo 1, máximo 5 archivos PDF</span>
+          </div>
+        </div>
+        <div class="formulario-item">
+          <div class="form-icon"><i class="bi bi-person-lines-fill"></i></div>
+          <div>
+            <strong>Información de contacto</strong>
+            <span>Nombre, teléfono y correo del contacto</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta-box mt-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <p>Este proceso <strong>sube el inmueble pero no lo publica</strong>. Debes esperar a que un agente inmobiliario verifique la información y lo publique en la página.</p>
+      </div>
+
+      <div class="info-box mt-2">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>El inmueble quedará guardado en tu <strong>ventana de perfil</strong>, donde podrás ver su estado y eliminarlo si está en estado PENDIENTE o NOADMITIDA.</p>
+      </div>
+    </div>
+
+    <!-- 6. Perfil -->
+    <div class="manual-seccion" id="perfil">
+      <div class="seccion-header">
+        <div class="seccion-num">06</div>
+        <div>
+          <h2 class="seccion-titulo-main">Ventana de perfil</h2>
+          <p class="seccion-desc">Gestión de tu información y propiedades</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Acceder al perfil</h5>
+            <p>Una vez logueado, aparecerá tu nombre en la parte superior derecha. Presiona el menú desplegable y selecciona <strong>"Ver perfil"</strong>.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Editar información personal</h5>
+            <p>Presiona el botón <strong>"Editar información"</strong> para actualizar tu nombre, apellido, teléfono y documento de identidad.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h5>Ver mis propiedades</h5>
+            <p>En la sección <strong>"Mis propiedades"</strong> podrás ver todos tus inmuebles, su estado actual y acceder a los detalles completos con el botón "Ver detalles".</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <h5>Eliminar inmueble</h5>
+            <p>Solo puedes eliminar un inmueble si está en estado <strong>PENDIENTE</strong> o <strong>NOADMITIDA</strong>. Usa el botón "Eliminar inmueble" en la tarjeta correspondiente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Accesibilidad -->
+    <div class="manual-seccion" id="accesibilidad">
+      <div class="seccion-header">
+        <div class="seccion-num">07</div>
+        <div>
+          <h2 class="seccion-titulo-main">Opciones de accesibilidad</h2>
+          <p class="seccion-desc">Personaliza tu experiencia en la plataforma</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Abrir el panel</h5>
+            <p>En cada interfaz encontrarás un pequeño ícono de accesibilidad <strong>(♿)</strong> en la esquina inferior derecha. Presiónalo para abrir el panel.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accesibilidad-grid">
+        <div class="acc-item">
+          <div class="acc-icon"><i class="bi bi-fonts"></i></div>
+          <h5>Tamaño de texto</h5>
+          <p>Ajusta el tamaño de la fuente mediante un deslizador de Pequeño a Grande.</p>
+        </div>
+        <div class="acc-item">
+          <div class="acc-icon oscuro"><i class="bi bi-moon-fill"></i></div>
+          <h5>Modo oscuro</h5>
+          <p>Activa o desactiva el modo oscuro para mayor comodidad visual.</p>
+        </div>
+        <div class="acc-item">
+          <div class="acc-icon idioma"><i class="bi bi-globe"></i></div>
+          <h5>Idioma</h5>
+          <p>Cambia el idioma de la aplicación entre <strong>Español</strong> e <strong>Inglés</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Información de la empresa -->
+    <div class="manual-seccion" id="empresa">
+      <div class="seccion-header">
+        <div class="seccion-num">08</div>
+        <div>
+          <h2 class="seccion-titulo-main">Información de la empresa</h2>
+          <p class="seccion-desc">Otros recursos y secciones disponibles</p>
+        </div>
+      </div>
+
+      <div class="empresa-grid">
+        <div class="empresa-item">
+          <i class="bi bi-info-square-fill"></i>
+          <div>
+            <h5>Conócenos</h5>
+            <p>Presiona el botón <strong>"Conócenos"</strong> en la barra superior para ver la historia, trayectoria y valores de la empresa.</p>
+          </div>
+        </div>
+        <div class="empresa-item">
+          <i class="bi bi-chat-left-text-fill"></i>
+          <div>
+            <h5>Contáctenos</h5>
+            <p>Canal de dudas generales. Presiona <strong>"Contáctenos"</strong> en la barra superior. Para dudas sobre inmuebles, contacta al agente directamente.</p>
+          </div>
+        </div>
+        <div class="empresa-item">
+          <i class="bi bi-file-earmark-lock-fill"></i>
+          <div>
+            <h5>Política de tratamiento de datos</h5>
+            <p>Accesible desde el pie de página o desde el formulario de registro.</p>
+          </div>
+        </div>
+        <div class="empresa-item">
+          <i class="bi bi-lightning-fill"></i>
+          <div>
+            <h5>Enlaces rápidos</h5>
+            <p>En el pie de página encontrarás accesos directos a Inicio, Hagamos Negocios y Política de Tratamiento de Datos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

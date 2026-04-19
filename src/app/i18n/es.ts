@@ -178,6 +178,7 @@ export const ES = {
     siguenos: 'Síguenos',
     derechos: '© 2026 EDÉN Inmobiliaria. Todos los derechos reservados.',
     sede: 'Sede principal: Colombia-Quindío-Armenia Cra 14 #20-6',
+    manualUsuario: 'Manual de usuario'
   },
 
   // === CONÓCENOS ===
@@ -450,4 +451,5 @@ export const ES = {
     maximo: 'Máximo',
     buscar: 'BUSCAR',
   }
+
 };
