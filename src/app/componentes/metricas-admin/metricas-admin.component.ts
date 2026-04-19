@@ -8,6 +8,7 @@ import { UserMenuComponent } from '../user-menu/user-menu.component';
 import { MetricasService } from '../../servicios/metricas.service';
 import { GraficaMetricaComponent} from '../grafica-metrica/grafica-metrica.component';
 import { forkJoin } from 'rxjs';
+import { environment} from '../../../environments/environment.prod';
 
 export interface UsuarioAdminDto {
   id: number;
@@ -67,7 +68,7 @@ export class MetricasAdminComponent implements OnInit {
     'DESVINCULADO'
   ];
 
-  private readonly API = 'http://localhost:8080/api/usuarios';
+  private readonly API = `${environment.backendUrl}/api/usuarios`;
 
   constructor( private metricasService: MetricasService,
                private authService: AuthService,
