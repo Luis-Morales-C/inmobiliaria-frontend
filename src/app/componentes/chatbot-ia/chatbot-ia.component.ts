@@ -19,7 +19,7 @@ export interface OpcionRapida {
   value?: string;
 }
 
-const WEBHOOK_URL = 'http://localhost:5678/webhook/chat';
+const WEBHOOK_URL = 'http://18.206.92.54:5678/webhook-test/chat';
 
 // ─── Árbol de respuestas predefinidas ────────────────────────────────────────
 interface ChatNode {
