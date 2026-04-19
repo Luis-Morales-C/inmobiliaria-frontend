@@ -8,6 +8,7 @@ import { UbicacionService } from '../../servicios/ubicacion.service'; //  agrega
 import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
 import {RedireccionService} from "../../servicios/redireccion.service";
 import {AuthService} from "../../servicios/auth.service";
+import { ChatbotEstadoService } from '../../servicios/chatbot-estado.service';
 
 @Component({
   selector: 'app-catalogo',
@@ -52,7 +53,8 @@ export class CatalogoComponent implements OnInit {
     private inmuebleService: InmuebleServiceService,
     private ubicacionService: UbicacionService ,//  inyectar
     private redireccionamiento: RedireccionService,
-    private authService: AuthService
+    private authService: AuthService,
+    private chatbotEstado: ChatbotEstadoService
   ) {
   }
 
@@ -62,6 +64,19 @@ export class CatalogoComponent implements OnInit {
       this.ubicacionData = data;
       this.departamentos = Object.keys(data).sort();
     });
+
+    // ← Agregar este bloque:
+    const filtrosChatbot = this.chatbotEstado.consumirFiltros();
+    if (filtrosChatbot) {
+      this.filtros.ciudad       = filtrosChatbot.ciudad       ?? '';
+      this.filtros.departamento = filtrosChatbot.departamento ?? '';
+      this.filtros.tipo         = filtrosChatbot.tipo         ?? '';
+      this.filtros.tipoNegocio  = filtrosChatbot.tipoNegocio  ?? '';
+      this.filtros.precioMin    = filtrosChatbot.precioMin    ?? null;
+      this.filtros.precioMax    = filtrosChatbot.precioMax    ?? null;
+      this.filtros.habitacionesMin = filtrosChatbot.habitacionesMin ?? null;
+      this.filtros.banosMin     = filtrosChatbot.banosMin     ?? null;
+    }
 
     this.buscar();
   }

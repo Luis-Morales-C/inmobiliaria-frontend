@@ -1,0 +1,14 @@
+{
+  "/webhook-test": {
+    "target": "http://localhost:5678",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/webhook": {
+    "target": "http://localhost:5678",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

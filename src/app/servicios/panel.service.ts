@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export type PanelActivo = 'chatbot' | 'accesibilidad' | null;
+export type PanelActivo = 'chatbot' | 'chatbot-ia' | 'accesibilidad' | null;
 
 @Injectable({ providedIn: 'root' })
 export class PanelService {

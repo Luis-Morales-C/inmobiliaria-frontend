@@ -346,5 +346,4 @@ return localStorage.getItem(this.TOKEN_KEY);
       })
     );
   }
-
 }

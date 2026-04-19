@@ -1,0 +1,71 @@
+<!-- Botón flotante -->
+<button class="chat-fab" (click)="toggle()" *ngIf="!isOpen">
+  <i class="fa-solid fa-comments"></i>
+</button>
+
+<!-- Ventana del chat -->
+<div class="chat-window" *ngIf="isOpen">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">🏡</div>
+      <div>
+        <strong>Edén IA</strong>
+        <span class="chat-status">Asistente EDEN</span>
+      </div>
+    </div>
+    <div class="chat-header-actions">
+      <button (click)="resetChat()" title="Reiniciar">🔄</button>
+      <button (click)="close()">✕</button>
+    </div>
+  </div>
+
+  <!-- Mensajes -->
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages"
+         class="chat-bubble-wrap"
+         [class.from-user]="msg.from === 'user'"
+         [class.from-bot]="msg.from === 'bot'">
+
+      <div class="chat-bubble"
+           [class.bubble-user]="msg.from === 'user'"
+           [class.bubble-bot]="msg.from === 'bot'">
+        {{ msg.text }}
+      </div>
+
+      <div class="chat-options" *ngIf="msg.from === 'bot' && msg.opciones?.length">
+        <button *ngFor="let op of msg.opciones"
+                class="chat-option-btn"
+                (click)="handleOpcion(op)">
+          {{ op.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicador de carga -->
+    <div class="chat-bubble-wrap from-bot" *ngIf="isLoading">
+      <div class="chat-bubble bubble-bot typing-indicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div #messagesEnd></div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <input
+      [(ngModel)]="userInput"
+      (keyup.enter)="sendMessage()"
+      placeholder="Escribe tu pregunta..."
+      [disabled]="isLoading"
+      class="chat-input"
+    />
+    <button (click)="sendMessage()"
+            [disabled]="isLoading || !userInput.trim()"
+            class="chat-send-btn">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
