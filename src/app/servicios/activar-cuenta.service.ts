@@ -18,7 +18,7 @@ export interface ResendCodeResponse {
 })
 export class ActivarCuentaService {
   //private baseUrl = 'https://inmobiliariasoft3back2-0.onrender.com/api/auth';
-  private baseUrl='http://localhost:8080/api/auth';
+  private baseUrl='${environment.backendUrl}/api/auth';
   constructor(private http: HttpClient) { }
 
   /**
