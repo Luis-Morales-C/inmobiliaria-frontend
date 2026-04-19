@@ -1,6 +1,14 @@
 <!-- manual-usuario.component.html -->
 <div class="manual-container">
 
+  <!-- Botón volver -->
+  <div class="volver-btn-wrapper">
+    <button class="volver-btn" onclick="history.back()">
+      <i class="bi bi-arrow-left-short"></i>
+      Volver
+    </button>
+  </div>
+
   <!-- Hero -->
   <div class="manual-hero">
     <div class="hero-content">
@@ -491,6 +499,179 @@
             <p>En el pie de página encontrarás accesos directos a Inicio, Hagamos Negocios y Política de Tratamiento de Datos.</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- 9. Chat en tiempo real -->
+    <div class="manual-seccion" id="chat">
+      <div class="seccion-header">
+        <div class="seccion-num">09</div>
+        <div>
+          <h2 class="seccion-titulo-main">Chat en tiempo real</h2>
+          <p class="seccion-desc">Comunicación directa entre usuarios, agentes y administradores</p>
+        </div>
+      </div>
+
+      <div class="info-box mb-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>Debes estar logueado para acceder al chat. El sistema permite la comunicación entre clientes, agentes inmobiliarios y administradores de la plataforma.</p>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Abrir el chat</h5>
+            <p>Presiona el ícono de burbuja de mensajes ubicado en la <strong>esquina inferior izquierda</strong> de la pantalla. Estará disponible en todas las interfaces una vez hayas iniciado sesión.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Ver la lista de conversaciones</h5>
+            <p>Se desplegará un panel con <strong>todas tus conversaciones activas</strong>, mostrando el nombre del contacto y el último mensaje enviado con su hora.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h5>Abrir una conversación</h5>
+            <p>Haz clic en cualquier conversación de la lista para ver el <strong>historial completo de mensajes</strong>. Cada mensaje muestra la hora exacta en que fue enviado.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <h5>Gestionar contactos</h5>
+            <p>Usa el ícono de contactos ubicado en la <strong>esquina inferior derecha</strong> de la pantalla para ver y administrar los usuarios vinculados a tu cuenta.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-usos-grid">
+        <div class="chat-uso-item">
+          <div class="chat-uso-icon cliente"><i class="bi bi-person-fill"></i></div>
+          <div>
+            <strong>Cliente ↔ Agente</strong>
+            <span>Canal principal para consultas sobre inmuebles específicos</span>
+          </div>
+        </div>
+        <div class="chat-uso-item">
+          <div class="chat-uso-icon agente"><i class="bi bi-briefcase-fill"></i></div>
+          <div>
+            <strong>Agente ↔ Admin</strong>
+            <span>Coordinación interna y gestión de publicaciones</span>
+          </div>
+        </div>
+        <div class="chat-uso-item">
+          <div class="chat-uso-icon admin"><i class="bi bi-shield-fill"></i></div>
+          <div>
+            <strong>Usuario ↔ Admin</strong>
+            <span>Soporte y resolución de inconvenientes en la plataforma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta-box mt-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <p>Para dudas relacionadas con inmuebles específicos, usa siempre el <strong>chat directo con el agente</strong> correspondiente. El botón "Contáctenos" de la barra superior es exclusivo para dudas generales sobre la empresa.</p>
+      </div>
+    </div>
+
+    <!-- 10. Funciones del administrador -->
+    <div class="manual-seccion" id="administrador">
+      <div class="seccion-header">
+        <div class="seccion-num">10</div>
+        <div>
+          <h2 class="seccion-titulo-main">Funciones del administrador</h2>
+          <p class="seccion-desc">Panel exclusivo para usuarios con rol de administrador</p>
+        </div>
+      </div>
+
+      <div class="alerta-box mb-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <p>Estas funcionalidades solo están disponibles para usuarios con rol <strong>ADMIN</strong>. Los clientes, agentes y asesores legales no tienen acceso a este panel.</p>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-item">
+          <div class="admin-icon metricas"><i class="bi bi-graph-up-arrow"></i></div>
+          <div>
+            <h5>Panel de métricas</h5>
+            <p>Monitoreo en tiempo real del sistema. Incluye indicadores de tasa de autenticaciones exitosas, tiempos medios de respuesta en login y registro, eficiencia en el registro de propiedades, tasa de errores de usuario y precisión en la actualización de estados de inmuebles. Cuenta con un botón <strong>"Actualizar métricas"</strong> para refrescar los datos.</p>
+          </div>
+        </div>
+        <div class="admin-item">
+          <div class="admin-icon usuarios"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <h5>Gestión de usuarios</h5>
+            <p>Visualización completa de todos los usuarios registrados con sus datos (nombre, apellido, correo, documento, teléfono y rol actual). Permite <strong>cambiar el rol</strong> de cualquier usuario entre CLIENTE, AGENTE, ASESOR_LEGAL y ADMIN usando el selector correspondiente y confirmando con el botón "Cambiar".</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box mt-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>El administrador también tiene acceso al <strong>chat en tiempo real</strong> para comunicarse directamente con cualquier usuario de la plataforma, y puede usar la barra de búsqueda del panel para filtrar usuarios por nombre, correo o documento.</p>
+      </div>
+    </div>
+
+    <!-- 11. Chatbot -->
+    <div class="manual-seccion" id="chatbot">
+      <div class="seccion-header">
+        <div class="seccion-num">11</div>
+        <div>
+          <h2 class="seccion-titulo-main">Chatbot — Edén IA</h2>
+          <p class="seccion-desc">Asistente virtual con información sobre la empresa y la plataforma</p>
+        </div>
+      </div>
+
+      <div class="pasos-container">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <h5>Abrir el asistente</h5>
+            <p>El chatbot <strong>"Edén IA"</strong> está disponible sin necesidad de estar logueado. Búscalo como ícono flotante en la parte inferior de la pantalla principal.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <h5>Usar las opciones rápidas</h5>
+            <p>Al abrirlo, verás botones de acceso directo a las consultas más frecuentes. Selecciona la que mejor se ajuste a tu necesidad o escribe directamente tu pregunta.</p>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <h5>Escribir una consulta libre</h5>
+            <p>Usa el campo de texto en la parte inferior del chat para escribir cualquier pregunta sobre la empresa, los servicios o los procesos de la plataforma.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chatbot-opciones-grid">
+        <div class="chatbot-opcion">
+          <div class="chatbot-opcion-icon"><i class="bi bi-search"></i></div>
+          <span>Buscar propiedades</span>
+        </div>
+        <div class="chatbot-opcion">
+          <div class="chatbot-opcion-icon"><i class="bi bi-house-add-fill"></i></div>
+          <span>Publicar mi inmueble</span>
+        </div>
+        <div class="chatbot-opcion">
+          <div class="chatbot-opcion-icon"><i class="bi bi-question-circle-fill"></i></div>
+          <span>¿Cómo funciona EDÉN?</span>
+        </div>
+        <div class="chatbot-opcion">
+          <div class="chatbot-opcion-icon"><i class="bi bi-headset"></i></div>
+          <span>Hablar con un asesor</span>
+        </div>
+      </div>
+
+      <div class="info-box mt-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <p>El chatbot guía al usuario paso a paso según su consulta. Por ejemplo, al seleccionar <strong>"Publicar mi inmueble"</strong>, pregunta si ya tienes cuenta y te redirige al registro o al formulario de captación según corresponda.</p>
       </div>
     </div>
 
