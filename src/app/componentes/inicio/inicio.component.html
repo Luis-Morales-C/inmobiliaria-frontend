@@ -20,6 +20,9 @@
             <li class="nav-item">
               <a class="nav-link" (click)="redireccionamiento.redirigirAContactenos()">CONTÁCTENOS</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="redireccionamiento.redirigirACatalogo()">CATÁLOGO</a>
+            </li>
           </ul>
           <div class="d-flex flex-column flex-lg-row mt-3 mt-lg-0">
             <app-user-menu [userName]="userName" (logout)="logout()"></app-user-menu>
@@ -35,7 +38,9 @@
             <div class="col-lg-6">
               <h1 class="display-4 fw-bold mb-4">Encuentra tu propiedad ideal</h1>
               <p class="lead mb-4">Casas, apartamentos, locales, lotes y fincas para todos tus necesidades.</p>
-              <button class="btn btn-primary btn-lg">Explorar Propiedades</button>
+              <button class="btn btn-primary btn-lg" (click)="redireccionamiento.redirigirACatalogo()">
+                Explorar Propiedades
+              </button>
             </div>
           </div>
         </div>

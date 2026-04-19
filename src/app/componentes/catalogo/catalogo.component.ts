@@ -6,6 +6,8 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
 import { InmuebleServiceService } from '../../servicios/inmueble-service.service';
 import { UbicacionService } from '../../servicios/ubicacion.service'; //  agregar
 import {DetalleInmuebleComponent} from '../detalle-inmueble/detalle-inmueble.component';
+import {RedireccionService} from "../../servicios/redireccion.service";
+import {AuthService} from "../../servicios/auth.service";
 
 @Component({
   selector: 'app-catalogo',
@@ -48,7 +50,9 @@ export class CatalogoComponent implements OnInit {
 
   constructor(
     private inmuebleService: InmuebleServiceService,
-    private ubicacionService: UbicacionService //  inyectar
+    private ubicacionService: UbicacionService ,//  inyectar
+    private redireccionamiento: RedireccionService,
+    private authService: AuthService
   ) {
   }
 
@@ -99,5 +103,13 @@ export class CatalogoComponent implements OnInit {
   abrirDetalle(p: InmuebleResponse): void {
     this.inmuebleSeleccionado = p;
     this.mostrarDetalle = true;
+  }
+  volverInicio(): void {
+    // Verificamos si hay una sesión activa para saber a qué Home enviarlo
+    if (this.authService.getToken() == null) {
+      this.redireccionamiento.redirigirAHome();
+    } else {
+      this.redireccionamiento.redirigirAHomeIngresado();
+    }
   }
 }

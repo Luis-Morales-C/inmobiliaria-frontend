@@ -74,17 +74,19 @@ export class AuthService {
   isAuthenticated(): boolean {
     const expireAt = localStorage.getItem(this.EXPIRE_AT_KEY);
     const token = localStorage.getItem(this.TOKEN_KEY);
+
     if (!expireAt || !token) {
-      this.logout(); // Limpia cualquier estado inconsistente
-      return false;
+      return false; // ← Solo retornar false, sin llamar logout()
     }
-    const expireDate = new Date(expireAt);
+
+    const expireDate = new Date(Number(expireAt) * 1000);
     if (expireDate <= new Date()) {
-      this.logout(); // Token expirado, limpiar
+      localStorage.clear(); // ← Limpiar sin redirigir
       return false;
     }
+
     return true;
-}
+  }
 
 
   /**

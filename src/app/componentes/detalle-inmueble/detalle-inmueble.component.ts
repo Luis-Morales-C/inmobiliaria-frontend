@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InmuebleResponse } from '../../dto/inmueble-response';
 import { AgenteResponse } from '../../dto/AgenteResponse';
 import { MapaService } from '../../mapa.service';
+import {ChatService} from '../../servicios/chat.service';
 
 @Component({
   selector: 'app-detalle-inmueble',
@@ -17,7 +18,7 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
 
   imagenActual = 0;
 
-  constructor(private mapaService: MapaService) {}
+  constructor(private mapaService: MapaService,private chatService: ChatService) {}
 
   ngAfterViewInit(): void {
     // Pequeño delay para asegurar que el DOM esté listo
@@ -50,6 +51,7 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
   }
 
   contactarAgente(agente: AgenteResponse): void {
-    // lógica de chat posterior
+    this.chatService.abrirConversacionCon(agente.id);
+    this.cerrarDetalle(); // Opcional: cierra el modal al abrir el chat
   }
 }

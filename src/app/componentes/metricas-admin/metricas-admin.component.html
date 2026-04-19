@@ -9,9 +9,10 @@
 
   <div *ngIf="!cargando">
 
-    <!-- Login y Autenticación: tarjetas -->
+    <!-- Sección: Login y Autenticación -->
     <h5 class="text-muted mb-3 mt-2">Login y Autenticación</h5>
-    <div class="row g-3 mb-3">
+    <div class="row g-3 mb-4">
+
       <div class="col-md-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -25,6 +26,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -38,6 +40,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -51,33 +54,13 @@
           </div>
         </div>
       </div>
+
     </div>
 
-    <!-- Login y Autenticación: gráficas -->
-    <div *ngIf="!cargandoGraficas" class="row g-3 mb-4">
-      <div class="col-md-6">
-        <app-grafica-metrica
-          titulo="Tiempo de Respuesta Login - Últimas 24h"
-          [datos]="historicoTiempoLogin"
-          etiqueta="Tiempo"
-          color="#0d6efd"
-          unidad="ms">
-        </app-grafica-metrica>
-      </div>
-      <div class="col-md-6">
-        <app-grafica-metrica
-          titulo="Tasa de Éxito Login - Últimas 24h"
-          [datos]="historicoTasaExito"
-          etiqueta="Éxito"
-          color="#198754"
-          unidad="%">
-        </app-grafica-metrica>
-      </div>
-    </div>
-
-    <!-- Captación y Registro: tarjetas -->
+    <!-- Sección: Captación y Registro de Propiedades -->
     <h5 class="text-muted mb-3">Captación y Registro de Propiedades</h5>
-    <div class="row g-3 mb-3">
+    <div class="row g-3 mb-4">
+
       <div class="col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -91,6 +74,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -104,33 +88,13 @@
           </div>
         </div>
       </div>
+
     </div>
 
-    <!-- Captación y Registro: gráficas -->
-    <div *ngIf="!cargandoGraficas" class="row g-3 mb-4">
-      <div class="col-md-6">
-        <app-grafica-metrica
-          titulo="Errores en Registro - Últimas 24h"
-          [datos]="historicoErroresRegistro"
-          etiqueta="Errores"
-          color="#dc3545"
-          unidad="%">
-        </app-grafica-metrica>
-      </div>
-      <div class="col-md-6">
-        <app-grafica-metrica
-          titulo="Tiempo Registro Inmueble - Últimas 24h"
-          [datos]="historicoTiempoInmueble"
-          etiqueta="Tiempo"
-          color="#fd7e14"
-          unidad="ms">
-        </app-grafica-metrica>
-      </div>
-    </div>
-
-    <!-- Gestión y Cierre de Negocio: tarjetas -->
+    <!-- Sección: Gestión y Cierre de Negocio -->
     <h5 class="text-muted mb-3">Gestión y Cierre de Negocio</h5>
     <div class="row g-3 mb-4">
+
       <div class="col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
@@ -144,6 +108,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
   </div>
