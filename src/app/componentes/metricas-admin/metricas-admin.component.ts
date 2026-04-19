@@ -201,4 +201,10 @@ export class MetricasAdminComponent implements OnInit {
     };
     return mapa[rol] ?? 'badge-default';
   }
+
+  // ─── Logout ──────────────────────────────────────────────────────────
+  logout(): void {
+    this.chatService.desconectarWebSocket();
+    this.authService.logout();
+  }
 }
