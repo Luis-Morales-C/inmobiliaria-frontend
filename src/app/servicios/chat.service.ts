@@ -1,9 +1,7 @@
-// src/app/servicios/chat.service.ts
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { AuthService } from './auth.service';
 import {
   ConversacionDto,
@@ -12,37 +10,31 @@ import {
   EnviarMensajeRequest,
   NotificacionDto,
 } from '../dto/chat/chat.models';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService implements OnDestroy {
-  private readonly API = 'http://localhost:8080/api/chat';
-  private readonly WS_URL = 'http://localhost:8080/ws-chat';
+  private readonly API = `${environment.backendUrl}/api/chat`;
+  private readonly WS_URL = `${environment.backendUrl}/ws-chat`;
 
-  // ─── Estado del panel de chat ──────────────────────────────────────────
   private _panelAbierto = new BehaviorSubject<boolean>(false);
   panelAbierto$ = this._panelAbierto.asObservable();
 
-  // Lista lateral de conversaciones
   private _conversaciones = new BehaviorSubject<ConversacionDto[]>([]);
   conversaciones$ = this._conversaciones.asObservable();
 
-  // Conversación activa
   private _conversacionActiva = new BehaviorSubject<ConversacionDetalleDto | null>(null);
   conversacionActiva$ = this._conversacionActiva.asObservable();
 
-  // Mensajes nuevos que llegan por WebSocket
   private _mensajeNuevo = new Subject<MensajeDto>();
   mensajeNuevo$ = this._mensajeNuevo.asObservable();
 
-  // Notificaciones (badge, toasts)
   private _notificacion = new Subject<NotificacionDto>();
   notificacion$ = this._notificacion.asObservable();
 
-  // Total de mensajes no leídos (para el botón flotante)
   private _totalNoLeidos = new BehaviorSubject<number>(0);
   totalNoLeidos$ = this._totalNoLeidos.asObservable();
 
-  // ─── WebSocket ────────────────────────────────────────────────────────
   private stompClient: Client | null = null;
   private conectado = false;
   private subMensajes: StompSubscription | null = null;
@@ -50,7 +42,6 @@ export class ChatService implements OnDestroy {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  // ─── Conexión WebSocket (llamar al hacer login) ───────────────────────
   conectarWebSocket(): void {
     console.log('=== conectarWebSocket llamado ===');
     console.log('Token:', this.authService.getToken() ? 'existe' : 'NO existe');
@@ -58,8 +49,13 @@ export class ChatService implements OnDestroy {
     const token = this.authService.getToken();
     if (!token || this.conectado) return;
 
+    // ✅ Convierte http→ws / https→wss
+    const wsUrl = this.WS_URL
+      .replace('http://', 'ws://')
+      .replace('https://', 'wss://');
+
     this.stompClient = new Client({
-      webSocketFactory: () => new WebSocket('ws://localhost:8080/ws-chat'), // ← así
+      brokerURL: wsUrl,   // ✅ Sin SockJS, sin webSocketFactory
       connectHeaders: { Authorization: `Bearer ${token}` },
       reconnectDelay: 5000,
       onConnect: () => {
@@ -67,30 +63,25 @@ export class ChatService implements OnDestroy {
         const userId = this.authService.obtenerIdUsuario();
         if (!userId) return;
 
-        // Suscripción a mensajes personales
         this.subMensajes = this.stompClient!.subscribe(
           `/user/${userId}/queue/mensajes`,
           (msg: IMessage) => {
             const mensaje: MensajeDto = JSON.parse(msg.body);
             this._mensajeNuevo.next(mensaje);
 
-            // Si el panel está abierto en esa conversación, agregar el mensaje
             const activa = this._conversacionActiva.getValue();
             if (activa && activa.id === mensaje.conversacionId) {
               this._conversacionActiva.next({
                 ...activa,
                 mensajes: [...activa.mensajes, mensaje],
               });
-              // Marcar como leído inmediatamente
               this.marcarLeidos(mensaje.conversacionId);
             }
 
-            // Actualizar la lista de conversaciones
             this.refrescarConversaciones();
           }
         );
 
-        // Suscripción a notificaciones
         this.subNotificaciones = this.stompClient!.subscribe(
           `/user/${userId}/queue/notificaciones`,
           (msg: IMessage) => {
@@ -100,7 +91,6 @@ export class ChatService implements OnDestroy {
           }
         );
 
-        // Cargar conversaciones iniciales
         this.refrescarConversaciones();
       },
       onDisconnect: () => {
@@ -118,7 +108,6 @@ export class ChatService implements OnDestroy {
     this.conectado = false;
   }
 
-  // ─── Panel ────────────────────────────────────────────────────────────
   abrirPanel(): void {
     this._panelAbierto.next(true);
     this.refrescarConversaciones();
@@ -137,7 +126,6 @@ export class ChatService implements OnDestroy {
     }
   }
 
-  // ─── Abrir conversación con un usuario específico (desde "Contactar") ─
   abrirConversacionCon(otroUsuarioId: number): void {
     const token = this.authService.getToken();
     if (!token) return;
@@ -158,7 +146,6 @@ export class ChatService implements OnDestroy {
       });
   }
 
-  // ─── Seleccionar una conversación de la lista ─────────────────────────
   seleccionarConversacion(conversacionId: number): void {
     const token = this.authService.getToken();
     if (!token) return;
@@ -178,7 +165,6 @@ export class ChatService implements OnDestroy {
       });
   }
 
-  // ─── Enviar mensaje por WebSocket ─────────────────────────────────────
   enviarMensaje(request: EnviarMensajeRequest): void {
     if (!this.stompClient?.connected) {
       console.warn('WebSocket no conectado');
@@ -189,7 +175,6 @@ export class ChatService implements OnDestroy {
       body: JSON.stringify(request),
     });
 
-    // Agregar optimistamente el mensaje al estado local
     const yo = this.authService.obtenerIdUsuario();
     const nombre = this.authService.obtenerNombreUsuario() ?? '';
     const apellido = this.authService.obtenerApellidoUsuario() ?? '';
@@ -197,7 +182,7 @@ export class ChatService implements OnDestroy {
 
     if (activa && yo) {
       const mensajeOptimista: MensajeDto = {
-        id: -1, // Temporal
+        id: -1,
         conversacionId: activa.id,
         emisorId: Number(yo),
         emisorNombre: nombre,
@@ -214,13 +199,11 @@ export class ChatService implements OnDestroy {
     }
   }
 
-  // ─── Volver a la lista desde una conversación ─────────────────────────
   volverALista(): void {
     this._conversacionActiva.next(null);
     this.refrescarConversaciones();
   }
 
-  // ─── Helpers REST ─────────────────────────────────────────────────────
   private refrescarConversaciones(): void {
     const token = this.authService.getToken();
     if (!token) return;
@@ -243,13 +226,11 @@ export class ChatService implements OnDestroy {
     const token = this.authService.getToken();
     if (!token) return;
 
-    // WebSocket
     this.stompClient?.publish({
       destination: '/app/chat.leidos',
       body: JSON.stringify(conversacionId),
     });
 
-    // REST como backup
     this.http
       .put(`${this.API}/conversaciones/${conversacionId}/leidos`, null, {
         headers: { Authorization: `Bearer ${token}` },
@@ -260,8 +241,6 @@ export class ChatService implements OnDestroy {
   ngOnDestroy(): void {
     this.desconectarWebSocket();
   }
-
-  // Agregar estos dos métodos en chat.service.ts
 
   refrescarConversacionActiva(conversacionId: number): void {
     const token = this.authService.getToken();
@@ -275,12 +254,11 @@ export class ChatService implements OnDestroy {
       .subscribe({
         next: (detalle) => {
           const actual = this._conversacionActiva.getValue();
-          // Solo actualizar si hay mensajes nuevos
           if (actual && detalle.mensajes.length !== actual.mensajes.length) {
             this._conversacionActiva.next(detalle);
           }
         },
-        error: () => {}
+        error: () => {},
       });
   }
 
@@ -298,7 +276,7 @@ export class ChatService implements OnDestroy {
           const total = lista.reduce((acc, c) => acc + c.noLeidosPorMi, 0);
           this._totalNoLeidos.next(total);
         },
-        error: () => {}
+        error: () => {},
       });
   }
 }
