@@ -166,14 +166,20 @@
 .chat-send-btn:not(:disabled):hover { background: #1b5e20; }
 
 /* ── Responsive ─────────────────────────────────────────────────────── */
+/* ── Responsive ─────────────────────────────────────────────────────── */
 @media (max-width: 420px) {
+  .chat-fab {
+    right: 16px;
+    bottom: 90px; /* sube sobre el botón de accesibilidad */
+  }
+
   .chat-window {
     right: 10px;
-    width: calc(100vw - 20px);
-    bottom: 88px;
-    height: 70vh;
+    left: 10px;
+    width: auto;
+    bottom: 158px; /* se abre sobre el chat-fab */
+    height: calc(100dvh - 175px);
   }
-  .chat-fab { right: 16px; bottom: 16px; }
 }
 
 /* ── Modo oscuro ────────────────────────────────────────────────────── */
