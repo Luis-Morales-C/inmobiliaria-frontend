@@ -407,35 +407,100 @@
   gap: 5px;
 }
 
+
 /* ════════════════════════════
    RESPONSIVE
 ════════════════════════════ */
 @media (max-width: 768px) {
+
+  /* Modal */
+  .modal-overlay {
+    padding: 8px;
+    align-items: flex-end; /* se pega a la parte baja como un bottom sheet */
+  }
+
   .modal-detalle-container {
     max-height: 95vh;
-    border-radius: 16px;
+    border-radius: 20px 20px 0 0; /* esquinas solo arriba */
   }
 
+  /* Layout: columnas → filas */
   .modal-body-detalle {
     flex-direction: column;
+    overflow-y: auto;
   }
 
+  /* Columna imágenes */
   .columna-imagenes {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #f0f0f0;
+    padding: 0 0 12px 0;
+    overflow-y: visible;
   }
 
   .imagen-principal img {
     height: 200px;
+    border-radius: 0;
   }
 
+  .miniaturas {
+    padding: 8px 12px;
+  }
+
+  /* Columna info */
+  .columna-info {
+    padding: 14px 16px;
+    overflow-y: visible;
+  }
+
+  /* Precio más compacto */
+  .precio-valor {
+    font-size: 1.4rem;
+  }
+
+  /* Grid de características: 2 columnas en móvil */
   .caracteristicas-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
-  .columna-info {
-    padding: 16px;
+  /* Persona card: botón baja debajo de la info */
+  .persona-card {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .persona-info {
+    flex: 1 1 auto;
+    min-width: 0; /* evita desbordamiento de texto */
+  }
+
+  .persona-dato {
+    word-break: break-all; /* emails largos no se salen */
+  }
+
+  .btn-contactar {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+  }
+
+  /* Mapa un poco más bajo en móvil */
+  .mapa-detalle-container {
+    height: 180px;
+  }
+
+  /* Secciones con menos padding */
+  .seccion-card {
+    padding: 12px 14px;
+  }
+
+  /* Header del modal */
+  .modal-header-detalle {
+    padding: 12px 16px;
   }
 }
 .btn-contactar {

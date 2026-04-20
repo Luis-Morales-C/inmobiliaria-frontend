@@ -11,6 +11,7 @@ import {
   NotificacionDto,
 } from '../dto/chat/chat.models';
 import { environment } from '../../environments/environment';
+import {PanelService} from './panel.service';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService implements OnDestroy {

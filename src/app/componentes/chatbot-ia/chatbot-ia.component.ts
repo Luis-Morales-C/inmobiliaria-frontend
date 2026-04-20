@@ -134,6 +134,9 @@ export class ChatbotIaComponent implements OnInit, OnDestroy {
   userInput = '';
   isLoading = false;
   private sub!: Subscription;
+  modalAbierto = false;
+  private subModal!: Subscription;
+
 
   constructor(
     private router: Router,
@@ -146,10 +149,20 @@ export class ChatbotIaComponent implements OnInit, OnDestroy {
       this.isOpen = panel === 'chatbot-ia';
     });
     this.loadNode('start');
+
+    this.subModal = this.panelService.modal$.subscribe(abierto => {
+      this.modalAbierto = abierto;        // 👈 nuevo
+      if (abierto) this.isOpen = false;   // cierra el chat si estaba abierto
+    });
+
+    this.loadNode('start');
   }
+
+
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+    this.subModal?.unsubscribe();
   }
 
   toggle(): void { this.panelService.abrir('chatbot-ia'); }

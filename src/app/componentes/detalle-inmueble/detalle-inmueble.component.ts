@@ -4,6 +4,7 @@ import { InmuebleResponse } from '../../dto/inmueble-response';
 import { AgenteResponse } from '../../dto/AgenteResponse';
 import { MapaService } from '../../mapa.service';
 import {ChatService} from '../../servicios/chat.service';
+import {PanelService} from '../../servicios/panel.service';
 
 @Component({
   selector: 'app-detalle-inmueble',
@@ -18,9 +19,12 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
 
   imagenActual = 0;
 
-  constructor(private mapaService: MapaService,private chatService: ChatService) {}
+  constructor(private mapaService: MapaService,
+              private chatService: ChatService,
+              private panelService: PanelService) {}
 
   ngAfterViewInit(): void {
+    this.panelService.abrirModal();
     // Pequeño delay para asegurar que el DOM esté listo
     setTimeout(() => {
       if (this.inmueble?.latitud && this.inmueble?.longitud) {
@@ -35,7 +39,9 @@ export class DetalleInmuebleComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.panelService.cerrarModal();
     this.mapaService.destruirMapaDetalle();
+
   }
 
   anteriorImagen(): void {

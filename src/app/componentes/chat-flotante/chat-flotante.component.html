@@ -2,7 +2,7 @@
 <ng-container *ngIf="authService.isAuthenticated()">
 
   <!-- Botón flotante -->
-  <button class="btn-flotante" (click)="chatService.togglePanel()">
+  <button class="btn-flotante" (click)="chatService.togglePanel()" *ngIf="!modalAbierto">
     <i class="bi bi-chat-dots-fill"></i>
     <span class="badge-count" *ngIf="totalNoLeidos > 0">
       {{ totalNoLeidos > 99 ? '99+' : totalNoLeidos }}

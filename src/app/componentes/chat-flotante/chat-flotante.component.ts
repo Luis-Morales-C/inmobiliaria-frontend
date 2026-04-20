@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ChatService } from '../../servicios/chat.service';
 import { AuthService } from '../../servicios/auth.service';
 import { ConversacionDetalleDto, MensajeDto } from '../../dto/chat/chat.models';
+import {PanelService} from '../../servicios/panel.service';
 
 @Component({
   selector: 'app-chat-flotante',
@@ -26,6 +27,7 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
   totalNoLeidos = 0;
   textoMensaje = '';
   miId = 0;
+  modalAbierto = false;
 
   get conversaciones$() {
     return this.chatService.conversaciones$;
@@ -36,7 +38,8 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
 
   constructor(
     public chatService: ChatService,
-    public authService: AuthService
+    public authService: AuthService,
+    public panelService: PanelService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +68,14 @@ export class ChatFlotanteComponent implements OnInit, OnDestroy, AfterViewChecke
     }));
 
     this.subs.add(this.chatService.totalNoLeidos$.subscribe(n => this.totalNoLeidos = n));
+
+    this.subs.add(this.panelService.modal$.subscribe(abierto => {
+      this.modalAbierto = abierto;
+      if (abierto) this.chatService.cerrarPanel();
+    }));
+
   }
+
 
   ngAfterViewChecked(): void {
     if (this.debeScroll && this.scrollContainer) {
